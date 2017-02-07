@@ -1,0 +1,17 @@
+{
+  "name": "chrome-neo",
+  "description": "Chrome extension that uses the asterank API",
+  "main": "popup.html",
+  "authors": [
+    "Bradley Taniguchi"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
