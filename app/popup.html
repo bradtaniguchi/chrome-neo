@@ -6,8 +6,20 @@
   <title></title>
   <meta name="description" content="">
   <meta name="viewpoint" content="width=device-wdith, initial-scale=1">
+  <!--bootstrap css-->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
 </head>
 <body>
-   <p>HELLO WORLD!</p>
+   <div ng-app="chrome-neo">
+     <ui-view></ui-view>
+   </div>
+<!--include angularjs files here-->
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
+<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+
+<!--angular app.js-->
+<script type="text/javascript" src="app.js"></script>
 </body>
 </html>

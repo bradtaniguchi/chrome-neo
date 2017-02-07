@@ -27,7 +27,7 @@ gulp.task('default', function() {
  *keep file structure*/
 gulp.task('copyHtml', function() {
   gulp.src('./app/**/*.html', {base: './app/'})
-  .pipe(gulp.dest('dist'));
+  .pipe(gulp.dest('dist/'));
 });
 
 /*move static files to base dir*/
@@ -40,6 +40,12 @@ gulp.task('moveStatic', function() {
   /*Move any png images*/
   gulp.src('./img/*.png')
   .pipe(gulp.dest('dist/img/'))
+  /*Move angularjs file*/
+  gulp.src('./bower_components/**')
+  .pipe(gulp.dest('dist/bower_components/'));
+  /*Move font files to root folder*/
+  gulp.src('./bower_components/bootstrap/fonts/**')
+  .pipe(gulp.dest('dist/fonts/'));
 });
 
 /*Clean the dist folder*/
@@ -59,11 +65,11 @@ gulp.task('jshint', function() {
 gulp.task('buildjs', function() {
   gutil.log(gutil.colors.magenta('building js files...'));
   return gulp.src('./app/**/*.js')
-  .pipe(concat('all.js'))
+  .pipe(concat('app.js'))
   .pipe(wrap(wrapper))
   .pipe(gulp.dest('dist'))
   /*minify the file*/
-  .pipe(rename('all.min.js'))
+  .pipe(rename('app.min.js'))
   .pipe(uglify())
   .pipe(gulp.dest('dist'));
 });
@@ -79,5 +85,6 @@ gulp.task('watch', function() {
 /*Default task*/
 gulp.task('default', ['jshint', 'copyHtml', 'moveStatic', 'buildjs', 'watch']);
 
-
+/*Same as the default task, but no watch*/
+gulp.task('build', ['jshint', 'copyHtml', 'moveStatic', 'buildjs']);
 
