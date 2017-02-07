@@ -2,7 +2,7 @@
 * Bradley Taniguchi
 * 2/7/17
 * Gulp build file
-* For chrome-neo extension for Senior Project at CSUDH 
+* For chrome-neo extension for Senior Project at CSUDH
 * CSC 492
 */
 
@@ -23,7 +23,7 @@ gulp.task('default', function() {
   return gutil.log('Gulp is running!');
 });
 
-/*Move html files from angular app to dist. 
+/*Move html files from angular app to dist.
  *keep file structure*/
 gulp.task('copyHtml', function() {
   gulp.src('./app/**/*.html', {base: './app/'})
@@ -33,19 +33,16 @@ gulp.task('copyHtml', function() {
 /*move static files to base dir*/
 gulp.task('moveStatic', function() {
   gulp.src('manifest.json')
-  .pipe(gulp.dest('dist'))
+  .pipe(gulp.dest('dist'));
   /*Move the background files*/
   gulp.src('./js/*.js')
-  .pipe(gulp.dest('dist/js/'))
+  .pipe(gulp.dest('dist/js/'));
   /*Move any png images*/
   gulp.src('./img/*.png')
-  .pipe(gulp.dest('dist/img/'))
+  .pipe(gulp.dest('dist/img/'));
   /*Move angularjs file*/
   gulp.src('./bower_components/**')
   .pipe(gulp.dest('dist/bower_components/'));
-  /*Move font files to root folder*/
-  gulp.src('./bower_components/bootstrap/fonts/**')
-  .pipe(gulp.dest('dist/fonts/'));
 });
 
 /*Clean the dist folder*/
@@ -64,7 +61,7 @@ gulp.task('jshint', function() {
 /*Build the js files, and */
 gulp.task('buildjs', function() {
   gutil.log(gutil.colors.magenta('building js files...'));
-  return gulp.src('./app/**/*.js')
+  return gulp.src('./app/**/*.js', {base: './app/'})
   .pipe(concat('app.js'))
   .pipe(wrap(wrapper))
   .pipe(gulp.dest('dist'))
@@ -87,4 +84,3 @@ gulp.task('default', ['jshint', 'copyHtml', 'moveStatic', 'buildjs', 'watch']);
 
 /*Same as the default task, but no watch*/
 gulp.task('build', ['jshint', 'copyHtml', 'moveStatic', 'buildjs']);
-

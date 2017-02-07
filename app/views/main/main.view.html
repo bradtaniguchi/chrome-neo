@@ -1,1 +1,45 @@
-main view
+<md-toolbar class="md-hue-1 md-whiteframe-8dp">
+  <div class="md-toolbar-tools">
+    <md-menu  md-offset="5 10">
+      <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openMenu($mdMenu, $event)">
+      <!--lookup how to do this...
+      https://material.angularjs.org/latest/demo/menu
+      -->
+      <md-tooltip md-direction="down">Open Menu</md-tooltip>
+        <i class="material-icons">menu</i>
+      </md-button>
+      <md-menu-content><!--ITEM LIST CONTENTS FOR MENU DROPDOWN-->
+        <md-menu-item>
+          <md-button>
+            <md-tooltip md-direction="right">Go to Home</md-tooltip>
+            <i class="material-icons">home</i>
+            Home
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button>
+            <md-tooltip md-direction="right">Go to Stat View</md-tooltip>
+            <i class="material-icons">show_chart</i>
+            Stats
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button>
+            <md-tooltip md-direction="right">Search the database</md-tooltip>
+            <i class="material-icons">search</i>
+            Search</md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button>
+            <md-tooltip md-direction="right">Extension information</md-tooltip>
+            <i class="material-icons">live_help</i>
+            About</md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu><!--END menu-->
+    <h2>Chrome-Neo</h2>
+    <span flex></span>
+  </div>
+</md-toolbar>
+<!--main content goes here-->
+<ui-view></ui-view>

@@ -1,1 +1,1 @@
-angular.module('chrome-neo', ['ui.bootstrap', 'ui.router']);
+angular.module('chrome-neo', ['ui.router', 'ngMaterial']);

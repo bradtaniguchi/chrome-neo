@@ -4,20 +4,26 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title></title>
-  <meta name="description" content="">
+  <meta name="description" content="Chrome Extension App">
   <meta name="viewpoint" content="width=device-wdith, initial-scale=1">
-  <!--bootstrap css-->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+  <!--angular material css-->
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
+  <!--css to get robot font, and icons-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
 </head>
-<body>
-   <div ng-app="chrome-neo">
+<body style="width:300px;height:600px">
+   <div ng-app="chrome-neo" ng-cloak>
      <ui-view></ui-view>
    </div>
 <!--include angularjs files here-->
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
-<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
-<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
+<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
+<script type="text/javascript" src="bower_components/angular-messages/angular-messages.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 
 <!--angular app.js-->
 <script type="text/javascript" src="app.js"></script>
