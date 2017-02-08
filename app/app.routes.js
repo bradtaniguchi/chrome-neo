@@ -13,7 +13,7 @@ function router($stateProvider, $urlRouterProvider) {
   .state('home',{
     url: 'home',
     parent: 'main',
-    template: 'THIS IS MAIN',
+    templateUrl: 'views/home/home.view.html',
     controller: 'HomeController as vm'
   });
   /*.state('stats',{})

@@ -1,3 +1,40 @@
-<md-card>
-  THIS IS HOME
+<md-card class="md-whiteframe-4dp">
+  <md-card-header>
+      <i class="material-icons">home</i>
+    <md-card-header-text class="md-title">
+      Home
+    </md-card-header-text>
+  </md-card-header>
+  <md-card-content>
+    <p class="md-body-2"><i>See below for the number of asteroids that will 
+    be considered NEOs</i></p>
+    <div layout="column">
+      <md-button ng-click="vm.showTable($event)">
+        <div layout="row">
+          <div class="md-subhead">Monthly:</div>
+          <span flex></span>
+          <i class="material-icons">event</i>
+        </div>
+      </md-button>
+      <md-button>
+        <div layout="row">
+          <div class="md-subhead">Weekly:</div>
+          <span flex></span>
+          <i class="material-icons">view_week</i>
+        </div>
+      </md-button>
+      <md-button>
+        <div layout="row">
+          <div class="md-subhead">Daily:</div>
+          <span flex></span>
+          <i class="material-icons">view_day</i>
+        </div>
+      </md-button>
+    </div>
+    <md-divider></md-divider>
+    
+    <div layout="row" layout-align="space-around" hide><!--loading bar-->
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+  </md-card-content>
 </md-card>
