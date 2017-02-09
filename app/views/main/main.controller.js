@@ -7,6 +7,7 @@ function MainController($log, $state, $rootScope) {
   vm.openMenu = openMenu;
   vm.loading = true;
   vm.go = go;
+  vm.refresh = refresh;
   vm.$onInit = onInit;
   return vm;
   /*function definitions*/
@@ -17,6 +18,9 @@ function MainController($log, $state, $rootScope) {
     $log.log("Clicked");
     originatorEv = ev;
     $mdMenu.open(ev);
+  }
+  function refresh() {
+    $state.reload();
   }
   function go(state) {
     $state.go(state);
