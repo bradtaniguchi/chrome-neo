@@ -1,4 +1,4 @@
-<md-toolbar class="md-hue-1 md-whiteframe-8dp">
+<md-toolbar class="md-hue-1 md-whiteframe-8dp" ng-show="!vm.loading">
   <div class="md-toolbar-tools">
     <md-menu  md-offset="5 10">
       <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openMenu($mdMenu, $event)">
@@ -10,27 +10,27 @@
       </md-button>
       <md-menu-content><!--ITEM LIST CONTENTS FOR MENU DROPDOWN-->
         <md-menu-item>
-          <md-button>
+          <md-button ng-click="vm.go('home')">
             <md-tooltip md-direction="right">Go to Home</md-tooltip>
             <i class="material-icons">home</i>
             Home
           </md-button>
         </md-menu-item>
         <md-menu-item>
-          <md-button>
+          <md-button ng-click="vm.go('stats')">
             <md-tooltip md-direction="right">Go to Stat View</md-tooltip>
             <i class="material-icons">show_chart</i>
             Stats
           </md-button>
         </md-menu-item>
         <md-menu-item>
-          <md-button>
+          <md-button ng-click="vm.go('search')">
             <md-tooltip md-direction="right">Search the database</md-tooltip>
             <i class="material-icons">search</i>
             Search</md-button>
         </md-menu-item>
         <md-menu-item>
-          <md-button>
+          <md-button ng-click="vm.go('about')">
             <md-tooltip md-direction="right">Extension information</md-tooltip>
             <i class="material-icons">live_help</i>
             About</md-button>
@@ -41,5 +41,8 @@
     <span flex></span>
   </div>
 </md-toolbar>
+<div layout="row" layout-sm="column" layout-align="space-around" ng-show="vm.loading">
+  <md-progress-circular md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+</div>
 <!--main content goes here-->
 <ui-view></ui-view>

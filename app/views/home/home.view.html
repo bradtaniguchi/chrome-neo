@@ -1,4 +1,4 @@
-<md-card class="md-whiteframe-4dp">
+<md-card class="md-whiteframe-4dp" ng-show="!vm.loading" ng-cloak>
   <md-card-header>
       <i class="material-icons">home</i>
     <md-card-header-text class="md-title">
@@ -6,7 +6,7 @@
     </md-card-header-text>
   </md-card-header>
   <md-card-content>
-    <p class="md-body-2"><i>See below for the number of asteroids that will 
+    <p class="md-body-2"><i>See below for the number of asteroids that will
     be considered NEOs</i></p>
     <div layout="column">
       <md-button ng-click="vm.showTable($event)">
@@ -32,9 +32,10 @@
       </md-button>
     </div>
     <md-divider></md-divider>
-    
+
     <div layout="row" layout-align="space-around" hide><!--loading bar-->
       <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     </div>
   </md-card-content>
 </md-card>
+<md-progress-linear md-mode="indeterminate" ng-show="vm.loading"></md-progress-linear>

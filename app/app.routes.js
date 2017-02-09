@@ -15,8 +15,20 @@ function router($stateProvider, $urlRouterProvider) {
     parent: 'main',
     templateUrl: 'views/home/home.view.html',
     controller: 'HomeController as vm'
+  })
+  .state('stats', {
+    url: 'stats',
+    parent: 'main',
+    template: 'stats template'
+  })
+  .state('search', {
+    url: 'search',
+    parent: 'main',
+    template: 'search template'
+  })
+  .state('about',{
+    url: 'about',
+    parent: 'main',
+    template: 'about template'
   });
-  /*.state('stats',{})
-  .state('search',{})
-  .state('about',{});*/
 }
