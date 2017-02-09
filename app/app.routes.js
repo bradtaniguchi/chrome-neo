@@ -19,16 +19,19 @@ function router($stateProvider, $urlRouterProvider) {
   .state('stats', {
     url: 'stats',
     parent: 'main',
-    template: 'stats template'
+    templateUrl: 'views/stats/stats.view.html',
+    controller: 'StatsController as vm'
   })
   .state('search', {
     url: 'search',
     parent: 'main',
-    template: 'search template'
+    templateUrl: 'views/search/search.view.html',
+    controller: 'SearchController as vm'
   })
   .state('about',{
     url: 'about',
     parent: 'main',
-    template: 'about template'
+    templateUrl: 'views/about/about.view.html',
+    controller: 'AboutController as vm'
   });
 }
