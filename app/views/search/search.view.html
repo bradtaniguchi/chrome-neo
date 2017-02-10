@@ -1,3 +1,50 @@
 <md-card class="md-whiteframe-4dp">
-  search view
+  <md-card-header>
+    <i class="material-icons">search</i>
+    <md-card-header-text class="md-title">
+      Search
+    </md-card-header-text>
+  </md-card-header>
+  <md-card-content>
+    <p class="md-body-2">
+      <i> Use the search bar below to query</i>
+    </p>
+    <!--
+    Options checkboxes
+    -->
+    <div layout="row" layout-align="start center">
+      <div class="md-hue-1">
+        Advance Options
+      </div>
+      <div flex>
+      </div>
+      <md-button class="md-icon-button" ng-show="!vm.showOptions" ng-click="vm.showOptions = true;">
+        <md-tooltip md-direction="top">show filters</md-tooltip>
+        <i class="material-icons">keyboard_arrow_down</i>
+      </md-button>
+      <md-button class="md-icon-button" ng-show="vm.showOptions" ng-click="vm.showOptions = false;">
+        <md-tooltip md-direction="top">hide filters</md-tooltip>
+        <i class="material-icons">keyboard_arrow_up</i>
+      </md-button>
+    </div>
+    <div layout="column"
+      ng-show="vm.showOptions" ng-init="vm.showOptions = false"> <!--start custom options-->
+      <md-checkbox  aria-label="NEO object?">
+        <md-tooltip md-direction="right">Show NEO objects</md-tooltip>
+        NEO
+      </md-checkbox>
+      <md-checkbox aria-label="NEO object?">
+        <md-tooltip md-direction="right">Other tooltip</md-tooltip>
+        NEO2
+      </md-checkbox>
+      <md-divider></md-divider>
+    </div>
+    <md-input-container md-no-float>
+      <label>Search</label>
+      <input ng-model="vm.query">
+      <md-button class="md-raised" ng-click="vm.search(vm.query)">Search</md-button>
+      <md-button class="md-raised" ng-click="vm.query = ''">Clear</md-button>
+    </md-input-container>
+
+  </md-card-content>
 </md-card>
