@@ -24,5 +24,8 @@
     "chart.js": "^2.5.0",
     "angular-chart.js": "^1.1.1",
     "angular-moment": "^1.0.1"
+  },
+  "resolutions": {
+    "angular": "^1.6.2"
   }
 }

@@ -3,7 +3,9 @@
 
 module.exports = function(config) {
   config.set({
-
+    client: {
+      captureConsole : true
+    },
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
@@ -15,10 +17,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'app/**/*.js', //get all normal files
-      'test/**.js' //get the test files
+      './bower_components/angular/angular.js',
+      './bower_components/angular-ui-router/release/angular-ui-router.js',
+      './bower_components/moment/moment.js',
+      './bower_components/angular-moment/angular-moment.js',
+      './bower_components/angular-material/angular-material.js',
+      './bower_components/angular-localforage/dist/angular-localForage.js',
+      './bower_components/chart.js/dist/Chart.bundle.js',
+      './bower_components/angular-chart.js/dist/angular-chart.js',
+      './bower_components/angular-material/angular-material.js',
+      './bower_components/angular-messages/angular-messages.js',
+      './bower_components/angular-animate/angular-animate.js',
+      './bower_components/angular-aria/angular-aria.js',
+      './node_modules/angular-mocks/angular-mocks.js',
+      './dist/app.js', //get all normal files
+      './test/**.js' //get the test files
     ],
-
 
     // list of files to exclude
     exclude: [
@@ -56,7 +70,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode

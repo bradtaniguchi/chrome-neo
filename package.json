@@ -13,6 +13,7 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "angular-mocks": "^1.6.2",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
@@ -21,6 +22,7 @@
     "gulp-uglify": "^2.0.1",
     "gulp-util": "^3.0.8",
     "gulp-wrap": "^0.13.0",
+    "jasmine": "^2.5.3",
     "jasmine-core": "^2.5.2",
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
