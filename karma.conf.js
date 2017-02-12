@@ -31,7 +31,7 @@ module.exports = function(config) {
       './bower_components/angular-aria/angular-aria.js',
       './node_modules/angular-mocks/angular-mocks.js',
       './dist/app.js', //get all normal files
-      './test/**.js' //get the test files
+      './test/**/*.js' //get the test files
     ],
 
     // list of files to exclude

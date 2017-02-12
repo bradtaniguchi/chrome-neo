@@ -61,7 +61,7 @@ gulp.task('jshint', function() {
 /*Build the js files, and */
 gulp.task('buildjs', function() {
   gutil.log(gutil.colors.magenta('building js files...'));
-  return gulp.src('./app/**/*.js', {base: './app/'})
+  return gulp.src(['./app/app.module.js', './app/**/*.js'], {base: './app/'})
   .pipe(concat('app.js'))
   .pipe(wrap(wrapper))
   .pipe(gulp.dest('dist'))
