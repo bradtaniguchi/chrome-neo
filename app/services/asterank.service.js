@@ -11,14 +11,13 @@ function AsterankService($log, $http, constants, moment) {
     if (typeof limit !== 'number') {
       limit = 10;
     }
-    var config = {
+    return $http({
+      url: constants.ASTERANK_BASE_URL,
+      method: 'GET',
       params: {
-        "query": {
-          "spkid" : id
-        },
-        "limit" : limit
+        query: {"spkid": id},
+        limit: limit
       }
-    };
-    return $http.get(constants.ASTERANK_BASE_URL + config);
+    });
   }
 }
