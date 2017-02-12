@@ -1,4 +1,21 @@
 <md-dialog>
   <!--https://material.angularjs.org/latest/demo/dialog-->
-  dialog
+  <md-toolbar>
+    <div class="md-toolbar-tools" layout="row" layout-align="start center">
+      Monthly
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.refresh()">
+        <i class="material-icons">refresh</i>
+      </md-button>
+      <md-button class="md-icon-button" ng-click="vm.close()">
+          <i class="material-icons">close</i>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content> <!--table goes here-->
+    GRAPH GOES HERE
+  </md-dialog-content>
+  <md-dialog-actions>
+    <md-button ng-click="vm.close()">Close</md-button>
+  </md-dialog-actions>
 </md-dialog>

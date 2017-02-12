@@ -1,9 +1,15 @@
 /*Table view Controller*/
 angular.module('chrome-neo').controller('TableViewController', TableViewController);
-TableViewController.$inject=['$log', 'constants'];
+TableViewController.$inject=['$log', '$mdDialog', 'constants'];
 
-function TableViewController($log, constants) {
+function TableViewController($log, $mdDialog, constants) {
   var vm = this;
-  console.log("test" + constants.test);
+  vm.close = close;
+  
   return vm;
+  
+  /*function definitons*/
+  function close() {
+    $mdDialog.hide();
+  }
 }
