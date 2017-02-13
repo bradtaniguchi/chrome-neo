@@ -20,4 +20,17 @@ function AsterankService($log, $http, constants, moment) {
       }
     });
   }
+  function getByName(name, limit) {
+    if(typeof limit !== 'number') {
+      limit = 10;
+    }
+    return $http({
+      url: constants.ASTERANK_BASE_URL,
+      method: 'GET',
+      params : {
+        query:{"full_name": name},
+        limit : limit
+      }
+    });
+  }
 }
