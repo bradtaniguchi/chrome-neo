@@ -14,8 +14,12 @@
   </md-toolbar>
   <md-dialog-content> <!--table goes here-->
     GRAPH GOES HERE
-    <md-button class="md-icon-button" ng-click="vm.test()">
-          <i class="material-icons">code</i>
+    <canvas id="lineGraph" class="chart chart-line" chart-data="vm.chart.data"
+    chart-labels="vm.chart.labels" chart-options="vm.chart.options"
+    chart-hover=""></canvas>
+    
+    <!--<md-button class="md-icon-button" ng-click="vm.test()">
+          <i class="material-icons">code</i>-->
       </md-button>
   </md-dialog-content>
   <md-dialog-actions>
