@@ -6,32 +6,28 @@
   <title>Chrome-Neo</title>
   <meta name="description" content="Chrome Extension App">
   <meta name="viewpoint" content="width=device-wdith, initial-scale=1">
-  <!--angular material css-->
-  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
   <!--css to get robot font, and icons-->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
+  <link rel="stylesheet" href="css/angular-material.css"/>
 </head>
 <body style="width:400px;height:600px">
    <div ng-app="chrome-neo" ng-cloak>
      <ui-view></ui-view>
    </div>
-<!--include angularjs files here-->
-<script type="text/javascript" src="bower_components/angular/angular.js"></script>
-<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
-<script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
-<script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
-<script type="text/javascript" src="bower_components/angular-messages/angular-messages.js"></script>
-<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-
-<!--non-core utility classes-->
-<script type="text/javascript" src="bower_components/angular-localforage/dist/angular-localForage.js"></script>
-<script type="text/javascript" src="bower_components/chart.js/dist/Chart.bundle.js"></script>
-<script type="text/javascript" src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
-<script type="text/javascript" src="bower_components/moment/moment.js"></script>
-<script type="text/javascript" src="bower_components/angular-moment/angular-moment.js"></script>
-
+<!--lib files-->
+<script src="lib/angular.js"></script>
+<script src="lib/angular-ui-router.js"></script>
+<script src="lib/angular-material.js"></script>
+<script src="lib/angular-animate.js"></script>
+<script src="lib/Chart.bundle.js"></script>
+<script src="lib/angular-chart.js"></script>
+<script src="lib/angular-aria.js"></script>
+<script src="lib/angular-messages.js"></script>
+<script src="lib/moment.js"></script>
+<script src="lib/angular-moment.js"></script>
+<script src="lib/localforage.js"></script>
+<script src="lib/angular-localForage.js"></script>
 
 <!--angular app.js-->
 <script type="text/javascript" src="app.js"></script>

@@ -34,15 +34,33 @@ gulp.task('copyHtml', function() {
 gulp.task('moveStatic', function() {
   gulp.src('manifest.json')
   .pipe(gulp.dest('dist'));
-  /*Move the background files*/
-  gulp.src('./js/*.js')
-  .pipe(gulp.dest('dist/js/'));
+  /*Move the css files*/
+  gulp.src([
+    './bower_components/angular-material/angular-material.css'
+  ])
+  .pipe(gulp.dest('dist/css'));
+
   /*Move any png images*/
   gulp.src('./img/*.png')
   .pipe(gulp.dest('dist/img/'));
   /*Move angularjs file*/
-  gulp.src('./bower_components/**')
-  .pipe(gulp.dest('dist/bower_components/'));
+  /*gulp.src('./bower_components/**')
+  .pipe(gulp.dest('dist/bower_components/'));*/
+  gulp.src([
+    './bower_components/angular/angular.js',
+    './bower_components/angular-ui-router/release/angular-ui-router.js',
+    './bower_components/angular-material/angular-material.js',
+    './bower_components/chart.js/dist/Chart.bundle.js',
+    './bower_components/angular-chart.js/dist/angular-chart.js',
+    './bower_components/angular-animate/angular-animate.js',
+    './bower_components/angular-aria/angular-aria.js',
+    './bower_components/angular-messages/angular-messages.js',
+    './bower_components/moment/moment.js',
+    './bower_components/angular-moment/angular-moment.js',
+    './bower_components/localforage/dist/localforage.js',
+    './bower_components/angular-localforage/dist/angular-localForage.js'
+  ])
+  .pipe(gulp.dest('dist/lib/'));
 });
 
 /*Clean the dist folder*/
