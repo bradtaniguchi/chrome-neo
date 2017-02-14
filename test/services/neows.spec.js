@@ -13,7 +13,7 @@
     });
     it('has function', function(){
       NeoWsService.test(function(answer){
-        expect(answer).toBe(true);
+        expect(answer).toEqual(true);
       });
     });
   });
