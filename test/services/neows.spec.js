@@ -1,20 +1,42 @@
-(function(){
+(function() {
   'use strict';
-  describe("Neo Service", function(){
-    var NeoWsService;
+  describe("Neo Service", function() {
+    var NeoWsService; 
+    var httpBackend; 
+    var constants;
     beforeEach(angular.mock.module('chrome-neo'));
-    
-    beforeEach(inject(function(_NeoWsService_) {
+
+    beforeEach(inject(function(_NeoWsService_, $httpBackend, _constants_) {
       NeoWsService = _NeoWsService_;
+      httpBackend = $httpBackend;
+      constants = _constants_;
+      console.log("constants provided: " + constants.NEOWS_BASE_URL);
+      httpBackend
+        .when('GET', constants.NEOWS_BASE_URL)
+        .respond(200, {
+          foo: 'bar'
+        });
     }));
-    
-    it('exists', function(){
+
+    it('exists', function() {
       expect(NeoWsService).toBeDefined();
     });
-    it('has function', function(){
-      NeoWsService.test(function(answer){
+
+    /*this is just a test function that does nothing*/
+    it('has function', function() {
+      NeoWsService.test(function(answer) {
         expect(answer).toEqual(true);
       });
     });
+
+    /*it('Can connect', function() {
+      var res;
+      NeoWsService.getWeekly().then(function(response) {
+        res = response;
+      });
+      expect(res).toEqual({
+        foo: 'bar'
+      });
+    });*/
   });
 })();
