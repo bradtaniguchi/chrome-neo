@@ -10,3 +10,4 @@ before_script:
   - npm install -g karma
   - npm install
   - bower install
+  - gulp build
