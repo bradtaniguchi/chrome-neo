@@ -11,21 +11,21 @@
     <div layout="column">
       <md-button ng-click="vm.showTable($event)">
         <div layout="row">
-          <div class="md-subhead">Monthly:</div>
+          <div class="md-subhead">Monthly: <b>{{vm.monthly}}</b></div>
           <span flex></span>
           <i class="material-icons">event</i>
         </div>
       </md-button>
       <md-button>
         <div layout="row">
-          <div class="md-subhead">Weekly:</div>
+          <div class="md-subhead">Weekly: <b>{{vm.weekly}}</b></div>
           <span flex></span>
           <i class="material-icons">view_week</i>
         </div>
       </md-button>
       <md-button>
         <div layout="row">
-          <div class="md-subhead">Daily:</div>
+          <div class="md-subhead">Daily: <b>{{vm.daily}}</b></div>
           <span flex></span>
           <i class="material-icons">view_day</i>
         </div>
