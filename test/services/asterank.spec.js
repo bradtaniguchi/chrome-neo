@@ -10,7 +10,6 @@
       AsterankService = _AsterankService_;
       httpBackend = $httpBackend;
       constants = _constants_;
-      console.log("constants provided: " + constants.ASTERANK_BASE_URL);
       httpBackend
         .when('GET', constants.ASTERANK_BASE_URL)
         .respond(200, {
