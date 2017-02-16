@@ -1,17 +1,22 @@
 angular.module('chrome-neo').controller('HomeController', HomeController);
-HomeController.$inject = ['$log', '$mdDialog', 'NeoWsService', '$q'];
-
-function HomeController($log, $mdDialog, NeoWsService, $q, $http) {
+HomeController.$inject = ['$log',
+'$mdDialog',
+'NeoWsService',
+'$q',
+'moment',
+'constants'];
+function HomeController($log, $mdDialog, NeoWsService, $q, moment, constants) {
   var vm = this;
   vm.loading = true;
   vm.monthly = 0;
   vm.weekly = 0;
   vm.daily = 0;
-  
+  vm.todaysDate = "";
+
   vm.showTable = showTable;
   vm.$onInit = onInit;
   vm.getWeekly = getWeekly;
-  vm.bin = 0;
+  vm.getDaily = getDaily;
 
   return vm;
   /*function definition*/
@@ -19,13 +24,22 @@ function HomeController($log, $mdDialog, NeoWsService, $q, $http) {
     vm.loading = false;
     vm.monthly = 0; //for now
     vm.daily = 0; //for now
+    vm.todaysDate = moment().format(constants.MOMENT_FORMAT);
     getWeekly();
+    getDaily();
   }
-  /*get weekly requests*/
-  function getWeekly() {
-    NeoWsService.getWeekly().then(function(response) {
+  /*get weekly requests, this automatically does this for us.*/
+  function getWeekly() {//2015-09-07
+    //console.log(moment().format('YYYY-MM-DD'));
+    /*NeoWsService.getWeekly().then(function(response) {
       vm.weekly = response.data.element_count;
-    }).catch(getFailedRequest);
+    }).catch(getFailedRequest);*/
+  }
+  /*get daily amounts*/
+  function getDaily() {
+      /*NeoWsService.getDaily().then(function(response) {
+        vm.daily = response.data.element_count;
+      }).catch(getFailedRequest);*/
   }
   /*Handles a http request*/
   function getFailedRequest(error) {
