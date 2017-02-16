@@ -1,11 +1,12 @@
 angular.module('chrome-neo').controller('HomeController', HomeController);
 HomeController.$inject = ['$log', '$mdDialog', 'NeoWsService', '$q'];
 
-function HomeController($log, $mdDialog, NeoWsService, $q) {
+function HomeController($log, $mdDialog, NeoWsService, $q, $http) {
   var vm = this;
   vm.loading = true;
   vm.showTable = showTable;
   vm.$onInit = onInit;
+  vm.bin = 0;
 
   return vm;
   /*function definition*/
