@@ -4,8 +4,13 @@ HomeController.$inject = ['$log', '$mdDialog', 'NeoWsService', '$q'];
 function HomeController($log, $mdDialog, NeoWsService, $q, $http) {
   var vm = this;
   vm.loading = true;
+  vm.monthly = 0;
+  vm.weekly = 0;
+  vm.daily = 0;
+  
   vm.showTable = showTable;
   vm.$onInit = onInit;
+  vm.getWeekly = getWeekly;
   vm.bin = 0;
 
   return vm;
@@ -13,11 +18,14 @@ function HomeController($log, $mdDialog, NeoWsService, $q, $http) {
   function onInit() {
     vm.loading = false;
     vm.monthly = 0; //for now
-    vm.weekly = 0;
+    vm.daily = 0; //for now
+    getWeekly();
+  }
+  /*get weekly requests*/
+  function getWeekly() {
     NeoWsService.getWeekly().then(function(response) {
       vm.weekly = response.data.element_count;
     }).catch(getFailedRequest);
-    vm.daily = 0; //for now
   }
   /*Handles a http request*/
   function getFailedRequest(error) {
