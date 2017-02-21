@@ -1,0 +1,6 @@
+Todo list:
+1. Push changes of constants with terms
+2. Create dropdown menu of said constants for Stat view.
+3. Add # amount for stat view, default to 10
+4. Create function that calls the Asterank service to display data. 
+5. Add loading widget to be shown while loading the ajax calls. 
