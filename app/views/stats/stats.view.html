@@ -6,13 +6,23 @@
     </md-card-header-text>
   </md-card-header>
   <md-card-content>
-    <p class="md-body-2">
-      <i>Below is a chart of this weeks NEO asteroids use the filter + dropdown
-         to show different views</i>
-    </p>
-    <canvas id="doughnut" class="chart chart-doughnut"
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="NEOs"> <!-- order only NEOs-->
+        <p class="md-body-2">
+          <i>Below is a chart of this weeks NEO asteroids use the filter + dropdown
+             to show different views</i>
+        </p>
+      </md-tab>
+      <md-tab label="Size"> <!-- order by size-->
+        two content
+      </md-tab>
+      <md-tab label="Distance"> <!-- order by distance-->
+        Distance
+      </md-tab>
+    </md-tabs>
+    <!--<canvas id="doughnut" class="chart chart-doughnut"
     height="100" width="100"
       chart-data="vm.data">
-    </canvas>
+    </canvas>-->
   </md-card-content>
 </md-card>
