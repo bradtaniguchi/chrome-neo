@@ -7,16 +7,37 @@
   </md-card-header>
   <md-card-content>
     <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab label="NEOs"> <!-- order only NEOs-->
+      <md-tab label="Size"> <!-- order only NEOs-->
         <p class="md-body-2">
-          <i>Below is a chart of this weeks NEO asteroids use the filter + dropdown
+          <i>Below is a chart of this NEO asteroids use the filter + dropdown
              to show different views</i>
         </p>
+        <md-menu>
+          <md-button class="md-icon-button" aria-label="Graph Settings"
+            ng-click='vm.openMenu($mdMenu, $event)'>
+            <i class="material-icons">more_vert</i>
+            <md-tooltip md-direction="right">Chart Settings</md-tooltip>
+          </md-button>
+          <md-menu-content> <!--chart option content list-->
+            <md-menu-item>
+              <md-button ng-click="vm.changeStat()"> <!--first option-->
+                <md-tooltip md-direction="right">First option</md-tooltip>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <!--<line-neo></line-neo>-->
+        <canvas id="line" class="chart chart-line"
+          chart-data="vm.lineData"
+          chart-labels="vm.lineLabels"
+          chart-series="vm.lineSeries"
+          ></canvas>
+        end graph
       </md-tab>
-      <md-tab label="Size"> <!-- order by size-->
+      <md-tab label=""> <!-- order by size-->
         two content
       </md-tab>
-      <md-tab label="Distance"> <!-- order by distance-->
+      <md-tab label="Dist/time"> <!-- order by distance-->
         Distance
       </md-tab>
     </md-tabs>
