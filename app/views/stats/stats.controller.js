@@ -1,7 +1,7 @@
 angular.module('chrome-neo').controller('StatsController', StatsController);
-StatsController.$inject = ['$log', 'AsterankService'];
+StatsController.$inject = ['$log', 'AsterankService', '$mdMenu'];
 
-function StatsController($log, AsterankService) {
+function StatsController($log, AsterankService, $mdMenu) {
   var vm = this;
   var originatorEv;
   
@@ -13,8 +13,10 @@ function StatsController($log, AsterankService) {
     [20,30,40]
   ];
   vm.options={};
+  
   vm.getNeos = getNeos;
   vm.changeStat = changeStat;
+  vm.openMenu = vm.openMenu;
   
   return vm;
   /*function defintions*/
