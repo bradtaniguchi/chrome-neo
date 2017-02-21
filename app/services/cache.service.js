@@ -1,6 +1,12 @@
 angular.module('chrome-neo').factory('CacheService', CacheService);
-CacheService.$inject = ['$log', '$localForage'];
-function CacheService($log, $localForage) {
+CacheService.$inject = [
+  '$log', //for basic logging
+  '$localForage', // interface API to handling the local storage on the machine
+  '$q', //Going to use promises to return, so it works the same as localForage
+  'moment', //Used to handle time handling
+  'constants' //application constants, used mainly for moment format.
+];
+function CacheService($log, $localForage, $q, moment, constants) {
   return {
     test: test,
     checkDaily: checkDaily,
@@ -14,10 +20,21 @@ function CacheService($log, $localForage) {
   }
   /*
   This function checks for old dates and removes them.
-  saved in the database in the format as:
-  Day_##
+  saved in the database in the following formats:
+  Day_##_Year,
+  Week_##_Year,
+  Month_##_year
   */
   function removeOld() {
+    /*
+    First get all the keys, then we need to check to see if any of them are
+    considered 'old', we do this by generating the current week/month/day/year
+    and comparing it to the given date.
+    */
+    var now = moment().now(); //get the current time
+    /*
+    iterate through all dates, and check to see if they are valid or not.
+    */
     return "";
   }
   /*
