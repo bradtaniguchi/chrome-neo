@@ -1,0 +1,36 @@
+<md-dialog aria-label="dialog popup">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h3>Help</h3>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.close()">
+            <i class="material-icons">close</i>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:300px;" layout-padding="">
+      <p class="md-body-2">
+          Definition count: {{vm.list.length}}
+      </p>
+      <p class="md-body-1" layout-wrap>
+        Below are all the definitions for the Filters.
+        These are defined by NASA engineers and represent different parts of
+        the NEO orbital parameters.
+      </p>
+      <md-divider></md-divider>
+      <md-list>
+        <md-list-item ng-repeat="property in vm.list track by $index">
+          <div layout="row" flex>
+            <p class="md-body-2" flex="50">
+              {{property}}
+            </p>
+            <p class="md-caption" flex="50">
+              {{vm.definitions[property]}}
+            </p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </md-dialog-content>
+  </form>
+</md-dialog>

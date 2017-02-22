@@ -3,10 +3,11 @@ StatsController.$inject = [
   '$log',
   'AsterankService',
   '$mdMenu',
+  '$mdDialog',
   'queryFields'
 ];
 
-function StatsController($log, AsterankService, $mdMenu, queryFields) {
+function StatsController($log, AsterankService, $mdMenu, $mdDialog, queryFields) {
   var vm = this;
   var originatorEv;
   /*This is for the datapoint filter options*/
@@ -28,6 +29,7 @@ function StatsController($log, AsterankService, $mdMenu, queryFields) {
   vm.getNeos = getNeos;
   vm.changeStat = changeStat;
   vm.openMenu = openMenu;
+  vm.openHelp = openHelp;
   vm.addFilter = addFilter;
   vm.removeFilter = removeFilter;
   vm.$onInit = onInit;
@@ -46,6 +48,18 @@ function StatsController($log, AsterankService, $mdMenu, queryFields) {
     $log.log("Clicked");
     originatorEv = ev;
     $mdMenu.open(ev);
+  }
+  /**
+   * Opens the $mdDialog help menu for obital mechanics definitions
+   */
+  function openHelp() {
+    $log.log("Opening dialog...");
+    $mdDialog.show({
+      controller: 'HelpDialogController as vm',
+      templateUrl: 'components/help-dialog/help-dialog.view.html',
+      parent: angular.element(document.body),
+      clickOutsideToClose:true
+    });
   }
   /**
    * Adds a new filter to the filter list, with the given name
