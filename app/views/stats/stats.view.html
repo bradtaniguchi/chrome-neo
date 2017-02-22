@@ -7,25 +7,54 @@
   </md-card-header>
   <md-card-content>
     <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab label="Size"> <!-- order only NEOs-->
+      <md-tab label="Line"> <!-- order only NEOs-->
         <p class="md-body-2">
           <i>Below is a chart of this NEO asteroids use the filter + dropdown
              to show different views</i>
         </p>
-        <md-menu>
-          <md-button class="md-icon-button" aria-label="Graph Settings"
-            ng-click='vm.openMenu($mdMenu, $event)'>
-            <i class="material-icons">more_vert</i>
-            <md-tooltip md-direction="right">Chart Settings</md-tooltip>
+        <!--filters that are active-->
+        <label class="md-body-2" ng-show="vm.filters.length !== 0">Active Filters</label>
+        <div ng-repeat="filter in vm.filters track by $index"
+          layout="row" layout-align="start center"> <!--list of all filters-->
+          <p class="md-body-1">
+            {{filter.filterName}} | {{filter.filterValue}}
+          </p>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="vm.removeFilter($index)">
+            <md-tooltip md-direction="top">Add Filter</md-tooltip>
+            <i class="material-icons">remove</i>
           </md-button>
-          <md-menu-content> <!--chart option content list-->
-            <md-menu-item>
-              <md-button ng-click="vm.changeStat()"> <!--first option-->
-                <md-tooltip md-direction="right">First option</md-tooltip>
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
+        </div>
+
+        <!--Tools to add new filters-->
+        <div layout="row">
+          <md-input-container>
+            <label>Filter</label>
+            <md-select ng-model="vm.newFilter">
+              <md-option ng-repeat="option in vm.menuOptions track by $index"
+                value="{{option}}">{{option}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container>
+            <label>Value</label>
+            <input ng-model="vm.newValue">
+            <md-tooltip md-direction="top">Value</md-tooltip>
+          </md-input-container>
+          <span flex></span>
+          <div layout="row" layout-align="start center">
+            <md-button class="md-icon-button" ng-click="vm.addFilter(vm.newFilter, vm.newValue)">
+              <md-tooltip md-direction="top">Add Filter</md-tooltip>
+              <i class="material-icons">add</i>
+            </md-button>
+            <md-button class="md-icon-button">
+              <md-tooltip md-direction="top">Help</md-tooltip>
+              <i class="material-icons">live_help</i>
+            </md-button>
+          </div>
+        </div>
+
         <!--<line-neo></line-neo>-->
         <canvas id="line" class="chart chart-line"
           chart-data="vm.lineData"
@@ -34,10 +63,10 @@
           ></canvas>
         end graph
       </md-tab>
-      <md-tab label=""> <!-- order by size-->
+      <md-tab label="Bar"> <!-- Use Bar chart-->
         two content
       </md-tab>
-      <md-tab label="Dist/time"> <!-- order by distance-->
+      <md-tab label="Round"> <!-- Use other chart-->
         Distance
       </md-tab>
     </md-tabs>
