@@ -2,10 +2,11 @@ angular.module('chrome-neo').factory('AsterankService', AsterankService);
 AsterankService.$inject= ['$log', '$http', 'constants', 'moment'];
 function AsterankService($log, $http, constants, moment) {
   return {
-    getById: getById
+    getById: getById,
+    getByName: getByName
   };
   /*
-  Gets a given asterank request by spkid 
+  Gets a given asterank request by spkid
   */
   function getById(id, limit) {
     if (typeof limit !== 'number') {
