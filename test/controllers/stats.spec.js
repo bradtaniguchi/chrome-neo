@@ -15,7 +15,7 @@
     });
 
     it('check functions exist', function(){
-      //expect(StatsController.openMenu.toBeDefined(); //needs dependencies
+      expect(StatsController.openMenu).toBeDefined(); //needs dependencies
       expect(StatsController.changeStat).toBeDefined();
       expect(StatsController.getNeos).toBeDefined();
       expect(StatsController.changeStat).toBeDefined();

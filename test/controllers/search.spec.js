@@ -1,14 +1,20 @@
-/*(function(){
+(function(){
   'use strict';
   describe("Search controller", function(){
     var SearchController;
-    beforeEach(angular.mock.module('chrome-neo'));
-    beforeEach(inject(function(_SearchController_){
-      SearchController = _SearchController_;
-    }));
-    
+    beforeEach(function(){
+      angular.mock.module('chrome-neo');
+      inject(function($controller){
+        SearchController = $controller('SearchController');
+      });
+    });
+
     it('exists', function(){
       expect(SearchController).toBeDefined();
     });
+
+    it("check functions exist", function(){
+      expect(SearchController.search).toBeDefined();
+    });
   });
-})();*/
+})();
