@@ -17,7 +17,7 @@ angular.module('chrome-neo').constant("queryFields", {
   "producer":"Who computed the orbit", //done
   "rms": "Root Mean square",//done
   //"H_sigma":0.66439, //??
-  "closeness":4.659571917281135,
+  //"closeness":4.659571917281135,
   "spec":"SMASSII Spectral type value",
   /*"K2":"",
   "K1":"",
@@ -32,13 +32,13 @@ angular.module('chrome-neo').constant("queryFields", {
   //"saved":-8641518801655.289,
   //"albedo":"",
   //"moid_ld":90.96226078,
-  "two_body":"",
+  //"two_body":"",
   "neo":"If the body is classified as an NEO",
-  "prefix":"",
+  //"prefix":"",
   //"sigma_ad":3.3626e-09,
   //"score":3.4508560938390502e-06,
-  "data_arc":10120.0,
-  "profit":2146841.445758379,
+  //"data_arc":10120.0,
+  //"profit":2146841.445758379,
   "sigma_q":"Sigma value of q perihelion distance",
   "sigma_w":"Sigma value of perihelion degree sigma",
   "epoch":"Orbital elements defined at this epoch",
@@ -88,7 +88,7 @@ angular.module('chrome-neo').constant("queryFields", {
   "w": "Argument of perihelion in deg", //?
   //"sigma_ma":2.7756e-05,
   "first_obs":"	date of first observation used in the fit", //donechro
-  "n_del_obs_used":"",
+  //"n_del_obs_used":"",
   //"sigma_n":2.1716e-09,
   //"spkid":2138911.0,
   "spkid" : "Small Body Database ID",
