@@ -3,20 +3,20 @@
   describe("Cache Service", function() {
     var CacheService;
     //notes: http://stackoverflow.com/questions/16565531/unit-testing-angularjs-factories-that-have-dependencies
-    beforeEach(angular.mock.module('chrome-neo'));
+    beforeEach(function(){
+      angular.mock.module('chrome-neo');
 
-    /*define a mock localForage module.*/
-    beforeEach(function() {
+      /*define mock localForage module*/
       var mockLocalForage = {};
+      module(function($provide){
+        $provide.value('$localForage', mockLocalForage);
+      });
 
-      module(function ($provide) {
-          $provide.value('$localForage', mockLocalForage);
-        });
+      inject(function(_CacheService_){
+        CacheService = _CacheService_;
+      });
+
     });
-
-    beforeEach(inject(function(_CacheService_) {
-      CacheService = _CacheService_;
-    }));
 
     it('exists', function() {
       expect(CacheService).toBeDefined();
