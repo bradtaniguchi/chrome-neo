@@ -1,6 +1,12 @@
 Todo list:
-1. Push changes of constants with terms
-2. Create dropdown menu of said constants for Stat view.
+1. Push changes of constants with terms DONE
+2. Create dropdown menu of said constants for Stat view. DONE
 3. Add # amount for stat view, default to 10
-4. Create function that calls the Asterank service to display data. 
-5. Add loading widget to be shown while loading the ajax calls. 
+4. Create function that calls the Asterank service to display data.
+5. Add loading widget to be shown while loading the ajax calls.
+6. NeoWs can only get per Week amounts,
+
+
+FIX Karma tests, with LocalForage breaking
+look at this:
+http://stackoverflow.com/questions/33863122/how-to-create-a-mock-for-localforage-getitem-method-in-jasmin-karma-unit-tests

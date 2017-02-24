@@ -13,6 +13,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment, constants) {
   vm.daily = 0;
   vm.todaysDate = "";
 
+  vm.test = test; //test function
   vm.showTable = showTable;
   vm.$onInit = onInit;
   vm.getWeekly = getWeekly;
@@ -27,6 +28,10 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment, constants) {
     vm.todaysDate = moment().format(constants.MOMENT_FORMAT);
     getWeekly();
     getDaily();
+  }
+  function test() {
+    $log.log("Calling get monthly");
+    NeoWsService.getMonthly();
   }
   /*get weekly requests, this automatically does this for us.*/
   function getWeekly() {//2015-09-07

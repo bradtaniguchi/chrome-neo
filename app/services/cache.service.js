@@ -62,7 +62,10 @@ function CacheService($log, $localForage, $q, moment, constants) {
   Month_##_Year
   */
   function checkMonthly(month, year) {
-    return "";
+    var keyNumber = "" + month +"_"+ year;
+    var key = "Month_" + keyNumber;
+    $log.log("Looking or key..." + keyNumber);
+    return $localForage.getItem(keyNumber); //returns a promise
   }
   /*Checks if a given single item lookup exists*/
   function checkByID(spkId) {
