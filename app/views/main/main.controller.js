@@ -5,6 +5,7 @@ function MainController($log, $state, $rootScope) {
   var originatorEv; //idk what this does right now..
 
   vm.openMenu = openMenu;
+  vm.currState = $state;//get current state
   vm.loading = true;
   vm.go = go;
   vm.refresh = refresh;
@@ -12,10 +13,10 @@ function MainController($log, $state, $rootScope) {
   return vm;
   /*function definitions*/
   function onInit() {
-    vm.loading = false;
+    $rootScope.loading = false;
+    vm.loading = $rootScope.loading;
   }
   function openMenu($mdMenu, ev) {
-    $log.log("Clicked");
     originatorEv = ev;
     $mdMenu.open(ev);
   }
@@ -23,6 +24,9 @@ function MainController($log, $state, $rootScope) {
     $state.reload();
   }
   function go(state) {
-    $state.go(state);
+    if(vm.currState !== state){
+      $state.go(state);
+      vm.currState = state;
+    }
   }
 }

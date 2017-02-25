@@ -24,14 +24,15 @@ function NeoWsService($log, $http, constants, moment, CacheService) {
   }
   /*get the weekly amount of NEOs known*/
   function getWeekly() {
-    return $http({
+    
+    
+    /*return $http({i
       url: constants.NEOWS_BASE_URL,
       method: 'GET',
       params: {
-        /*So not safe, but cmon its or science!*/
         api_key : constants.API_KEY
       }
-    });
+    });*/
   }
   /*gets the daily amount of NEOs known*/
   function getDaily() {

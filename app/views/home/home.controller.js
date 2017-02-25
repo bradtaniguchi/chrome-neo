@@ -4,10 +4,11 @@ HomeController.$inject = ['$log',
 'NeoWsService',
 '$q',
 'moment',
-'constants'];
-function HomeController($log, $mdDialog, NeoWsService, $q, moment, constants) {
+'constants',
+'$rootScope'];
+function HomeController($log, $mdDialog, NeoWsService, $q, moment, 
+  constants, $rootScope) {
   var vm = this;
-  vm.loading = true;
   vm.monthly = 0;
   vm.weekly = 0;
   vm.daily = 0;
@@ -22,12 +23,13 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment, constants) {
   return vm;
   /*function definition*/
   function onInit() {
-    vm.loading = false;
     vm.monthly = 0; //for now
     vm.daily = 0; //for now
     vm.todaysDate = moment().format(constants.MOMENT_FORMAT);
     getWeekly();
     getDaily();
+    /*Add then statements, which finally go back to $rootScope loading!*/
+    $rootScope.loading = false;
   }
   function test() {
     $log.log("Calling get monthly");

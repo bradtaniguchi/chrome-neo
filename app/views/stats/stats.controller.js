@@ -4,10 +4,12 @@ StatsController.$inject = [
   'AsterankService',
   '$mdMenu',
   '$mdDialog',
-  'queryFields'
+  'queryFields',
+  '$rootScope'
 ];
 
-function StatsController($log, AsterankService, $mdMenu, $mdDialog, queryFields) {
+function StatsController($log, AsterankService, $mdMenu, $mdDialog, 
+  queryFields,$rootScope) {
   var vm = this;
   var originatorEv;
   /*This is for the datapoint filter options*/
@@ -37,6 +39,7 @@ function StatsController($log, AsterankService, $mdMenu, $mdDialog, queryFields)
   return vm;
   /*function defintions*/
   function onInit() {
+    $rootScope.loading = false; //turn off loading
   }
   /**
    * Open menu handler, opens the menu of filter options

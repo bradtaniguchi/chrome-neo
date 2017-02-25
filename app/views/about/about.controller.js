@@ -1,6 +1,8 @@
 angular.module('chrome-neo').controller('AboutController', AboutController);
-AboutController.$inject = ['$log'];
-function AboutController($log) {
+AboutController.$inject = [
+  '$log',
+  '$rootScope'];
+function AboutController($log, $rootScope) {
   var vm = this;
   vm.technologies = [];
   vm.$onInit = onInit;
@@ -8,6 +10,10 @@ function AboutController($log) {
   return vm;
   /*function definitions*/
   function onInit() {
+    vm.techInit(); //init the technologies
+    $rootScope.loading = false;
+  }
+  function techInit() {
     vm.technologies = [
       {
         'title': "angularjs",
@@ -24,7 +30,6 @@ function AboutController($log) {
         'description' : "Utilized for a build tool, with gulp.",
         'link': "nodejs.org"
       }
-
     ];
   }
 }

@@ -1,4 +1,4 @@
-<md-toolbar class="md-hue-1 md-whiteframe-8dp" ng-show="!vm.loading">
+<md-toolbar class="md-hue-1 md-whiteframe-8dp">
   <div class="md-toolbar-tools" layout-align="start center">
     <md-menu  md-offset="5 10">
       <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openMenu($mdMenu, $event)">
@@ -45,8 +45,11 @@
     </md-button>
   </div>
 </md-toolbar>
-<div layout="row" layout-sm="column" layout-align="space-around" ng-show="vm.loading">
-  <md-progress-circular md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+<div layout="column" ng-show="vm.loading">
+  <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+  <md-card layout-padding="" class="md-whiteframe-4dp"><i>We are loading, get right back to you!</i></md-card>
 </div>
 <!--main content goes here-->
-<ui-view></ui-view>
+<div ng-show="!vm.loading">
+  <ui-view></ui-view>
+</div>

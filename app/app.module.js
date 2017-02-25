@@ -5,3 +5,4 @@ angular.module('chrome-neo', [
   'angularMoment', //to handle times more gracefully
   'LocalForageModule' //local storage api
 ]);
+
