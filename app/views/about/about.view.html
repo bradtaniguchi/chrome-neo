@@ -1,4 +1,4 @@
-<md-card class="md-whiteframe-4dp" ng-cloak>
+<md-card class="md-whiteframe-4dp animated slideInRight" ng-cloak>
   <md-card-header>
     <i class="material-icons">live_help</i>
     <md-card-header-text class="md-title">
@@ -15,7 +15,7 @@
     </p>
   </md-card-content>
 </md-card>
-<md-card ng-repeat="tech in vm.technologies">
+<md-card ng-repeat="tech in vm.technologies" class="animated slideInRight"> 
   <md-card-content>
     <p class="md-body-2">
       {{tech.title}}

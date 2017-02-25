@@ -36,7 +36,8 @@ gulp.task('moveStatic', function() {
   .pipe(gulp.dest('dist'));
   /*Move the css files*/
   gulp.src([
-    './bower_components/angular-material/angular-material.css'
+    './bower_components/angular-material/angular-material.css',
+    './bower_components/animate.css/animate.css/'
   ])
   .pipe(gulp.dest('dist/css'));
 

@@ -10,7 +10,7 @@ function AboutController($log, $rootScope) {
   return vm;
   /*function definitions*/
   function onInit() {
-    vm.techInit(); //init the technologies
+    techInit(); //init the technologies
     $rootScope.loading = false;
   }
   function techInit() {
