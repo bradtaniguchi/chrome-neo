@@ -11,6 +11,7 @@ NeoWsService.$inject = [
   'CacheService'
 ];
 function NeoWsService($log, $http, constants, moment, CacheService) {
+  var year = moment().year();
   return {
     test: test,
     getWeekly : getWeekly,
@@ -24,8 +25,21 @@ function NeoWsService($log, $http, constants, moment, CacheService) {
   }
   /*get the weekly amount of NEOs known*/
   function getWeekly() {
+    var week = moment().week();
     
-    
+    $log.log("Week: "+ week); //get the week of the year
+    CacheService.checkDaily(week, year).then(function(object){
+      if(object !== null) {
+        $log.log("Key exists in Cache as: " + object);
+        /*return the data*/
+      } else {
+        $log.log("Key does not exist, calling api...");
+        
+        var startWeek = moment().startOf('week').format(constants.MOMENT_FORMAT);
+        var endWeek = moment().endOf('week').format(constants.MOMENT_FORMAT);
+        /*call api and return data*/
+      }
+    });
     /*return $http({i
       url: constants.NEOWS_BASE_URL,
       method: 'GET',
@@ -37,14 +51,13 @@ function NeoWsService($log, $http, constants, moment, CacheService) {
   /*gets the daily amount of NEOs known*/
   function getDaily() {
     var day = moment().dayOfYear();
-    var year = moment().year();
     
     $log.log("day " + day);
     $log.log("year " + year);
     
-    CacheService.checkDaily(day, year).then(function(key){
-      if(key !== null) {
-        $log.log("Key exists in Cache as: " + key);
+    CacheService.checkDaily(day, year).then(function(object){
+      if(object !== null) {
+        $log.log("Key exists in Cache as: " + object);
         /*return the data*/
       } else {
         $log.log("Key does not exist, calling api...");
@@ -79,9 +92,8 @@ function NeoWsService($log, $http, constants, moment, CacheService) {
     //var q = $q.differ; //impliment promise
     //see this help ()http://markdalgleish.com/2013/06/using-promises-in-angularjs-views/
     var monthNumber = moment().month(); //note 0 is janurary
-    var yearNumber = moment().year();
-    CacheService.checkMonthly(monthNumber, yearNumber).then(function(object){
-      if(key !== null) {
+    CacheService.checkMonthly(monthNumber, year).then(function(object){
+      if(object !== null) {
         $log.log("Key exists in Cache as: " + object);
         /*return the data object using promise*/
       } else {
@@ -89,7 +101,7 @@ function NeoWsService($log, $http, constants, moment, CacheService) {
 
         var startWeek = moment().startOf('week').format(constants.MOMENT_FORMAT);
         var endWeek = moment().endOf('week').format(constants.MOMENT_FORMAT);
-        $log.log("Start Week " + monthNumber+ " " + yearNumber);
+        $log.log("Start Week " + monthNumber+ " " + year);
         $log.log("End Week " + startWeek + " " + endWeek);
         /*call API and return data*/
         /*TODO add integration*/

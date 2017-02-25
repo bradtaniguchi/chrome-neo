@@ -48,8 +48,10 @@ function CacheService($log, $localForage, $q, moment, constants) {
   Day_##_Year
   @returns object of whats given, or if it is in the datastore
   */
-  function checkDaily(day, year, object) {
-    return "";
+  function checkDaily(day, year) {
+    var key = "" + day + "_" + year;
+    $log.log("Looking for key: " + key);
+    return $localForage.getItem(key);
   }
   /*
   Checks if the given week number is within the application,
@@ -59,17 +61,18 @@ function CacheService($log, $localForage, $q, moment, constants) {
      var weeknumber = moment("12-25-1995", "MM-DD-YYYY").week();
   */
   function checkWeekly(week, year) {
-    return "";
+    var key = "" + week + "_" + year;
+    $log.log("Looking for key: " + key);
+    return $localForage.getItem(key);
   }
   /*
   Checks if the given month is within the application,
   Month_##_Year
   */
   function checkMonthly(month, year) {
-    var keyNumber = "" + month +"_"+ year;
-    var key = "Month_" + keyNumber;
-    $log.log("Looking or key..." + keyNumber);
-    return $localForage.getItem(keyNumber); //returns a promise
+    var key = "Month_" + month +"_"+ year;
+    $log.log("Looking or key: " + key);
+    return $localForage.getItem(key); //returns a promise
   }
   
   /*sets the value in the cache with the daily format
