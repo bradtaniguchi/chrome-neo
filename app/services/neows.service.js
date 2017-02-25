@@ -35,9 +35,26 @@ function NeoWsService($log, $http, constants, moment, CacheService) {
   }
   /*gets the daily amount of NEOs known*/
   function getDaily() {
-    /*get todays date*/
-    var today = moment().format(constants.MOMENT_FORMAT);
-    return $http({
+    var day = moment().dayOfYear();
+    var year = moment().year();
+    
+    $log.log("day " + day);
+    $log.log("year " + year);
+    
+    CacheService.checkDaily(day, year).then(function(key){
+      if(key !== null) {
+        $log.log("Key exists in Cache as: " + key);
+        /*return the data*/
+      } else {
+        $log.log("Key does not exist, calling api...");
+        var today = moment().format(constants.MOMENT_FORMAT);
+        $log.log("todays date: " + today);
+        
+        /*call API and return data*/
+      }
+    });
+    
+    /*return $http({
       url: constants.NEOWS_BASE_URL,
       method: 'GET',
       params: {
@@ -45,7 +62,7 @@ function NeoWsService($log, $http, constants, moment, CacheService) {
         end_date : today,
         api_key : constants.API_KEY
       }
-    });
+    });*/
   }
   /*gets monthly, don't impliment this until I have caching setup.
   As this is A LOT OF DATA. I don't want to keep more than I need, especially
@@ -59,21 +76,23 @@ function NeoWsService($log, $http, constants, moment, CacheService) {
     the cache service. The Cache service needs the month and year
     */
     //var q = $q.differ; //impliment promise
-    //see this help http://markdalgleish.com/2013/06/using-promises-in-angularjs-views/
+    //see this help ()http://markdalgleish.com/2013/06/using-promises-in-angularjs-views/
     var monthNumber = moment().month(); //note 0 is janurary
     var yearNumber = moment().year();
-    CacheService.checkMonthly(monthNumber, yearNumber).then(function(key){
-      if(key !== undefined) {
-        $log.log("Key exists in Cache as: " + key);
-        /*return the data*/
+    CacheService.checkMonthly(monthNumber, yearNumber).then(function(object){
+      if(key !== null) {
+        $log.log("Key exists in Cache as: " + object);
+        /*return the data object using promise*/
       } else {
         $log.log("Key does not exist, calling api...");
 
         var startWeek = moment().startOf('week').format(constants.MOMENT_FORMAT);
         var endWeek = moment().endOf('week').format(constants.MOMENT_FORMAT);
-        $log.log(monthNumber+ " " + yearNumber);
-        $log.log(startWeek + " " + endWeek);
+        $log.log("Start Week " + monthNumber+ " " + yearNumber);
+        $log.log("End Week " + startWeek + " " + endWeek);
         /*call API and return data*/
+        /*TODO add integration*/
+        /*Save data using CacheService*/
       }
     }); //catch errors with cache/localForage service
     return "";

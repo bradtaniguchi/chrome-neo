@@ -12,7 +12,11 @@ function CacheService($log, $localForage, $q, moment, constants) {
     checkDaily: checkDaily,
     checkWeekly: checkWeekly,
     checkMonthly: checkMonthly,
-    checkByID : checkByID
+    checkByID : checkByID,
+    
+    setDaily : setDaily,
+    setWeekly : setWeekly
+    //NOTE no monthly as I might not support monthly statements
   };
   /*function definitions*/
   function test(callback) {
@@ -67,8 +71,27 @@ function CacheService($log, $localForage, $q, moment, constants) {
     $log.log("Looking or key..." + keyNumber);
     return $localForage.getItem(keyNumber); //returns a promise
   }
+  
+  /*sets the value in the cache with the daily format
+  Day_##_Year
+  where day is the DAY NUMBER*/
+  function setDaily(day, year, object) {
+    var key = "Day_" + day + "_" + year;
+    $log.log("setting daily with given key: " + key);
+    return $localForage.setItem(key, object); //returns promise
+  }
+  
+  /*Sets the value in the cache with the weekly format:
+  Week_##_Year
+  where week is the WEEK NUMBER*/
+  function setWeekly(week, year, object) {
+    var key = "Week_" + week + "_" + year;
+    $log.log("setting weekly with given key: " + key);
+    return $localForage.setItem(key, object);
+  }
+  
   /*Checks if a given single item lookup exists*/
   function checkByID(spkId) {
-
+    return"";
   }
 }

@@ -31,7 +31,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment, constants) {
   }
   function test() {
     $log.log("Calling get monthly");
-    NeoWsService.getMonthly();
+    NeoWsService.getDaily();
   }
   /*get weekly requests, this automatically does this for us.*/
   function getWeekly() {//2015-09-07
