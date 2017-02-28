@@ -20,6 +20,6 @@
     it('check functions exist', function(){
       expect(TableViewController.close).toBeDefined();
     });
-  }
+  });
 })();
 

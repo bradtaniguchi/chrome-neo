@@ -104,6 +104,13 @@ gulp.task('buildjs', function() {
   .pipe(gulp.dest('dist'));
 });
 
+/*lint test*/
+gulp.task('testjs', function(){
+  gutil.log(gutil.colors.magenta('linting js files...'));
+  return gulp.src(['./test/**/*.js'], { base:'./app/'})
+  .pipe(jshint());
+});
+
 /*watch these files*/
 gulp.task('watch', function() {
   gutil.log(gutil.colors.magenta('watching js files...'));
@@ -117,4 +124,7 @@ gulp.task('watch', function() {
 gulp.task('default', ['jshint', 'copyHtml', 'moveStatic', 'buildjs', 'watch']);
 
 /*Same as the default task, but no watch*/
-gulp.task('build', ['jshint', 'copyHtml', 'moveStatic', 'buildjs']);
+gulp.task('build', ['jshint', 'copyHtml', 'moveStatic', 'buildjs', 'testjs']);
+
+/*Just lint my files*/
+gulp.task('lint',['jshint', 'testjs']);
