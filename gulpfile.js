@@ -17,6 +17,13 @@ var clean = require('gulp-clean');
 var wrap = require('gulp-wrap');
 
 //gutil.log('stuff happened?', 'for realz', gutil.colors.magenta('123'));
+var title='/*\n';
+title +=' * Bradley Taniguchi\n';
+title +=' * 2/27/2017\n';
+title +=' * chrome-neo\n'; 
+title +=' * */\n';
+title +='<%= contents %>';
+
 var wrapper = '(function(){\n"use strict";<%= contents %>\n})();';
 /*default task*/
 gulp.task('default', function() {
@@ -32,8 +39,11 @@ gulp.task('copyHtml', function() {
 
 /*move static files to base dir*/
 gulp.task('moveStatic', function() {
+  gutil.log(gutil.colors.magenta("Moving manifest"));
   gulp.src('manifest.json')
   .pipe(gulp.dest('dist'));
+
+  gutil.log(gutil.colors.magenta("Moving css files"));
   /*Move the css files*/
   gulp.src([
     './bower_components/angular-material/angular-material.css',
@@ -42,11 +52,13 @@ gulp.task('moveStatic', function() {
   .pipe(gulp.dest('dist/css'));
 
   /*Move any png images*/
+  gutil.log(gutil.colors.magenta("Moving png files"));
   gulp.src('./img/*.png')
   .pipe(gulp.dest('dist/img/'));
   /*Move angularjs file*/
   /*gulp.src('./bower_components/**')
   .pipe(gulp.dest('dist/bower_components/'));*/
+  gutil.log(gutil.colors.magenta("Moving static files to lib"));
   gulp.src([
     './bower_components/angular/angular.js',
     './bower_components/angular-ui-router/release/angular-ui-router.js',
@@ -66,12 +78,13 @@ gulp.task('moveStatic', function() {
 
 /*Clean the dist folder*/
 gulp.task('clean', function() {
-  gutil.log("Remove dist folder..");
+  gutil.log("Removing dist folder..");
   return gulp.src('dist', {read: false}).pipe(clean());
 });
 
 /*Linting task*/
 gulp.task('jshint', function() {
+  gutil.log(gutil.colors.magenta('Linting...'));
   return gulp.src('./app/**/*.js')
   .pipe(jshint())
   .pipe(jshint.reporter('jshint-stylish'));
@@ -82,16 +95,18 @@ gulp.task('buildjs', function() {
   gutil.log(gutil.colors.magenta('building js files...'));
   return gulp.src(['./app/app.module.js', './app/**/*.js'], {base: './app/'})
   .pipe(concat('app.js'))
-  .pipe(wrap(wrapper))
+  .pipe(wrap(wrapper)) //apply the self-executing function
   .pipe(gulp.dest('dist'))
   /*minify the file*/
   .pipe(rename('app.min.js'))
   .pipe(uglify())
+  .pipe(wrap(title))
   .pipe(gulp.dest('dist'));
 });
 
 /*watch these files*/
 gulp.task('watch', function() {
+  gutil.log(gutil.colors.magenta('watching js files...'));
   gutil.log(gutil.colors.magenta('watching files...'));
   gulp.watch('./app/**/*.js', ['jshint', 'buildjs']);
   gulp.watch('manifest.json', ['moveStatic']);
