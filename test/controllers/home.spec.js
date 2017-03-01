@@ -5,15 +5,19 @@
     var HomeController;
     beforeEach(function() {
       angular.mock.module('chrome-neo');
-      
+
       var mockNeowsService = {}; //mocked service
-      
+      var mockCacheService = {};
+
       inject(function($controller, $injector) {
-        HomeController = $controller('HomeController', {NeoWsService: mockNeowsService});
+        HomeController = $controller('HomeController', {
+            NeoWsService: mockNeowsService,
+            CacheService : mockCacheService
+        });
       });
-      
+
     });
-    
+
 
     /*tests to make*/
     it('exists', function() {
@@ -36,8 +40,8 @@
       done();
       expect(HomeController.getWeekly).toHaveBeenCalled();
     });*/
-    
-    
-    
+
+
+
   });
 })();

@@ -5,8 +5,8 @@
     var httpBackend;
     var constants;
     beforeEach(function(){
-      angular.mock.module('chrome-neo')
-      
+      angular.mock.module('chrome-neo');
+
       /*define mock localForage Module*/
       var mockLocalForage = {};
       module(function($provide){
@@ -35,7 +35,7 @@
       expect(NeoWsService.getDaily).toBeDefined();
       expect(NeoWsService.getMonthly).toBeDefined();
     });
-    
+
     /*this is just a test function that does nothing*/
     it('has test function', function() {
       NeoWsService.test(function(answer) {

@@ -9,18 +9,28 @@ CacheService.$inject = [
 function CacheService($log, $localForage, $q, moment, constants) {
   return {
     test: test,
+    clear: clear,
     checkDaily: checkDaily,
     checkWeekly: checkWeekly,
     checkMonthly: checkMonthly,
     checkByID : checkByID,
-    
+
     setDaily : setDaily,
-    setWeekly : setWeekly
+    setWeekly : setWeekly,
+    setMonthly: setMonthly
     //NOTE no monthly as I might not support monthly statements
   };
   /*function definitions*/
   function test(callback) {
     callback(true);
+  }
+  /**
+   * [clearCache description]
+   * @return {promise} returns a promise with no arguments. To assist in chaining
+   */
+  function clear() {
+    $log.log("Clearing Cache...");
+    return $localForage.clear();
   }
   /*
   This function checks for old dates and removes them.
@@ -74,7 +84,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
     $log.log("Looking or key: " + key);
     return $localForage.getItem(key); //returns a promise
   }
-  
+
   /*sets the value in the cache with the daily format
   Day_##_Year
   where day is the DAY NUMBER*/
@@ -83,7 +93,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
     $log.log("setting daily with given key: " + key);
     return $localForage.setItem(key, object); //returns promise
   }
-  
+
   /*Sets the value in the cache with the weekly format:
   Week_##_Year
   where week is the WEEK NUMBER*/
@@ -92,9 +102,12 @@ function CacheService($log, $localForage, $q, moment, constants) {
     $log.log("setting weekly with given key: " + key);
     return $localForage.setItem(key, object);
   }
-  
+
   /*Checks if a given single item lookup exists*/
   function checkByID(spkId) {
     return"";
+  }
+  function setMonthly() {
+    return "";
   }
 }

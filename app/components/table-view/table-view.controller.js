@@ -5,13 +5,12 @@ TableViewController.$inject=['$log', '$mdDialog', 'constants', 'AsterankService'
 function TableViewController($log, $mdDialog, constants, AsterankService) {
   var vm = this;
   vm.chart = {};
-  console.log("In Controller");
   vm.close = close;
   //vm.test = test;
-  
+
   onInit(); //call the function
   return vm;
-  
+
   /*function definitons*/
   function onInit() {
     $log.log("Loading data...");

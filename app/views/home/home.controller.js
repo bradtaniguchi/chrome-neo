@@ -5,9 +5,10 @@ HomeController.$inject = ['$log',
 '$q',
 'moment',
 'constants',
-'$rootScope'];
-function HomeController($log, $mdDialog, NeoWsService, $q, moment, 
-  constants, $rootScope) {
+'$rootScope',
+'CacheService'];
+function HomeController($log, $mdDialog, NeoWsService, $q, moment,
+  constants, $rootScope, CacheService) {
   var vm = this;
   vm.monthly = 0;
   vm.weekly = 0;
@@ -15,6 +16,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   vm.todaysDate = "";
 
   vm.test = test; //test function
+  vm.clearCache = clearCache;
   vm.showTable = showTable;
   vm.$onInit = onInit;
   vm.getWeekly = getWeekly;
@@ -32,8 +34,18 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     $rootScope.loading = false;
   }
   function test() {
-    $log.log("Calling get monthly");
-    NeoWsService.getWeekly();
+    /*nice!*/
+    var week = moment().week();
+    $log.log("Test: " + moment().week(week-1).startOf('week').format(constants.MOMENT_FORMAT));
+  }
+  /**
+   * Debugging utiling
+   * @return {[type]} [description]
+   */
+  function clearCache() {
+    CacheService.clear().then(function(){
+      $log.log("Cache cleared!");
+    });//clears the cache
   }
   /*get weekly requests, this automatically does this for us.*/
   function getWeekly() {//2015-09-07
