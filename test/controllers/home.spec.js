@@ -6,10 +6,19 @@
     beforeEach(function() {
       angular.mock.module('chrome-neo');
 
-      var mockNeowsService = {}; //mocked service
-      var mockCacheService = {};
 
-      inject(function($controller, $injector) {
+      inject(function($controller, $injector, $q) {
+        /*define mocks*/
+        var mockNeowsService = {
+          getDaily : function(){
+            var differed = $q.defer();
+            differed.resolve({element_count: 25});
+            return differed.promise;
+          }
+        };
+        var mockCacheService = {};
+
+        /*define controller to test*/
         HomeController = $controller('HomeController', {
             NeoWsService: mockNeowsService,
             CacheService : mockCacheService
@@ -32,16 +41,25 @@
       expect(HomeController.showTable).toBeDefined();
       /*function shouldnt be accessible*/
       expect(HomeController.getFailedRequest).not.toBeDefined();
+      expect(HomeController.getDaily).toBeDefined();
+      expect(HomeController.getWeekly).toBeDefined();
+      expect(HomeController.getMonthly).toBeDefined();
     });
 
-    /*it('getWeekly has been called', function(done) {
+    it('getWeekly has been called', function() {
       spyOn(HomeController, 'getWeekly').and.callThrough();
       HomeController.getWeekly();
-      done();
       expect(HomeController.getWeekly).toHaveBeenCalled();
-    });*/
+    });
 
-
-
+    describe("getDaily has been called", function() {
+      beforeEach(function(){
+        spyOn(HomeController, 'getDaily').and.callThrough();
+        HomeController.getDaily();
+      });
+      it("test call", function(){
+        expect(HomeController.getDaily).toHaveBeenCalled();
+      });
+    });
   });
 })();
