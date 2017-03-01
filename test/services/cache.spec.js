@@ -8,11 +8,11 @@
 
       /*define mock localForage module*/
       var mockLocalForage = {
-        getItem: function(){ 
-          var q = $q.differ();
+        getItem: function(){
+          var q = $q.defer();
           q.resolve({foo: 'bar'});
           return q.promis;
-          
+
         }
       };
       module(function($provide){
@@ -37,13 +37,13 @@
       expect(CacheService.setDaily).toBeDefined();
       expect(CacheService.setWeekly).toBeDefined();
     });
-    
+
     /* fix promise return!
     it('check daily', function(){
       spyOn(CacheService, 'checkDaily').and.callThrough();
       CacheService.checkDaily();
       expect(CacheService.checkDaily).toHaveBeenCalled();
-      
+
     });
     */
 

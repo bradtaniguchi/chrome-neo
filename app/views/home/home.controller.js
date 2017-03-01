@@ -21,6 +21,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   vm.$onInit = onInit;
   vm.getWeekly = getWeekly;
   vm.getDaily = getDaily;
+  vm.getMonthly = getMonthly;
 
   return vm;
   /*function definition*/
@@ -49,17 +50,25 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
   /*get weekly requests, this automatically does this for us.*/
   function getWeekly() {//2015-09-07
-    //console.log(moment().format('YYYY-MM-DD'));
     /*NeoWsService.getWeekly().then(function(response) {
-      vm.weekly = response.data.element_count;
+      vm.weekly = response.element_count;
     }).catch(getFailedRequest);*/
   }
   /*get daily amounts*/
   function getDaily() {
-      /*NeoWsService.getDaily().then(function(response) {
-        vm.daily = response.data.element_count;
-      }).catch(getFailedRequest);*/
+      NeoWsService.getDaily().then(function(response) {
+        vm.daily = response.element_count;
+      }).catch(getFailedRequest);
   }
+  /*gets the monthly amount*/
+  function getMonthly() {
+    /* TODO: This isn't implimented yet
+      NeoWsService().getMonthly().then(function(response) {
+        vm.monthly = response.data.element_count;
+      }).catch(getFailedRequest);
+      */
+  }
+
   /*Handles a http request*/
   function getFailedRequest(error) {
     var newMessage = 'XHR Failed for getCustomer';

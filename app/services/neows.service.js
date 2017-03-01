@@ -44,15 +44,13 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
   function getWeekly(startWeek, endWeek) {
     var year = moment().year();
     var week = moment().week();
+    var differed = $q.defer();
     $log.log("Week: "+ week); //get the week of the year
     CacheService.checkDaily(week, year).then(function(object){
-      var differed = $q.differ();
       if(object !== null) {
         $log.log("Key exists in Cache as: " + object);
         /*return the data*/
         differed.resolve(object);
-        return differed;
-
       } else {
         $log.log("Key does not exist, calling api...");
         if(startWeek === undefined) {
@@ -75,14 +73,15 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
           /*get the response from the http request, stash it then return it*/
         }).then(function(response){
           $log.log('Saving response in cache from NeoWsService');
-          CacheService.setWeekly(week, year, response).then(function(){
+          CacheService.setWeekly(week, year, response.data).then(function(){
             /*then FINALLY return the data to the user*/
-            differed.resolve(response);
+            differed.resolve(response.data);
           }); //save the whole response
-          return differed;
+
         });
       }
     });
+    return differed.promise;
   }
   /**
    * Gets the daily results from the NeoWsService.
@@ -91,6 +90,7 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
   function getDaily() {
     var year = moment().year();
     var day = moment().dayOfYear();
+    var differed = $q.defer();
 
     $log.log("day " + day);
     $log.log("year " + year);
@@ -98,9 +98,7 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
       if(object !== null) {
         $log.log("Key exists in Cache as: " + object);
         /*return the data*/
-        var differed = $q.differ();
         differed.resolve(object);
-        return differed;
       } else {
         $log.log("Key does not exist, calling api...");
         var today = moment().format(constants.MOMENT_FORMAT);
@@ -116,14 +114,14 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
             api_key : constants.API_KEY
           }
         }).then(function(response){
-          CacheService.setDaily(day, year, response).then(function(){
+          CacheService.setDaily(day, year, response.data).then(function(){
             /*after we set it in cache we return the differed*/
-            differed.resolve(response);
+            differed.resolve(response.data);
           });
-          return differed;
         });
       }
     });
+    return differed.promise;
   }
   /**
    * Gets monthly, don't impliment this until I have caching setup.
@@ -141,13 +139,14 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
   function getMonthly() {
     var year = moment().year();
     var monthNumber = moment().month(); //note 0 is janurary
+    var differed = $q.defer();
+
     CacheService.checkMonthly(monthNumber, year).then(function(object){
+
       if(object !== null) {
         $log.log("Key exists in Cache as: " + object);
         /*return the data object using promise*/
-        var differed = $q.differ();
         differed.resolve(object);
-        return differed;
       } else {
         $log.log("Key does not exist, calling api 4 times(!)...");
         /*call the first week of the month*/
@@ -173,10 +172,12 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
 
             /*now combine the week objects*/
             var finalObject = {}; //object to return
-            finalObject.totalCount = week1ElementCount + week2ElementCount;
-            finalObject.objects = Object.assign({}, week1Objects,week2Objects);
-            $log.log("Final week count: " + finalObject.totalCount);
-            $log.log("Final object count(length): " + finalObject.objects.length);
+            finalObject.element_count = week1ElementCount + week2ElementCount;
+            finalObject.near_earth_objects = Object.assign({}, week1Objects,week2Objects);
+            $log.log("Final week count: " + finalObject.element_count);
+            $log.log("Final object count(length): " + finalObject.near_earth_objects.length);
+
+            differed.resolve(finalObject);
           });
           /*TODO: ADD MORE WEEKS LATER!*/
           /*TODO: SAVED TO CACHE ONCE TESTED!!*/
@@ -186,7 +187,7 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
         /*Due to the fact the API only supports up to weekly reports, I will
         just call the getWeekly function and combine its data.*/
         /*call API and return data*/
-        return "";
+        return differed.promise;
       }
     }); //catch errors with cache/localForage service
   }

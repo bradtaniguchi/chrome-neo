@@ -59,7 +59,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
   @returns object of whats given, or if it is in the datastore
   */
   function checkDaily(day, year) {
-    var key = "" + day + "_" + year;
+    var key = "Day_" + day + "_" + year;
     $log.log("Looking for key: " + key);
     return $localForage.getItem(key);
   }
@@ -71,7 +71,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
      var weeknumber = moment("12-25-1995", "MM-DD-YYYY").week();
   */
   function checkWeekly(week, year) {
-    var key = "" + week + "_" + year;
+    var key = "Week_" + week + "_" + year;
     $log.log("Looking for key: " + key);
     return $localForage.getItem(key);
   }
@@ -108,6 +108,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
     return"";
   }
   function setMonthly() {
+    /*Not implimented yet*/
     return "";
   }
 }
