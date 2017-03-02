@@ -17,7 +17,8 @@ function CacheService($log, $localForage, $q, moment, constants) {
 
     setDaily : setDaily,
     setWeekly : setWeekly,
-    setMonthly: setMonthly
+    setMonthly : setMonthly,
+    setByID : setByID
     //NOTE no monthly as I might not support monthly statements
   };
   /*function definitions*/
@@ -81,7 +82,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
   */
   function checkMonthly(month, year) {
     var key = "Month_" + month +"_"+ year;
-    $log.log("Looking or key: " + key);
+    $log.log("Looking for key: " + key);
     return $localForage.getItem(key); //returns a promise
   }
 
@@ -109,6 +110,13 @@ function CacheService($log, $localForage, $q, moment, constants) {
   }
   /*Checks if a given single item lookup exists*/
   function checkByID(spkId) {
-    return"";
+    var key="NEO_" + spkId;
+    $log.log("Looking for key: " + key);
+    return $localForage.getItem(key);
+  }
+  function setByID(spkId, object) {
+    var key = "NEO_" + spkId;
+    $log.log("setting NEO with the given key: " + key);
+    return $localForage.setItem(key, object);
   }
 }

@@ -49,7 +49,6 @@
       expect(CacheService.setWeekly).toBeDefined();
       expect(CacheService.setMonthly).toBeDefined();
     });
-    
     /*Check Daily function*/
     describe("checkDaily", function(){
       beforeEach(function(){
@@ -101,11 +100,28 @@
         CacheService.checkByID();
         expect(CacheService.checkByID).toHaveBeenCalled();
       });
-      /*not implimented!
       it("check by Id with arguments", function(){
         CacheService.checkByID('KeyName').then(function(response){
           expect(response.toEqual({"key":"keyName"}));
-        });*/
+        });
+      });
+    });
+    describe("setByID", function(){
+      beforeEach(function(){
+        spyOn(CacheService, 'setByID').and.callThrough();
+      });
+      it("set by ID called", function(){
+        CacheService.setByID();
+        expect(CacheService.setByID).toHaveBeenCalled();
+      });
+      it("set by Id with arguments", function(done){
+        CacheService.setByID(12345, {foo: 'bar'}).then(function(response){
+          expect(response.key).toEqual("NEO_12345");
+          expect(response.object).toEqual({foo: 'bar'});
+          done();
+        });
+        $scope.$apply();
+      });
     });
     describe("setDaily", function(){
       beforeEach(function(){
@@ -149,11 +165,13 @@
         CacheService.setMonthly();
         expect(CacheService.setMonthly).toHaveBeenCalled();
       });
-      it('set monthly with arguments', function(){
+      it('set monthly with arguments', function(done){
         CacheService.setMonthly(1, 2017, {foo:'bar'}).then(function(response){
           expect(response.key).toEqual('Month_1_2017');
           expect(response.object).toEqual({foo:'bar'});
+          done();
         });
+        $scope.$apply();
       });
     });
   });
