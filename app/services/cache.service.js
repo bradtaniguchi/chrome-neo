@@ -18,9 +18,20 @@ function CacheService($log, $localForage, $q, moment, constants) {
     setDaily : setDaily,
     setWeekly : setWeekly,
     setMonthly : setMonthly,
-    setByID : setByID
+    setByID : setByID,
+
+    printDatabase: printDatabase
     //NOTE no monthly as I might not support monthly statements
   };
+  /**
+   * Debugging function, prints out the contents of the database in the log
+   */
+  function printDatabase() {
+    $log.log("[[[[[DATABASE PRINTOUT]]]]]");
+    $localForage.iterate(function(value, key, iterationNumber) {
+      $log.log("     [" + key + "] : " + JSON.stringify(value));
+    });
+  }
   /*function definitions*/
   function test(callback) {
     callback(true);
