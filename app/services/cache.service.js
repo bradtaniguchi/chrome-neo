@@ -102,13 +102,13 @@ function CacheService($log, $localForage, $q, moment, constants) {
     $log.log("setting weekly with given key: " + key);
     return $localForage.setItem(key, object);
   }
-
+  function setMonthly(month, year, object) {
+    var key ="Month_" + month +"_" + year;
+    $log.log("setting monthly with given key: " + key);
+    return $localForage.setItem(key, object);
+  }
   /*Checks if a given single item lookup exists*/
   function checkByID(spkId) {
     return"";
-  }
-  function setMonthly() {
-    /*Not implimented yet*/
-    return "";
   }
 }
