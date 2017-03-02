@@ -20,7 +20,7 @@ var wrap = require('gulp-wrap');
 var title='/*\n';
 title +=' * Bradley Taniguchi\n';
 title +=' * 2/27/2017\n';
-title +=' * chrome-neo\n'; 
+title +=' * chrome-neo\n';
 title +=' * */\n';
 title +='<%= contents %>';
 
@@ -40,7 +40,7 @@ gulp.task('copyHtml', function() {
 /*move static files to base dir*/
 gulp.task('moveStatic', function() {
   gutil.log(gutil.colors.magenta("Moving manifest"));
-  gulp.src('manifest.json')
+  gulp.src(['manifest.json', 'favicon.ico'])
   .pipe(gulp.dest('dist'));
 
   gutil.log(gutil.colors.magenta("Moving css files"));
@@ -56,8 +56,6 @@ gulp.task('moveStatic', function() {
   gulp.src('./img/*.png')
   .pipe(gulp.dest('dist/img/'));
   /*Move angularjs file*/
-  /*gulp.src('./bower_components/**')
-  .pipe(gulp.dest('dist/bower_components/'));*/
   gutil.log(gutil.colors.magenta("Moving static files to lib"));
   gulp.src([
     './bower_components/angular/angular.js',
