@@ -16,6 +16,16 @@
             var differed = $q.defer();
             differed.resolve({element_count: 25});
             return differed.promise;
+          },
+          getWeekly: function(){
+            var differed = $q.defer();
+            differed.resolve({element_count: 60});
+            return differed.promise;
+          },
+          getMonthly: function(){
+            var differed = $q.defer();
+            differed.resolve({element_count: 100});
+            return differed.promise;
           }
         };
         var mockCacheService = {};
@@ -49,13 +59,13 @@
       expect(HomeController.getMonthly).toBeDefined();
     });
 
-    it('getWeekly has been called', function() {
+    /*t('getWeekly has been called', function() {
       spyOn(HomeController, 'getWeekly').and.callThrough();
       HomeController.getWeekly();
       expect(HomeController.getWeekly).toHaveBeenCalled();
-    });
+    });*/
 
-    describe("getDaily has been called", function() {
+    describe("getDaily", function() {
       beforeEach(function(done){
         spyOn(HomeController, 'getDaily').and.callThrough();
         HomeController.getDaily();
@@ -65,9 +75,36 @@
       it("test call", function(){
         expect(HomeController.getDaily).toHaveBeenCalled();
       });
-      it("test value", function(){
+      it("test value change", function(){
         expect(HomeController.daily).toEqual(25);
       });
+    });
+    describe("getWeekly", function(){
+      beforeEach(function(){
+        spyOn(HomeController, 'getWeekly').and.callThrough();
+        HomeController.getWeekly();
+        $scope.$apply();
+      });
+      it('test call', function(){
+        expect(HomeController.getWeekly).toHaveBeenCalled();
+      });
+      /*not implimented yet
+      it('test value change', function(){
+        expect(HomeController.weekly).toEqual(60);
+      });*/
+    });
+    describe("getMonthly", function(){
+      beforeEach(function(){
+        spyOn(HomeController, 'getMonthly').and.callThrough();
+        HomeController.getMonthly();
+        $scope.$apply();
+      });
+      it("test call", function(){
+        expect(HomeController.getMonthly).toHaveBeenCalled();
+      });
+      /*it("test valu change", function(){
+        expect(HomeController.monthly).toEqual(100);
+      });*/
     });
   });
 })();
