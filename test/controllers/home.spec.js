@@ -3,12 +3,14 @@
   //http://www.syntaxsuccess.com/viewarticle/how-to-mock-http-calls-in-angular
   describe("Home controller", function() {
     var HomeController;
+    var $scope;
     beforeEach(function() {
       angular.mock.module('chrome-neo');
 
 
-      inject(function($controller, $injector, $q) {
+      inject(function($controller, $injector, _$rootScope_, $q) {
         /*define mocks*/
+        $scope = _$rootScope_.$new();
         var mockNeowsService = {
           getDaily : function(){
             var differed = $q.defer();
@@ -20,6 +22,7 @@
 
         /*define controller to test*/
         HomeController = $controller('HomeController', {
+            $scope: $scope,
             NeoWsService: mockNeowsService,
             CacheService : mockCacheService
         });
@@ -53,12 +56,17 @@
     });
 
     describe("getDaily has been called", function() {
-      beforeEach(function(){
+      beforeEach(function(done){
         spyOn(HomeController, 'getDaily').and.callThrough();
         HomeController.getDaily();
+        $scope.$apply();
+        done();
       });
       it("test call", function(){
         expect(HomeController.getDaily).toHaveBeenCalled();
+      });
+      it("test value", function(){
+        expect(HomeController.daily).toEqual(25);
       });
     });
   });

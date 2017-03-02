@@ -56,11 +56,12 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
   /*get daily amounts*/
   function getDaily() {
-    console.log("preReq");
+    var differed = $q.defer();
     NeoWsService.getDaily().then(function(response) {
       vm.daily = response.element_count;
-      console.log("Dailyed: " + vm.daily);
+      differed.resolve();
     }).catch(getFailedRequest);
+    return differed.promise;
   }
   /*gets the monthly amount*/
   function getMonthly() {
