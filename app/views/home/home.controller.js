@@ -22,6 +22,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   vm.getWeekly = getWeekly;
   vm.getDaily = getDaily;
   vm.getMonthly = getMonthly;
+  vm.printDatabase = printDatabase;
 
   return vm;
   /*function definition*/
@@ -29,15 +30,18 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     vm.monthly = 0; //for now
     vm.daily = 0; //for now
     vm.todaysDate = moment().format(constants.MOMENT_FORMAT);
-    getWeekly();
+    //getWeekly();
     getDaily();
     /*Add then statements, which finally go back to $rootScope loading!*/
     $rootScope.loading = false;
   }
   function test() {
     /*nice!*/
-    var week = moment().week();
-    $log.log("Test: " + moment().week(week-1).startOf('week').format(constants.MOMENT_FORMAT));
+    //$log.log("Test: " + moment().week(week-1).startOf('week').format(constants.MOMENT_FORMAT));
+    getWeekly();
+  }
+  function printDatabase(){
+    CacheService.printDatabase();
   }
   /**
    * Debugging utiling
@@ -50,18 +54,15 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
   /*get weekly requests, this automatically does this for us.*/
   function getWeekly() {//2015-09-07
-    /*NeoWsService.getWeekly().then(function(response) {
+    NeoWsService.getWeekly().then(function(response) {
       vm.weekly = response.element_count;
-    }).catch(getFailedRequest);*/
+    }).catch(getFailedRequest);
   }
   /*get daily amounts*/
   function getDaily() {
-    var differed = $q.defer();
     NeoWsService.getDaily().then(function(response) {
       vm.daily = response.element_count;
-      differed.resolve();
     }).catch(getFailedRequest);
-    return differed.promise;
   }
   /*gets the monthly amount*/
   function getMonthly() {
@@ -74,7 +75,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
 
   /*Handles a http request*/
   function getFailedRequest(error) {
-    var newMessage = 'XHR Failed for getCustomer';
+    var newMessage = 'XHR Failed';
     if (error.data && error.data.description) {
       newMessage = newMessage + '\n' + error.data.description;
     }
