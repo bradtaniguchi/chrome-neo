@@ -31,10 +31,11 @@ function TableViewController($log, $mdDialog, constants, initData, moment) {
     if(vm.xAttribute === undefined) {//use days of the week
       labels = Object.keys(vm.data);
       labelString = "NEOs per day";
-      data = [];
+      /*chartjs requires an array of arrays. Or an array of GRAPH DATA.*/
+      data = [[]];
       vm.tableType = "NEOs per Day";
       Object.keys(vm.data).forEach(function(key){
-        data.push(vm.data[key].length);
+        data[0].push(vm.data[key].length);
       });
     } else if (vm.xAttribute === 'monthly') {
       $log.log("This isnt support yet...");

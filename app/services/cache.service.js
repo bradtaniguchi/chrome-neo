@@ -29,7 +29,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
   function printDatabase() {
     $log.log("[[[[[DATABASE PRINTOUT]]]]]");
     $localForage.iterate(function(value, key, iterationNumber) {
-      $log.log("     [" + key + "] : " + JSON.stringify(value));
+      $log.log("     [" + key + "] : " + value);
     });
   }
   /*function definitions*/
