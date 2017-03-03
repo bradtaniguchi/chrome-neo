@@ -5,7 +5,13 @@
     beforeEach(function(){
       angular.mock.module('chrome-neo');
       inject(function($controller){
-        var mockInitData = {};
+        var mockInitData = {
+          data: {
+            element_count : 66,
+            near_earth_objects: {}
+          },
+          xAttribute : ''
+        };
         TableViewController = $controller("TableViewController", {initData: mockInitData});
       });
     });

@@ -1,10 +1,18 @@
 /*Table view Controller*/
 angular.module('chrome-neo').controller('TableViewController', TableViewController);
-TableViewController.$inject=['$log', '$mdDialog', 'constants', 'AsterankService'];
+TableViewController.$inject=[
+  '$log',
+  '$mdDialog',
+  'constants',
+  'initData', //this should be given to us from the home controller
+  'moment' //we need to handle some dates here if given a month/week
+];
 
-function TableViewController($log, $mdDialog, constants, AsterankService) {
+function TableViewController($log, $mdDialog, constants, initData, moment) {
   var vm = this;
+  vm.data = {}; //all data
   vm.chart = {};
+  vm.xAttribute = "";
   vm.close = close;
   //vm.test = test;
 
@@ -13,15 +21,20 @@ function TableViewController($log, $mdDialog, constants, AsterankService) {
 
   /*function definitons*/
   function onInit() {
-    $log.log("Loading data...");
-    /*
-    Todo: add a loader service here
-    https://api.nasa.gov/api.html#NeoWS
-    */
+    var labels = [];
+    var data = [];
     /*define our chart object*/
+    parseData(); //setup this components settings
+    if(vm.xAttribute === undefined) {//use days of the week
+      labels = Object.keys(vm.data);
+      data = [];
+      Object.keys(vm.data).forEach(function(key){
+        data.push(vm.data[key].length);
+      });
+    } /*add other possible attributes here*/
     vm.chart = {
-      data: [[10,20,30]],
-      labels: ["one", "two", "three"],
+      data: data,
+      labels: labels,
       options: {
         tooltips: {
           enabled: false
@@ -29,12 +42,14 @@ function TableViewController($log, $mdDialog, constants, AsterankService) {
       }
     };
   }
+  /**
+   * Parses the given data and applies it to the settings.
+   */
+  function parseData(){
+    vm.xAttribute = initData.xAttribute;
+    vm.data = initData.data.near_earth_objects;
+  }
   function close() {
     $mdDialog.hide();
-  }
-  function test() {
-    AsterankService.getById(3726710).then(function(data){
-      $log.log(JSON.stringify(data));
-    });
   }
 }

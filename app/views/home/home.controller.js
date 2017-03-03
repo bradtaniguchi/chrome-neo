@@ -99,7 +99,10 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   function showTable(event, data, xAttribute) {
     $mdDialog.show({
       locals: {
-        initData : data
+        initData : {
+          data: data,
+          xAttribute: xAttribute
+        },
       },
       controller: 'TableViewController as vm',
       templateUrl: 'components/table-view/table-view.view.html',
@@ -112,7 +115,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     showTable(event, data);
   }
   function showWeekTable(event, data) {
-    showTable(event, data);
+    showTable(event, data); //don't give an xAttribute, it will automatically do dates
   }
   function showMonthTable(event, data){
     showTable(event, data);
