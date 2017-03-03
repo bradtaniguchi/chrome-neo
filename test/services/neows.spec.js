@@ -4,27 +4,38 @@
     var NeoWsService;
     var httpBackend;
     var constants;
+    var $q;
+    var $scope;
     beforeEach(function(){
       angular.mock.module('chrome-neo');
 
-      /*define mock localForage Module*/
-      var mockLocalForage = {};
+      /*define mock CacheService*/
+      var mockCacheService = {
+        useCache : true, //we find it in cache and return foobar
+        checkDaily: function(day, year){
+          var differed = $q.defer();
+          if(this.useCache) differed.resolve({foo: "bar"}); //not null!
+          else differed.resolve(null); //this will force NeoWsService to call API
+          return differed.promise;
+        }
+      };
       module(function($provide){
-        $provide.value('$localForage', mockLocalForage);
+        $provide.value('CacheService', mockCacheService);
+      });
+
+      inject(function(_NeoWsService_, $httpBackend, _constants_, _$q_, $rootScope) {
+        NeoWsService = _NeoWsService_;
+        $scope = $rootScope;
+        httpBackend = $httpBackend;
+        constants = _constants_;
+        $q = _$q_;
+        httpBackend
+        .whenGET(/.*/)
+        .respond(200, {
+          foo: 'barHTML'
+        });
       });
     });
-
-    beforeEach(inject(function(_NeoWsService_, $httpBackend, _constants_) {
-      NeoWsService = _NeoWsService_;
-      httpBackend = $httpBackend;
-      constants = _constants_;
-      httpBackend
-        //.when('GET', constants.NEOWS_BASE_URL+"/.*/")
-        .whenGET(/.*/)
-        .respond(200, { //update with real data
-          foo: 'bar'
-        });
-    }));
 
     it('exists', function() {
       expect(NeoWsService).toBeDefined();
@@ -36,20 +47,22 @@
       expect(NeoWsService.getMonthly).toBeDefined();
     });
 
-    /*this is just a test function that does nothing*/
-    it('has test function', function() {
-      NeoWsService.test(function(answer) {
-        expect(answer).toEqual(true);
+    describe("get daily", function(){
+      beforeEach(function(){
+        spyOn(NeoWsService, 'getDaily').and.callThrough();
       });
+      it("using cache", function(done) {
+        NeoWsService.getDaily().then(function(response){
+          expect(response).toEqual({foo:"bar"});
+          done();
+        });
+        $scope.$apply();
+        expect(NeoWsService.getDaily).toHaveBeenCalled();
+      });
+      /*in development
+      it("not using cache", function(done){
+        NeoWsService.getDaily().
+      });*/
     });
-
-    /* BEING DEVELOPED
-    it('Can connect', function(done) {
-      NeoWsService.getWeekly().then(function(response) {
-        console.log(response);
-        expect(response).toBeDefined();
-        done();
-      });
-    });*/
   });
 })();
