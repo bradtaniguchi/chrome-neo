@@ -1,8 +1,8 @@
-<md-dialog flex>
+<md-dialog flex aria-label="Graph Dialog">
   <!--https://material.angularjs.org/latest/demo/dialog-->
   <md-toolbar>
     <div class="md-toolbar-tools" layout="row" layout-align="start center">
-      Monthly
+      {{vm.tableType}}
       <span flex></span>
       <md-button class="md-icon-button" ng-click="vm.refresh()">
         <i class="material-icons">refresh</i>
@@ -13,7 +13,6 @@
     </div>
   </md-toolbar>
   <md-dialog-content> <!--table goes here-->
-    GRAPH GOES HERE
     <canvas id="lineGraph" class="chart chart-line" chart-data="vm.chart.data"
     chart-labels="vm.chart.labels" chart-options="vm.chart.options"
     chart-hover=""></canvas>

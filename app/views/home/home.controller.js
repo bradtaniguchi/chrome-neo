@@ -112,7 +112,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     });
   }
   function showDayTable(event, data){
-    showTable(event, data);
+    showTable(event, data, 'TEMP ATTRIBUTE');
   }
   function showWeekTable(event, data) {
     showTable(event, data); //don't give an xAttribute, it will automatically do dates
