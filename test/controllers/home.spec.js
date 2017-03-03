@@ -51,12 +51,18 @@
       expect(HomeController.daily).toBeDefined();
       expect(HomeController.weekly).toBeDefined();
       expect(HomeController.monthly).toBeDefined();
-      expect(HomeController.showTable).toBeDefined();
-      /*function shouldnt be accessible*/
+
+      /*these functions are private, they shoudn't be accessible*/
       expect(HomeController.getFailedRequest).not.toBeDefined();
+      expect(HomeController.showTable).not.toBeDefined();
+
       expect(HomeController.getDaily).toBeDefined();
       expect(HomeController.getWeekly).toBeDefined();
       expect(HomeController.getMonthly).toBeDefined();
+      /*functions that show the table dialog*/
+      expect(HomeController.showDayTable).toBeDefined();
+      expect(HomeController.showWeekTable).toBeDefined();
+      expect(HomeController.showMonthTable).toBeDefined();
     });
 
     /*t('getWeekly has been called', function() {

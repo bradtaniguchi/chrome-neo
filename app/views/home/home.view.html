@@ -9,21 +9,21 @@
     <p class="md-body-2"><i>See below for the number of asteroids that will
     be considered NEOs</i></p>
     <div layout="column">
-      <md-button ng-click="vm.showTable($event)">
+      <md-button ng-click="vm.showMonthTable($event, vm.monthlyData)">
         <div layout="row">
           <div class="md-subhead">Monthly: <b>{{vm.monthly}}</b></div>
           <span flex></span>
           <i class="material-icons">event</i>
         </div>
       </md-button>
-      <md-button>
+      <md-button ng-click="vm.showWeekTable($event, vm.weeklyData)">
         <div layout="row">
           <div class="md-subhead">Weekly: <b>{{vm.weekly}}</b></div>
           <span flex></span>
           <i class="material-icons">view_week</i>
         </div>
       </md-button>
-      <md-button>
+      <md-button ng-click="vm.showDayTable($event, vm.dailyData)">
         <div layout="row">
           <div class="md-subhead">Daily: <b>{{vm.daily}}</b></div>
           <span flex></span>

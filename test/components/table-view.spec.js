@@ -1,18 +1,19 @@
 (function(){
   'use strict';
-  describe("help-dialog", function(){
+  describe("table-dialog", function(){
     var TableViewController;
     beforeEach(function(){
       angular.mock.module('chrome-neo');
       inject(function($controller){
-        TableViewController = $controller("TableViewController");
+        var mockInitData = {};
+        TableViewController = $controller("TableViewController", {initData: mockInitData});
       });
     });
     /*tests to make*/
     it('exists', function(){
       expect(TableViewController).toBeDefined();
     });
-    
+
     it('check scope variables exist', function(){
       expect(TableViewController.chart).toBeDefined();
     });
@@ -22,4 +23,3 @@
     });
   });
 })();
-
