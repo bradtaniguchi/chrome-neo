@@ -8,7 +8,7 @@ StatsController.$inject = [
   '$rootScope'
 ];
 
-function StatsController($log, AsterankService, $mdMenu, $mdDialog, 
+function StatsController($log, AsterankService, $mdMenu, $mdDialog,
   queryFields,$rootScope) {
   var vm = this;
   var originatorEv;
@@ -16,6 +16,9 @@ function StatsController($log, AsterankService, $mdMenu, $mdDialog,
   vm.menuOptions = Object.keys(queryFields);
   vm.newFilter= ""; //the currently selected filter view
   vm.newValue = "";// the currently entered value
+  vm.datapointAmount = 10; //how much data do we want to return
+  vm.datapointAmounts = [10, 25, 50, 100]; //list of options on how much data we want to return
+
   /*list of all the filters in the view*/
   vm.filters = [];
 
@@ -102,9 +105,9 @@ function StatsController($log, AsterankService, $mdMenu, $mdDialog,
   }
   /**
    * Gets the data points from the API endpoint
+   * TODO: Work from here
    */
   function getNeos() {
-
     return [];
   }
 }

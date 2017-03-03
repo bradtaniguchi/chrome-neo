@@ -25,6 +25,17 @@
             <i class="material-icons">remove</i>
           </md-button>
         </div>
+        <!--return limit controls-->
+        <div>
+          <md-input-container>
+            <label>Datapoint Limit</label>
+            <md-select ng-model="vm.datapointAmount">
+              <md-option ng-repeat="amount in vm.datapointAmounts track by $index"
+                value="{{amount}}">{{amount}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
 
         <!--Tools to add new filters-->
         <div layout="row">
