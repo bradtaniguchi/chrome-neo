@@ -6,15 +6,13 @@ function MainController($log, $state, $rootScope) {
 
   vm.openMenu = openMenu;
   vm.currState = $state;//get current state
-  vm.loading = true;
   vm.go = go;
   vm.refresh = refresh;
   vm.$onInit = onInit;
   return vm;
   /*function definitions*/
   function onInit() {
-    $rootScope.loading = false;
-    vm.loading = $rootScope.loading;
+    
   }
   function openMenu($mdMenu, ev) {
     originatorEv = ev;

@@ -5,5 +5,19 @@ angular.module('chrome-neo', [
   'chart.js', //to display the data
   'angularMoment', //to handle times more gracefully
   'LocalForageModule' //local storage api
-]);
+]).run(block);
+
+block.$inject = ['$log', '$rootScope'];
+function block($log, $rootScope){
+  $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
+    $rootScope.loading = true;
+  });
+  $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
+    $rootScope.loading = false;
+  });
+  $rootScope.$on('$stateChangeError',function(event, toState, toParams, fromState, fromParams){
+    $log.log("An error occured changing states.");
+    $rootScope.loading = false;
+  });
+}
 

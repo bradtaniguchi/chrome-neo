@@ -43,8 +43,6 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     getWeekly();
     getDaily();
     //getMonthly();
-    /*Add then statements, which finally go back to $rootScope loading!*/
-    $rootScope.loading = false;
   }
   function test() {
     /*nice!*/
