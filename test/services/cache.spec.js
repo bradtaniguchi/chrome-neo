@@ -156,6 +156,16 @@
         });
         $scope.$apply();
       });
+      it('set bad weekly with arguments', function(done){
+        CacheService.setWeekly(25, 2017,{foo:'bar'}).then(function(response){
+          fail("Bad date was accepted");
+          done();
+        }).catch(function(reason){
+          expect(reason).toBeDefined();
+          done();
+        });
+        $scope.$apply();
+      });
     });
     describe("setMonthly", function(){
       beforeEach(function(){

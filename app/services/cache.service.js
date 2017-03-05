@@ -110,9 +110,16 @@ function CacheService($log, $localForage, $q, moment, constants) {
   Week_##_Year
   where week is the WEEK NUMBER*/
   function setWeekly(week, year, object) {
-    var key = "Week_" + week + "_" + year;
-    $log.log("setting weekly with given key: " + key);
-    return $localForage.setItem(key, object);
+    var differed = $q.defer();
+    if(week >= 0 && week <= 12) {
+      var key = "Week_" + week + "_" + year;
+      $log.log("setting weekly with given key: " + key);
+      return $localForage.setItem(key, object);
+    } else {
+      $log.log("Invalid week amount");
+      differed.reject("Invalid week amount");
+      return differed.promise;
+    }
   }
   function setMonthly(month, year, object) {
     var key ="Month_" + month +"_" + year;
