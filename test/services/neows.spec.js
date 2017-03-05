@@ -17,6 +17,18 @@
           if(this.useCache) differed.resolve({foo: "bar"}); //not null!
           else differed.resolve(null); //this will force NeoWsService to call API
           return differed.promise;
+        },
+        checkWeekly: function(week, year){
+          var differed = $q.defer();
+          if(this.useCache) differed.resolve({foo:"bar"});
+          else differed.resolve(null);
+          return differed.promise;
+        },
+        checkMonthly: function(month, year){
+          var differed = $q.defer();
+          if(this.useCache)differed.resolve({foo:"bar"});
+          else differed.resolve(null);
+          return differed.promise;
         }
       };
       module(function($provide){
@@ -63,6 +75,28 @@
       it("not using cache", function(done){
         NeoWsService.getDaily().
       });*/
+    });
+    describe("get weekly", function(){
+      beforeEach(function(){
+        spyOn(NeoWsService, 'getWeekly').and.callThrough();
+      });
+      it("using cache", function(done){
+        NeoWsService.getWeekly().then(function(response){
+          expect(response).toEqual({foo:"bar"});
+          done();
+        });
+        $scope.$apply();
+        expect(NeoWsService.getWeekly).toHaveBeenCalled();
+      });
+    });
+    describe("get monthly", function(){
+      beforeEach(function(){
+        spyOn(NeoWsService, 'getMonthly').and.callThrough();
+      });
+      it("test call", function(){
+        NeoWsService.getMonthly();
+        expect(NeoWsService.getMonthly).toHaveBeenCalled();
+      });
     });
   });
 })();
