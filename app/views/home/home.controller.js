@@ -24,6 +24,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   vm.test = test; //test function
   vm.clearCache = clearCache;
   vm.$onInit = onInit;
+
   vm.getWeekly = getWeekly;
   vm.getDaily = getDaily;
   vm.getMonthly = getMonthly;
@@ -63,24 +64,30 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
   /*get weekly requests, this automatically does this for us.*/
   function getWeekly() {//2015-09-07
+    $rootScope.loading = true;
     NeoWsService.getWeekly().then(function(response) {
       vm.weekly = response.element_count;
       vm.weeklyData = response;
+      $rootScope.loading = false;
     }).catch(getFailedRequest);
   }
   /*get daily amounts*/
   function getDaily() {
+    $rootScope.loading = true;
     NeoWsService.getDaily().then(function(response) {
       vm.daily = response.element_count;
       vm.dailyData = response;
+      $rootScope.loading = false;
     }).catch(getFailedRequest);
   }
   /*gets the monthly amount*/
   function getMonthly() {
+    $rootScope.loading = true;
     /* TODO: This isn't implimented yet*/
       NeoWsService.getMonthly().then(function(response) {
         vm.monthly = response.element_count;
         vm.monthlyData = response.near_earth_objects;
+        $rootScope.loading = false;
       });
   }
 

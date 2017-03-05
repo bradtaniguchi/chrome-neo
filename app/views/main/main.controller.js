@@ -12,7 +12,7 @@ function MainController($log, $state, $rootScope) {
   return vm;
   /*function definitions*/
   function onInit() {
-    
+
   }
   function openMenu($mdMenu, ev) {
     originatorEv = ev;
