@@ -40,9 +40,9 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     vm.monthly = 0; //for now
     vm.daily = 0; //for now
     vm.todaysDate = moment().format(constants.MOMENT_FORMAT);
-    getWeekly();
-    getDaily();
-    //getMonthly();
+    //getWeekly();
+    //getDaily();
+    getMonthly();
   }
   function test() {
     /*nice!*/
@@ -77,11 +77,11 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
   /*gets the monthly amount*/
   function getMonthly() {
-    /* TODO: This isn't implimented yet
-      NeoWsService().getMonthly().then(function(response) {
-        vm.monthly = response.data.element_count;
-      }).catch(getFailedRequest);
-      */
+    /* TODO: This isn't implimented yet*/
+      NeoWsService.getMonthly().then(function(response) {
+        vm.monthly = response.element_count;
+        vm.monthlyData = response.near_earth_objects;
+      });
   }
 
   /*Handles a http request*/

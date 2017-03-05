@@ -13,21 +13,11 @@ NeoWsService.$inject = [
 ];
 function NeoWsService($log, $http, constants, moment, CacheService, $q) {
   return {
-    test: test,
     getWeekly : getWeekly,
     getDaily : getDaily,
     getMonthly : getMonthly
   };
   /*function definitions*/
-  /**
-   * Test function, will be removed in the future
-   * @param  {Function} callback callback function to test...
-   * @return {None}
-   */
-  function test(callback) {
-    /*test to see if you can make a connection to the service.*/
-    callback(true);
-  }
   /**
    * Calls the NeoWsService with the parameter start week and end week. If these
    * are not given, the function automatically uses this week's start and end.
@@ -41,9 +31,14 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
    *                           cache or the http request. Regardless it SHOULD
    *                           look the same.
    */
-  function getWeekly(startWeek, endWeek) {
+  function getWeekly(startWeek, endWeek, weekNumber) {
     var year = moment().year();
-    var week = moment().week();
+    var week;
+    if(weekNumber !== undefined) {
+      week = weekNumber;
+    } else {
+      week = moment().week();
+    }
     var differed = $q.defer();
     $log.log("Week: "+ week); //get the week of the year
     CacheService.checkWeekly(week, year).then(function(object){
@@ -153,42 +148,76 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
         var weekNumber = moment().week();
         /*get the first and last day of the first week of the current month*/
         var week1 = {}, week2={}, week3={}, week4={}; //create 4 week objects
+        week1.week = weekNumber;
         week1.startDay = moment().week(weekNumber).startOf('week').format(constants.MOMENT_FORMAT); //go back 1 week
         week1.endDay = moment().week(weekNumber).endOf('week').format(constants.MOMENT_FORMAT);
 
+        week1.week = weekNumber+1;
         week2.startDay = moment().week(weekNumber+1).startOf('week').format(constants.MOMENT_FORMAT);
         week2.endDay = moment().week(weekNumber+1).endOf('week').format(constants.MOMENT_FORMAT);
 
+        week1.week = weekNumber+2;
+        week3.startDay = moment().week(weekNumber+2).startOf('week').format(constants.MOMENT_FORMAT);
+        week3.endDay = moment().week(weekNumber+2).endOf('week').format(constants.MOMENT_FORMAT);
+
+        week1.week = weekNumber+3;
+        week4.startDay = moment().week(weekNumber+3).startOf('week').format(constants.MOMENT_FORMAT);
+        week4.endDay = moment().week(weekNumber+3).endOf('week').format(constants.MOMENT_FORMAT);
+
+        //$log.log("w1: " + week1.startDay + ' ' + week1.endDay + ' '+ week1.week);
+        // $log.log("w2: " + week2.startDay + ' ' + week2.endDay);
+        // $log.log("w3: " + week3.startDay + ' ' + week3.endDay);
+        // $log.log("w4: " + week4.startDay + ' ' + week4.endDay);
+        /*now combine the week objects*/
+        var finalObject = {}; //object to return
+
         /*call the get weekly amount with the given dates*/
-        getWeekly(week1.startDay, week1.endDay).then(function(object){
+        getWeekly(week1.startDay, week1.endDay, week1.week).then(function(object1){ //week 1
           /*we need to get the amount, to add it to the other weeks*/
-          var week1ElementCount = object.element_count;
-          var week1Objects = object.near_earth_objects;
-          $log.log('got week1, objects: ' +week1ElementCount);
-          getWeekly(week2.startDay, week3.endDay).then(function(object2){
-            var week2ElementCount = object.element_count;
-            var week2Objects = object.near_earth_objects;
-            $log.log("got week2, objects: " + week2ElementCount);
+          var week1ElementCount = object1.element_count;
+          var week1Objects = object1.near_earth_objects;
+          $log.log('got week1 objects: ' +week1ElementCount);
 
-            /*now combine the week objects*/
-            var finalObject = {}; //object to return
-            finalObject.element_count = week1ElementCount + week2ElementCount;
-            finalObject.near_earth_objects = Object.assign({}, week1Objects,week2Objects);
-            $log.log("Final week count: " + finalObject.element_count);
-            $log.log("Final object count(length): " + finalObject.near_earth_objects.length);
+          finalObject.element_count = week1ElementCount;
 
-            differed.resolve(finalObject);
-          });
-          /*TODO: ADD MORE WEEKS LATER!*/
-          /*TODO: SAVED TO CACHE ONCE TESTED!!*/
-        });
-        $log.log("Start this Week " + monthNumber+ " " + year);
-        $log.log("End this Week " + startWeek + " " + endWeek);
-        /*Due to the fact the API only supports up to weekly reports, I will
-        just call the getWeekly function and combine its data.*/
-        /*call API and return data*/
-        return differed.promise;
-      }
+          getWeekly(week2.startDay, week2.endDay, week2.week).then(function(object2){ //week 1
+            var week2ElementCount = object2.element_count;
+            var week2Objects = object2.near_earth_objects;
+            $log.log("got week2 objects: " + week2ElementCount);
+
+            finalObject.element_count +=  week2ElementCount;
+
+            getWeekly(week3.startDay, week3.endDay, week3.week).then(function(object3){ //week 2
+              var week3ElementCount = object3.element_count;
+              var week3Objects = object3.near_earth_objects;
+              $log.log("Get week3 objects: " + week3ElementCount);
+
+              finalObject.element_count = finalObject.element_count + week3ElementCount;
+              /*TODO: CALL IT ONE MORE TIME!*/
+              getWeekly(week4.startDay, week4.endDay, week4.week).then(function(object4){
+                var week4ElementCount = object4.element_count;
+                var week4Objects = object4.near_earth_objects;
+                $log.log("Got week4 objects: " + week4ElementCount);
+
+                finalObject.element_count = finalObject.element_count + week4ElementCount;
+
+                /*combine the elements*/
+                finalObject.near_earth_objects = Object.assign(
+                  week1Objects,
+                  week2Objects,
+                  week3Objects,
+                  week4Objects
+                );
+
+                $log.log("Final week count: " + finalObject.element_count);
+                $log.log("Final object count(length): " + Object.keys(finalObject.near_earth_objects).length);
+                differed.resolve(finalObject);
+              }); /*Finally done wth this madness!*/
+            }); //week3
+          }); //week2
+        }); //week1
+      }// else statement
     }); //catch errors with cache/localForage service
+    return differed.promise;
   }
 }
