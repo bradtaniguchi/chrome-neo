@@ -101,30 +101,44 @@ function CacheService($log, $localForage, $q, moment, constants) {
   Day_##_Year
   where day is the DAY NUMBER*/
   function setDaily(day, year, object) {
-    var key = "Day_" + day + "_" + year;
-    $log.log("setting daily with given key: " + key);
-    return $localForage.setItem(key, object); //returns promise
+    if(day >= 0 && day <= 366) {
+      var key = "Day_" + day + "_" + year;
+      $log.log("setting daily with given key: " + key);
+      return $localForage.setItem(key, object); //returns promise
+    } else {
+      var differed = $q.defer();
+      $log.log("Invalid day amount");
+      differed.reject("Invalid day amount");
+      return differed.promise;
+    }
   }
 
   /*Sets the value in the cache with the weekly format:
   Week_##_Year
   where week is the WEEK NUMBER*/
   function setWeekly(week, year, object) {
-    var differed = $q.defer();
-    if(week >= 0 && week <= 12) {
+    if(week >= 0 && week <= 52) {
       var key = "Week_" + week + "_" + year;
       $log.log("setting weekly with given key: " + key);
       return $localForage.setItem(key, object);
     } else {
+      var differed = $q.defer();
       $log.log("Invalid week amount");
       differed.reject("Invalid week amount");
       return differed.promise;
     }
   }
   function setMonthly(month, year, object) {
-    var key ="Month_" + month +"_" + year;
-    $log.log("setting monthly with given key: " + key);
-    return $localForage.setItem(key, object);
+    if(month >= 0 && month <= 12) {
+      var key ="Month_" + month +"_" + year;
+      $log.log("setting monthly with given key: " + key);
+      return $localForage.setItem(key, object);
+    } else {
+      var differed = $q.defer();
+      $log.log("Invalid month ammount");
+      differed.reject("invalid month amount");
+      return differed.promise;
+    }
   }
   /*Checks if a given single item lookup exists*/
   function checkByID(spkId) {

@@ -43,7 +43,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     vm.todaysDate = moment().format(constants.MOMENT_FORMAT);
     //getWeekly();
     //getDaily();
-    getMonthly();
+    //getMonthly();
   }
   function test() {
     /*nice!*/

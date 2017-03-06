@@ -157,7 +157,7 @@
         $scope.$apply();
       });
       it('set bad weekly with arguments', function(done){
-        CacheService.setWeekly(25, 2017,{foo:'bar'}).then(function(response){
+        CacheService.setWeekly(60, 2017,{foo:'bar'}).then(function(response){
           fail("Bad date was accepted");
           done();
         }).catch(function(reason){
