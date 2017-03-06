@@ -201,13 +201,21 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
 
                 finalObject.element_count = finalObject.element_count + week4ElementCount;
 
-                /*combine the elements*/
-                finalObject.near_earth_objects = Object.assign(
+                /*combine the elements
+                TODO: this code below only works in ES6, I don't want to use it
+                THus I have to use a function*/
+                /*finalObject.near_earth_objects = Object.assign(
                   week1Objects,
                   week2Objects,
                   week3Objects,
                   week4Objects
-                );
+                );*/
+                finalObject.near_earth_objects = combine([
+                  week1Objects,
+                  week2Objects,
+                  week3Objects,
+                  week4Objects
+                ]);
 
                 $log.log("Final week count: " + finalObject.element_count);
                 $log.log("Final object count(length): " + Object.keys(finalObject.near_earth_objects).length);
@@ -219,5 +227,23 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
       }// else statement
     }); //catch errors with cache/localForage service
     return differed.promise;
+  }
+  /**
+   * Quick and dirty utility function that acts like the ES6 Object.assin function
+   * This will overmap previous key values, but for what I am doing this doesnt matter.
+   * @param  {list} list list of objects to combine
+   * @return {object}      the final object, that combines all the keys and values.
+   *                           Any overlapps are automatically written over from
+   *                           the first item in the list to the last. Thus the
+   *                           first item in the list has the LEAST priority.
+   */
+  function combine(list) {
+    var finalObject = {};
+    for (var object in list) { //for each object in list
+      for(var attr in object) { //for each Attribute in object
+        finalObject[attr] = object[attr];
+      }
+    }
+    return finalObject;
   }
 }
