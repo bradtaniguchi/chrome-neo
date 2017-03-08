@@ -15,9 +15,8 @@ function block($log, $rootScope){
   $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
     $rootScope.loading = false;
   });
-  $rootScope.$on('$stateChangeError',function(event, toState, toParams, fromState, fromParams){
-    $log.log("An error occured changing states.");
+  $rootScope.$on('$stateChangeError',function(event, toState, toParams, fromState, fromParams, error){
+    $log.log("An error occured changing states. " + error);
     $rootScope.loading = false;
   });
 }
-

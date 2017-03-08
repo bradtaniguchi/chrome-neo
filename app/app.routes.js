@@ -17,7 +17,10 @@ function router($stateProvider, $urlRouterProvider) {
     controller: 'HomeController as vm'
   })
   .state('stats', {
-    url: 'stats',
+    url: 'stats/:id',
+    resolve : {
+      resolvedStatData : resolvedStatData
+    },
     parent: 'main',
     templateUrl: 'views/stats/stats.view.html',
     controller: 'StatsController as vm'
@@ -34,4 +37,8 @@ function router($stateProvider, $urlRouterProvider) {
     templateUrl: 'views/about/about.view.html',
     controller: 'AboutController as vm'
   });
+  resolvedStatData.$inject = ['$log', '$stateParams', 'AsterankService'];
+  function resolvedStatData($log, $stateParams, AsterankService) {
+    return AsterankService.getById($stateParams.id, 10);
+  }
 }
