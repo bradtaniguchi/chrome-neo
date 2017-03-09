@@ -152,22 +152,22 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
         week1.startDay = moment().week(weekNumber).startOf('week').format(constants.MOMENT_FORMAT); //go back 1 week
         week1.endDay = moment().week(weekNumber).endOf('week').format(constants.MOMENT_FORMAT);
 
-        week1.week = weekNumber+1;
+        week2.week = weekNumber+1;
         week2.startDay = moment().week(weekNumber+1).startOf('week').format(constants.MOMENT_FORMAT);
         week2.endDay = moment().week(weekNumber+1).endOf('week').format(constants.MOMENT_FORMAT);
 
-        week1.week = weekNumber+2;
+        week3.week = weekNumber+2;
         week3.startDay = moment().week(weekNumber+2).startOf('week').format(constants.MOMENT_FORMAT);
         week3.endDay = moment().week(weekNumber+2).endOf('week').format(constants.MOMENT_FORMAT);
 
-        week1.week = weekNumber+3;
+        week4.week = weekNumber+3;
         week4.startDay = moment().week(weekNumber+3).startOf('week').format(constants.MOMENT_FORMAT);
         week4.endDay = moment().week(weekNumber+3).endOf('week').format(constants.MOMENT_FORMAT);
 
-        //$log.log("w1: " + week1.startDay + ' ' + week1.endDay + ' '+ week1.week);
-        // $log.log("w2: " + week2.startDay + ' ' + week2.endDay);
-        // $log.log("w3: " + week3.startDay + ' ' + week3.endDay);
-        // $log.log("w4: " + week4.startDay + ' ' + week4.endDay);
+        $log.log("w1: " + week1.startDay + ' ' + week1.endDay + ' ' + week1.week);
+        $log.log("w2: " + week2.startDay + ' ' + week2.endDay + ' ' + week2.week);
+        $log.log("w3: " + week3.startDay + ' ' + week3.endDay + ' ' + week3.week);
+        $log.log("w4: " + week4.startDay + ' ' + week4.endDay + ' ' + week4.week);
         /*now combine the week objects*/
         var finalObject = {}; //object to return
 
@@ -218,7 +218,7 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
                 ]);
 
                 $log.log("Final week count: " + finalObject.element_count);
-                $log.log("Final object count(length): " + Object.keys(finalObject.near_earth_objects).length);
+                $log.log("Final object count(length): " + Object.keys(finalObject.near_earth_objects));
                 differed.resolve(finalObject);
               }); /*Finally done wth this madness!*/
             }); //week3
@@ -239,11 +239,17 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
    */
   function combine(list) {
     var finalObject = {};
-    for (var object in list) { //for each object in list
-      for(var attr in object) { //for each Attribute in object
+    //for (var object in list) { //for each object in list
+      //for (var attr in object) { //for each Attribute in object
+        //finalObject[attr] = object[attr];
+      //}
+    //}
+      /* the above code ALMOST DESTROYED MY LIFE!*/
+    list.forEach(function(object){ //for each object in the list
+      Object.keys(object).forEach(function(attr){//for each Attribute in object
         finalObject[attr] = object[attr];
-      }
-    }
+      });
+    });
     return finalObject;
   }
 }
