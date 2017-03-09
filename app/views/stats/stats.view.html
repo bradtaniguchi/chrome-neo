@@ -5,14 +5,35 @@
       Stats
     </md-card-header-text>
   </md-card-header>
-  <md-card-content>
-    <p class="md-body-2">
-      <i>Below are all the datapoints for {{vm.id}}</i>
-    </p>
-
-    <div ng-repeat="dp in vm.dataPointList track by $index">
-      {{dp.name}}
+  <md-card-content ng-show="vm.valid">
+    <div layout="row">
+      <p class="md-body-2">
+        <i>Below are all the datapoints for {{vm.id}}</i>
+      </p>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.openHelp()">
+        <md-tooltip md-direction="top">Help</md-tooltip>
+        <i class="material-icons">live_help</i>
+      </md-button>
     </div>
 
+    <div ng-repeat="dp in vm.dataPointList track by $index" layout="row">
+      <p class="md-body-2">
+        {{dp.name}}
+      </p>
+      <span flex></span>
+      <p>
+        {{dp.value}}
+        <md-tooltip md-direction="bottom">
+          {{dp.description || "sorry no description!"}}
+        </md-tooltip>
+      </p>
+    </div>
+  </md-card-content>
+  <md-card-content ng-hide="vm.valid">
+    <p class="md-body-2">
+      Sorry, no NEO with the given designation: {{vm.id}}
+    </p>
+    <md-button class="raised" ng-click="vm.back()"> go back</md-button>
   </md-card-content>
 </md-card>

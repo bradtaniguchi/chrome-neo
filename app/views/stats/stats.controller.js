@@ -2,21 +2,25 @@ angular.module('chrome-neo').controller('StatsController', StatsController);
 StatsController.$inject = [
   '$log',
   '$mdMenu',
+  '$mdDialog',
+  '$state',
   '$rootScope',
   '$stateParams',
   'queryFields',
   'resolvedStatData'
 ];
 
-function StatsController($log, $mdMenu, $rootScope, $stateParams, queryFields,
-  resolvedStatData) {
+function StatsController($log, $mdMenu, $mdDialog, $state, $rootScope,
+  $stateParams, queryFields, resolvedStatData) {
 
   var vm = this;
   vm.data = {};
+  vm.valid = true; //default for now
   vm.id = "";
   vm.dataPointList = [];
 
-  vm.$onInit = onInit();
+  vm.openHelp = openHelp;
+  vm.$onInit = onInit;
 
   return vm;
 
@@ -24,15 +28,32 @@ function StatsController($log, $mdMenu, $rootScope, $stateParams, queryFields,
   function onInit() {
     vm.id = $stateParams.id;
     vm.data = resolvedStatData; //just get the first item
-    $log.log("onInit " + JSON.stringify(vm.data));
-    buildList();
+    if(vm.data === undefined) {// its invalid!
+      vm.valid = false;
+    } else {
+      vm.valid = true;
+        buildList();
+    }
   }
-  function buildList() {
-    $log.log("Datapoint: "+ Object.keys(vm.data));
-    //for(var dataPoint in Object.keys(vm.data)) {
-    Object.keys(vm.data).forEach(function(dataPoint) {
-      $log.log("key: " + dataPoint);
 
+  /**
+   * Opens help dialog that shows all known terms to the user
+   * @return {undefined}
+   */
+  function openHelp() {
+    $mdDialog.show({
+      controller: 'HelpDialogController as vm',
+      templateUrl: 'components/help-dialog/help-dialog.view.html',
+      parent: angular.element(document.body),
+      clickOutsideToClose:true
+    });
+  }
+  /**
+   * Builds the list of dataPoints to display with their description.
+   * Applies this to vm.dataPointList
+   */
+  function buildList() {
+    Object.keys(vm.data).forEach(function(dataPoint) {
       vm.dataPointList.push({
         "name" : dataPoint, //the name of the datapoint
         "value" : vm.data[dataPoint], //the value of the datapoint in key
