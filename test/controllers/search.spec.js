@@ -4,8 +4,12 @@
     var SearchController;
     beforeEach(function(){
       angular.mock.module('chrome-neo');
+
       inject(function($controller){
-        SearchController = $controller('SearchController');
+        var mockAsterankService = {};
+        SearchController = $controller('SearchController', {
+          AsterankService:mockAsterankService
+        });
       });
     });
 

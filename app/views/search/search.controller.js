@@ -1,8 +1,9 @@
 angular.module('chrome-neo').controller('SearchController', SearchController);
 SearchController.$inject = [
-  '$log', 
+  '$log',
   '$rootScope',
-  'AsterankService'];
+  'AsterankService'
+];
 function SearchController($log, $rootScope, AsterankService) {
   var vm = this;
   vm.query = "";
