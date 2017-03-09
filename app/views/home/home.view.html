@@ -11,7 +11,7 @@
     <div layout="column">
       <!--<md-button ng-click="vm.showMonthTable($event, vm.monthlyData)">-->
       <md-button>
-        <div layout="row">
+        <div layout="row" ng-click="vm.showMonthTable($event, vm.monthlyData)">
           <div class="md-subhead">Monthly: <b>{{vm.monthly}}</b></div>
           <span flex></span>
           <i class="material-icons">event</i>

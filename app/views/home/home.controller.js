@@ -41,14 +41,21 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     vm.monthly = 0; //for now
     vm.daily = 0; //for now
     vm.todaysDate = moment().format(constants.MOMENT_FORMAT);
-    //getWeekly();
-    //getDaily();
-    //getMonthly();
+    $rootScope.loading = true; // show the loading bar until we get all data
+    getDaily().then(function(){
+      getWeekly().then(function(){
+        getMonthly().then(function(){
+          $log.log("loading done");
+          $rootScope.loading = false;
+        });
+      });
+    });
+
   }
   function test() {
     /*nice!*/
     //$log.log("Test: " + moment().week(week-1).startOf('week').format(constants.MOMENT_FORMAT));
-    getWeekly();
+    getMonthly();
   }
   function printDatabase(){
     CacheService.printDatabase();
@@ -62,33 +69,44 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
       $log.log("Cache cleared!");
     });//clears the cache
   }
-  /*get weekly requests, this automatically does this for us.*/
-  function getWeekly() {//2015-09-07
-    $rootScope.loading = true;
-    NeoWsService.getWeekly().then(function(response) {
-      vm.weekly = response.element_count;
-      vm.weeklyData = response;
-      $rootScope.loading = false;
-    }).catch(getFailedRequest);
-  }
   /*get daily amounts*/
   function getDaily() {
-    $rootScope.loading = true;
+    var differed = $q.defer();
     NeoWsService.getDaily().then(function(response) {
       vm.daily = response.element_count;
       vm.dailyData = response;
-      $rootScope.loading = false;
-    }).catch(getFailedRequest);
+      differed.resolve();
+    }).catch(function(error){
+      getFailedRequest(error);
+      differed.resolve();
+    });
+    return differed.promise;
+  }
+  /*get weekly requests, this automatically does this for us.*/
+  function getWeekly() {//2015-09-07
+    var differed = $q.defer();
+    NeoWsService.getWeekly().then(function(response) {
+      vm.weekly = response.element_count;
+      vm.weeklyData = response;
+      differed.resolve();
+    }).catch(function(error){
+      getFailedRequest(error);
+      differed.resolve();
+    });
+    return differed.promise;
   }
   /*gets the monthly amount*/
   function getMonthly() {
-    $rootScope.loading = true;
-    /* TODO: This isn't implimented yet*/
-      NeoWsService.getMonthly().then(function(response) {
-        vm.monthly = response.element_count;
-        vm.monthlyData = response.near_earth_objects;
-        $rootScope.loading = false;
-      });
+    var differed = $q.defer();
+    NeoWsService.getMonthly().then(function(response) {
+      vm.monthly = response.element_count;
+      vm.monthlyData = response.near_earth_objects;
+      differed.resolve();
+    }).catch(function(error){
+      getFailedRequest(error);
+      differed.resolve();
+    });
+    return differed.promise;
   }
 
   /*Handles a http request*/
@@ -123,6 +141,6 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     showTable(event, data); //don't give an xAttribute, it will automatically do dates
   }
   function showMonthTable(event, data){
-    showTable(event, data);
+    showTable(event, data, 'monthly');
   }
 }
