@@ -4,13 +4,43 @@
     var AsterankService;
     var httpBackend;
     var constants;
+    var $q;
+    var $scope;
+    var useCache;
     beforeEach(function(){
       angular.mock.module('chrome-neo');
-      inject(function(_AsterankService_, $httpBackend, _constants_){
+
+      var mockCacheService ={
+        checkByID : function(id){
+          var differed = $q.defer();
+          if(useCache) differed.resolve({foo:"bar"});
+          else differed.resolve(null);
+          return differed.promise;
+        },
+        setByID : function(spkId, object){
+          var differed = $q.defer();
+          differed.resolve();
+          return differed.promise;
+        }
+
+      };
+      module(function($provide){
+        $provide.value("CacheService", mockCacheService);
+      });
+
+      inject(function(_AsterankService_, $httpBackend, _constants_,
+        _$q_, $rootScope){
         AsterankService = _AsterankService_;
         httpBackend = $httpBackend;
         constants = _constants_;
+        $q = _$q_;
+        $scope = $rootScope;
 
+        httpBackend
+        .when('GET', /.*/) //capture all requests
+        .respond(200, {
+          foo: 'bar'
+        });
       });
     });
 
@@ -23,22 +53,25 @@
       expect(AsterankService.getByName).toBeDefined();
     });
 
-    it("check getById", function(done){
-      var data;
-      httpBackend
-        .when('GET', constants.ASTERANK_BASE_URL+"?limit=1&query=%7B%22spkid%22:0%7D")
-        //.when('GET', constants.ASTERANK_BASE_URL+"?/limit=[0-9]*&query=.*")
-        .respond(200, {
-          foo: 'bar'
+    describe("getById", function(){
+      //beforeEach(function(){});
+      it("check getById, using cache", function(done){
+        useCache = true;
+        AsterankService.getById(0,1).then(function(response){
+          expect(response).toBeDefined();
+          expect(response.foo).toEqual("bar");
+          done();
         });
-
-      AsterankService.getById(0,1).then(function(response){
-        expect(response).toBeDefined();
-        expect(response.data.foo).toEqual("bar");
-        done();
+        $scope.$apply();
       });
-      httpBackend.flush();
+      // it("check getById, not using cache", function(done){
+      //   useCache = false;
+      //   AsterankService.getById(0,1).then(function(response){
+      //       expect(response).toBeDefined();
+      //       done();
+      //   });
+      //   $scope.$apply();
+      // });
     });
-
   });
 })();
