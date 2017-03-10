@@ -217,8 +217,8 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
                   week4Objects
                 ]);
 
-                $log.log("Final week count: " + finalObject.element_count);
-                $log.log("Final object count(length): " + Object.keys(finalObject.near_earth_objects));
+                // $log.log("Final week count: " + finalObject.element_count);
+                // $log.log("Final object count(length): " + Object.keys(finalObject.near_earth_objects));
                 differed.resolve(finalObject);
               }); /*Finally done wth this madness!*/
             }); //week3
