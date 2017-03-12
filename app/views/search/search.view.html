@@ -4,6 +4,11 @@
     <md-card-header-text class="md-title">
       Search
     </md-card-header-text>
+    <span flex></span>
+    <md-button ng-click="" class="md-icon-button" ng-show="vm.results.length">
+      <md-tooltip md-direction="left">Show search</md-tooltip>
+      <i class="material-icons">keyboard_arrow_down</i>
+    </md-button>
   </md-card-header>
   <md-card-content>
     <p class="md-body-2">
@@ -18,7 +23,7 @@
       </div>
       <div flex>
       </div>
-      <md-button class="md-icon-button" ng-show="!vm.showOptions" ng-click="vm.showOptions = true;">
+      <md-button class="md-icon-button" ng-hide="vm.showOptions" ng-click="vm.showOptions = true;">
         <md-tooltip md-direction="top">show filters</md-tooltip>
         <i class="material-icons">keyboard_arrow_down</i>
       </md-button>
@@ -29,22 +34,53 @@
     </div>
     <div layout="column"
       ng-show="vm.showOptions" ng-init="vm.showOptions = false"> <!--start custom options-->
-      <md-checkbox  aria-label="NEO object?">
+      <md-checkbox ng-model="vm.neosOnly" aria-label="NEO only">
         <md-tooltip md-direction="right">Show NEO objects</md-tooltip>
-        NEO
+        NEO only
       </md-checkbox>
-      <md-checkbox aria-label="NEO object?">
-        <md-tooltip md-direction="right">Other tooltip</md-tooltip>
-        NEO2
-      </md-checkbox>
-      <md-divider></md-divider>
-    </div>
+      <md-input-container>
+        <label>Result Limit</label>
+        <md-select ng-model="vm.limit">
+          <md-option ng-repeat="limit in vm.limits track by $index" value="{{limit}}">
+            {{limit}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div> <!--end custom dropdown options-->
+
     <md-input-container md-no-float>
       <label>Search</label>
       <input ng-model="vm.query">
       <md-button class="md-raised" ng-click="vm.search(vm.query)">Search</md-button>
       <md-button class="md-raised" ng-click="vm.query = ''">Clear</md-button>
     </md-input-container>
+  </md-card-content>
+</md-card>
+<!--make a card for each result-->
+<md-card class="md-whiteframe-2dp"
+  ng-repeat="result in vm.results track by $index">
+  <md-card-header>
+    <md-card-header-text layout="row" layout-align="start center">
+      <p>{{result.full_name}}</p>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.fullDetail(result.spkid)">
+        <md-tooltip md-direction="left">Full Details</md-tooltip>
+        <i class="material-icons">keyboard_arrow_right</i>
+      </md-button>
+    </md-card-header-text>
+  </md-card-header>
+  <md-card-content>
+    <div layout="row">
+      <p>
+        First Observed: {{result.first_obs}}
+      </p>
+      <span flex></span>
+      <p>
+        Last Observed: {{result.last_obs}}
+      </p>
+    </div>
+    <div layout="row">
 
+    </div>
   </md-card-content>
 </md-card>

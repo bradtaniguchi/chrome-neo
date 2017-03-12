@@ -38,15 +38,31 @@ function AsterankService($log, $http, constants, moment, $q, CacheService) {
     });
     return differed.promise;
   }
-  function getByName(name, limit) {
+  /**
+   * Query the Asterank api using the simple regex expression.
+   * Due to how it is implimented in the back-end, I will be returning multiple
+   * different NEOs.
+   * @param  {string} name  name of the neo to search the asterank database for.
+   *                        This will be used in a REGEX.
+   * @param  {number} limit limit of returns to provide.
+   * @param  {list} queryParams  List of extra search parameters to narrow the search.
+   * @return {promise}       promise from the http request
+   */
+  function getByName(name, limit, queryParams) {
     if(typeof limit !== 'number') {
       limit = 10;
     }
+    if(queryParams === undefined) {
+      queryParams = {};
+    }
+    /*regardless of if I gave params or not, I need to append the full_name
+    to the params for the query*/
+    queryParams.full_name = {"$regex": name }; //support regex expression search;
     return $http({
       url: constants.ASTERANK_BASE_URL,
       method: 'GET',
       params : {
-        query:{"full_name": name},
+        query: queryParams,
         limit : limit
       }
     });
