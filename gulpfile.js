@@ -15,6 +15,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var wrap = require('gulp-wrap');
+var sloc = require('gulp-sloc');
 
 //gutil.log('stuff happened?', 'for realz', gutil.colors.magenta('123'));
 var title='/*\n';
@@ -116,6 +117,28 @@ gulp.task('watch', function() {
   gulp.watch('./app/**/*.js', ['jshint', 'buildjs']);
   gulp.watch('manifest.json', ['moveStatic']);
   gulp.watch('./app/**/*.html', ['copyHtml']);
+});
+
+/*get status of project in terms of lines*/
+gulp.task('slocJs', function(){
+  gulp.src(['./app/**/*.js'])
+  .pipe(sloc());
+});
+gulp.task('slocHtml', function(){
+  gulp.src(['./app/**/*.html'])
+  .pipe(sloc());
+});
+gulp.task('slocTest', function(){
+  gulp.src(['./test/**/*.js'])
+  .pipe(sloc());
+});
+gulp.task('sloc', function(){
+  gulp.src([
+      './app/**/*.js',
+      './app/**/*.html',
+      './test/**/*.js'
+  ])
+  .pipe(sloc());
 });
 
 /*Default task*/
