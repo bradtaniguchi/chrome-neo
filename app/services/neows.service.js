@@ -15,7 +15,8 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
   return {
     getWeekly : getWeekly,
     getDaily : getDaily,
-    getMonthly : getMonthly
+    getMonthly : getMonthly,
+    parseDays: parseDays
   };
   /*function definitions*/
   /**
@@ -43,7 +44,8 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
     $log.log("Week: "+ week); //get the week of the year
     CacheService.checkWeekly(week, year).then(function(object){
       if(object !== null) {
-        $log.log("Key exists in Cache as: " + object);
+        $log.log('key exists in cache as:');
+        $log.log(object);
         /*return the data*/
         differed.resolve(object);
       } else {
@@ -91,7 +93,8 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
     $log.log("year " + year);
     CacheService.checkDaily(day, year).then(function(object){
       if(object !== null) {
-        $log.log("Key exists in Cache as: " + object);
+        $log.log('key exists in cache as:');
+        $log.log(object);
         /*return the data*/
         differed.resolve(object);
       } else {
@@ -139,7 +142,8 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
     CacheService.checkMonthly(monthNumber, year).then(function(object){
 
       if(object !== null) {
-        $log.log("Key exists in Cache as: " + object);
+        $log.log('key exists in cache as:');
+        $log.log(object);
         /*return the data object using promise*/
         differed.resolve(object);
       } else {
@@ -251,5 +255,20 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
       });
     });
     return finalObject;
+  }
+  /**
+   * Utility function, when given an array of days, it will iterate through them
+   * and return an array of all the neos.
+   * @return {array} array of neos.
+   * @todo: needs testing!
+   */
+  function parseDays(days){
+    var neos = [];
+    days.forEach(function() {
+      days.forEach(function() {
+        neos.push(neo);
+      });
+    });
+    return neos;
   }
 }
