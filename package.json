@@ -20,6 +20,7 @@
     "gulp-jsdoc3": "^1.0.1",
     "gulp-jshint": "^2.0.4",
     "gulp-rename": "^1.2.2",
+    "gulp-sloc": "^1.0.4",
     "gulp-uglify": "^2.0.1",
     "gulp-util": "^3.0.8",
     "gulp-wrap": "^0.13.0",
