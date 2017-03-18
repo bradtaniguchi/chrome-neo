@@ -14,13 +14,26 @@ function MainController($log, $state, $rootScope) {
   function onInit() {
 
   }
+  /**
+   * Opens the menu to display the available choices to provide a
+   * small and basic navbar.
+   * @param {$mdMenu} $mdMenu angular material
+   * @param {event} ev event to open the menu from on the screen
+   */ 
   function openMenu($mdMenu, ev) {
     originatorEv = ev;
     $mdMenu.open(ev);
   }
+  /**
+   * Refreshes the current state
+   */ 
   function refresh() {
     $state.reload();
   }
+  /**
+   * Transfers to the given state 
+   * @param {string} state name of the state to transfer to
+   */ 
   function go(state) {
     if(vm.currState !== state){
       $state.go(state);

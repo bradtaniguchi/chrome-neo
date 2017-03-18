@@ -57,19 +57,27 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     //$log.log("Test: " + moment().week(week-1).startOf('week').format(constants.MOMENT_FORMAT));
     getMonthly();
   }
+  /**
+   * debug function, that prints the database keys within the database.
+   * I don't print out the full JSON size as it gets to large.
+   */ 
   function printDatabase(){
     CacheService.printDatabase();
   }
   /**
-   * Debugging utiling
-   * @return {[type]} [description]
+   * Debugging utiling to clear the cache.
    */
   function clearCache() {
     CacheService.clear().then(function(){
       $log.log("Cache cleared!");
     });//clears the cache
   }
-  /*get daily amounts*/
+  /**
+   * Get the daily amount of NEOs. Updates the vm.daily, vm.dailyData with
+   * data from the NeowsService.getDaily request. 
+   * @returns {Promise} returns a promise that will either resolve with nothing 
+   *                    or returns an error. 
+   */ 
   function getDaily() {
     var differed = $q.defer();
     NeoWsService.getDaily().then(function(response) {
@@ -82,7 +90,9 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     });
     return differed.promise;
   }
-  /*get weekly requests, this automatically does this for us.*/
+  /** 
+   * get weekly requests, this automatically does this for us.
+   */
   function getWeekly() {//2015-09-07
     var differed = $q.defer();
     NeoWsService.getWeekly().then(function(response) {
