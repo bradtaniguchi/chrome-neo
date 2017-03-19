@@ -56,31 +56,7 @@
     </md-input-container>
   </md-card-content>
 </md-card>
-<!--make a card for each result-->
-<md-card class="md-whiteframe-2dp"
-  ng-repeat="result in vm.results track by $index">
-  <md-card-header>
-    <md-card-header-text layout="row" layout-align="start center">
-      <p>{{result.full_name}}</p>
-      <span flex></span>
-      <md-button class="md-icon-button" ng-click="vm.fullDetail(result.spkid)">
-        <md-tooltip md-direction="left">Full Details</md-tooltip>
-        <i class="material-icons">keyboard_arrow_right</i>
-      </md-button>
-    </md-card-header-text>
-  </md-card-header>
-  <md-card-content>
-    <div layout="row">
-      <p>
-        First Observed: {{result.first_obs}}
-      </p>
-      <span flex></span>
-      <p>
-        Last Observed: {{result.last_obs}}
-      </p>
-    </div>
-    <div layout="row">
-
-    </div>
-  </md-card-content>
-</md-card>
+<!--use a directive to make this re-usable-->
+<div ng-repeat="result in vm.results track by $index">
+  <neo-basic neo="result"></neo-basic>
+</div>
