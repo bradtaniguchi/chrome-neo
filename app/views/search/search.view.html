@@ -47,13 +47,14 @@
         </md-select>
       </md-input-container>
     </div> <!--end custom dropdown options-->
-
-    <md-input-container md-no-float>
-      <label>Search</label>
-      <input ng-model="vm.query">
-      <md-button class="md-raised" ng-click="vm.search(vm.query)">Search</md-button>
-      <md-button class="md-raised" ng-click="vm.query = ''">Clear</md-button>
-    </md-input-container>
+    <form ng-submit="vm.search(vm.query)">
+      <md-input-container md-no-float>
+        <label>Search</label>
+        <input ng-model="vm.query">
+        <md-button class="md-raised" ng-click="vm.search(vm.query)">Search</md-button>
+        <md-button class="md-raised" ng-click="vm.query = ''">Clear</md-button>
+      </md-input-container>
+    </form>
   </md-card-content>
 </md-card>
 <!--use a directive to make this re-usable-->

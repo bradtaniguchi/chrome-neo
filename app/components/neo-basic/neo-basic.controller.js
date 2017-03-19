@@ -13,14 +13,18 @@ NeoBasicController.$inject=[
   '$log',
   '$state',
   '$stateParams',
-  '$window'
+  '$window',
+  'ChromeService'
 ];
 
-function NeoBasicController($log, $state, $stateParams, $window) {
+function NeoBasicController($log, $state, $stateParams, $window, ChromeService) {
   var vm = this;
   //vm.$onInit = onInit;
+
   vm.fullDetail = fullDetail;
+  vm.jplDetail = jplDetail;
   return vm;
+
   /*function definitions*/
   function onInit() {
     //console.log(vm.neo);
@@ -51,6 +55,8 @@ function NeoBasicController($log, $state, $stateParams, $window) {
    *                        reference link for JPL is
    */
   function jplDetail(spkid){
-    $log.log("looking up the given id in browser " + id);
+    var rawUrl ='http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=';
+    $log.log("looking up the given id in browser " + spkid);
+    ChromeService.link(rawUrl + spkid);
   }
 }
