@@ -5,10 +5,12 @@ TableViewController.$inject=[
   '$mdDialog',
   'constants',
   'initData', //this should be given to us from the home controller
-  'moment' //we need to handle some dates here if given a month/week
+  'moment', //we need to handle some dates here if given a month/week
+  'RankItService'
 ];
 
-function TableViewController($log, $mdDialog, constants, initData, moment) {
+function TableViewController($log, $mdDialog, constants, initData, moment,
+  RankItService) {
   var vm = this;
   vm.data = {}; //all data
   vm.chart = {};
@@ -22,76 +24,30 @@ function TableViewController($log, $mdDialog, constants, initData, moment) {
 
   /*function definitons*/
   function onInit() {
-    var labels = [];
-    var data = [];
-    var labelString = ""; //this is what to show on the Y axis
 
     /*define our chart object*/
-    parseData(); //setup this components settings
-    if(vm.xAttribute === undefined) {//use days of the week
-      labels = Object.keys(vm.data);
-      labelString = "NEOs per day";
-      /*chartjs requires an array of arrays. Or an array of GRAPH DATA.*/
-      data = [[]];
-      vm.tableType = "NEOs per Day";
-      Object.keys(vm.data).forEach(function(key){
-        data[0].push(vm.data[key].length);
-      });
+    parseData();
+    /*
+      By default we setup the chart with given parameters for the given data.
+
+     */
+    if(vm.xAttribute === 'daily') {//use days of the week
+      vm.tableType = "Daily";
+      //vm.chart = buildDailyChart(vm.data, vm.xAttribute);
+      vm.chart = buildSizeChart(vm.data, vm.xAttribute);
+
+    } else if (vm.xAttribute === 'weekly'){
+      vm.tableType = "Weekly ";
+      //vm.chart = buildWeeklyChart(vm.data, vm.xAttribute);
+      vm.chart = buildDayChart(vm.data, vm.xAttribute);
+
     } else if (vm.xAttribute === 'monthly') {
-      $log.log("This isnt support yet...");
-      labels = [];
-      data = [];
-    } else { //we are going to use vm.xAttribute through ALL datapoints
-      vm.tableType = "Estimated Diameter in meters";
-      labelString = "Size in Meters";
-      /*now we have the neos, time to sort them by different parameters
-      for now we are going to order by in estimated_diameter_min.kilometers
-            "estimated_diameter_min":0.0366906138,
-            "estimated_diameter_max":0.0820427065*/
-
-      data.push(parseNeos(vm.data)
-      /*Sort the parsed data by estimatedDiameter*/
-      .sort(function(a, b){
-        return a.estimated_diameter.meters.estimated_diameter_min -
-               b.estimated_diameter.meters.estimated_diameter_min;
-      })
-      /*because we want to see how large these guys are, map to return the estimated diameter*/
-      .map(function(neo){
-        labels.push(neo.name);
-        return neo.estimated_diameter.meters.estimated_diameter_min;
-      }));
-
-      /*now sort by max*/
-      data.push(parseNeos(vm.data)
-      /*Sort the parsed data by estimatedDiameter*/
-      .sort(function(a, b){
-        return a.estimated_diameter.meters.estimated_diameter_max -
-               b.estimated_diameter.meters.estimated_diameter_max;
-      })
-      /*because we want to see how large these guys are, map to return the estimated diameter*/
-      .map(function(neo){
-        return neo.estimated_diameter.meters.estimated_diameter_max;
-      }));
-
+      vm.tableType = "Monthly";
+      vm.chart = buildDayChart(vm.data, vm.xAttribute);
+    } else {
+      $log.debug("invalid parameter given!");
     }
-    /*create the chart*/
-    vm.chart = {
-      data: data,
-      labels: labels,
-      options: {
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: labelString
-            }
-          }]
-        },
-        tooltips: {
-          enabled: true
-        }
-      }
-    };
+
   }
   /**
    * Parses the given data and applies it to the settings.
@@ -121,5 +77,121 @@ function TableViewController($log, $mdDialog, constants, initData, moment) {
   }
   function close() {
     $mdDialog.hide();
+  }
+
+  /**
+   * Builds a chart based on min and max estimated sizes
+   * @param  {object} data       an object with keys that represent different days
+   * @param  {string} xAttribute attribute to orderby, currently not in use.
+   */
+  function buildSizeChart(data, xAttribute) {
+    var labels =[];
+    var chartData = [];
+    var labelString = 'Size in Meters';
+
+    chartData.push(parseNeos(data)
+    /*Sort the parsed data by estimatedDiameter*/
+    .sort(function(a, b){
+      return a.estimated_diameter.meters.estimated_diameter_min -
+             b.estimated_diameter.meters.estimated_diameter_min;
+    })
+    /*because we want to see how large these guys are, map to return the estimated diameter*/
+    .map(function(neo){
+      labels.push(neo.name);
+      return neo.estimated_diameter.meters.estimated_diameter_min;
+    }));
+
+    /*now sort by max*/
+    chartData.push(parseNeos(data)
+    /*Sort the parsed data by estimatedDiameter*/
+    .sort(function(a, b){
+      return a.estimated_diameter.meters.estimated_diameter_max -
+             b.estimated_diameter.meters.estimated_diameter_max;
+    })
+    /*because we want to see how large these guys are, map to return the estimated diameter*/
+    .map(function(neo){
+      return neo.estimated_diameter.meters.estimated_diameter_max;
+    }));
+
+    return {
+      data: chartData,
+      labels: labels,
+      options: {
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: labelString
+            }
+          }]
+        },
+        tooltips: {
+          enabled: true
+        }
+      }
+    };
+  }
+  /**
+   * Builds a chart based on days. Showing the amount per day.
+   * @param  {object} data       an object with keys that represent different days
+   * @param  {string} xAttribute attribute to orderby, currently not in use.
+   */
+  function buildDayChart(data, xAttribute) {
+    var labels = [];
+    var chartData = [[]];
+    var labelString =  'Order by Size';
+    labels = Object.keys(data);
+    labelString = "NEOs per day";
+    /*chartjs requires an array of arrays. Or an array of GRAPH DATA.*/
+    Object.keys(data).forEach(function(key){
+      chartData[0].push(data[key].length);
+    });
+    return {
+      data: chartData,
+      labels: labels,
+      options: {
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: labelString
+            }
+          }]
+        },
+        tooltips: {
+          enabled: true
+        }
+      }
+    };
+  }
+  /**
+   * @param  {[type]} data       [description]
+   * @param  {[type]} xAttribute [description]
+   * @return [type]              [description]
+   * @TODO: finish the functionality of this function. Until it is implimented.
+   * I will just use order by size for the month.
+   */
+  function buildMonthlyChart(data, xAttribute) {
+    var labels = [];
+    var chartData = [];
+    var labelString = '??';
+
+    return {
+      data: chartData,
+      labels: labels,
+      options: {
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: labelString
+            }
+          }]
+        },
+        tooltips: {
+          enabled: true
+        }
+      }
+    };
   }
 }

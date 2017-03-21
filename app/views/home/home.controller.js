@@ -100,7 +100,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     var differed = $q.defer();
     NeoWsService.getMonthly().then(function(response) {
       vm.monthly = response.element_count;
-      vm.monthlyData = response.near_earth_objects;
+      vm.monthlyData = response;
       differed.resolve();
     }).catch(function(error){
       getFailedRequest(error);
@@ -135,10 +135,10 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     });
   }
   function showDayTable(event, data){
-    showTable(event, data, 'TEMP ATTRIBUTE');
+    showTable(event, data, 'daily');
   }
   function showWeekTable(event, data) {
-    showTable(event, data); //don't give an xAttribute, it will automatically do dates
+    showTable(event, data, 'weekly'); //don't give an xAttribute, it will automatically do dates
   }
   function showMonthTable(event, data){
     showTable(event, data, 'monthly');

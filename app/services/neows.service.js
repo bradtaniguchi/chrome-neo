@@ -264,8 +264,8 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
    */
   function parseDays(days){
     var neos = [];
-    days.forEach(function() {
-      days.forEach(function() {
+    days.forEach(function(day) {
+      day.forEach(function() {
         neos.push(neo);
       });
     });
