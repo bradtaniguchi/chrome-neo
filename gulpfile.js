@@ -16,6 +16,7 @@ var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var wrap = require('gulp-wrap');
 var sloc = require('gulp-sloc');
+var ngGraph = require('gulp-angular-architecture-graph');
 
 //gutil.log('stuff happened?', 'for realz', gutil.colors.magenta('123'));
 var title='/*\n';
@@ -139,6 +140,17 @@ gulp.task('sloc', function(){
       './test/**/*.js'
   ])
   .pipe(sloc());
+});
+/*
+* builds the achitecture graph
+* NOTE: You need to download graphviz for the png render to work!
+*/
+gulp.task('graph', function(){
+  gulp.src(['./app/**/*.js'])
+  .pipe(ngGraph({
+      dest: 'architecture',
+      hideAngularServices: true
+  }));
 });
 
 /*Default task*/
