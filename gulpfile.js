@@ -17,6 +17,7 @@ var clean = require('gulp-clean');
 var wrap = require('gulp-wrap');
 var sloc = require('gulp-sloc');
 var ngGraph = require('gulp-angular-architecture-graph');
+var Server = require('karma').Server;
 
 //gutil.log('stuff happened?', 'for realz', gutil.colors.magenta('123'));
 var title='/*\n';
@@ -152,6 +153,16 @@ gulp.task('graph', function(){
       hideAngularServices: true
   }));
 });
+
+/*tests the current build*/
+gulp.task('test', function (done) {
+  gutil.log(gutil.colors.magenta('testing application'));
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
 
 /*Default task*/
 gulp.task('default', ['jshint', 'copyHtml', 'moveStatic', 'buildjs', 'watch']);
