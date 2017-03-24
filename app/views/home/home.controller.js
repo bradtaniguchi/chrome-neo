@@ -6,7 +6,8 @@ HomeController.$inject = ['$log',
 'moment',
 'constants',
 '$rootScope',
-'CacheService'];
+'CacheService',
+'$mdDialog'];
 function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   constants, $rootScope, CacheService) {
   var vm = this;
@@ -47,11 +48,36 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
         getMonthly().then(function(){
           $log.log("loading done");
           $rootScope.loading = false;
-        });
-      });
-    });
-
+        }).catch(handleError);
+      }).catch(handleError);
+    }).catch(handleError);
   }
+  /**
+   * Wrapper function to handle failed promise requests
+   * @param  {[type]} error [description]
+   * @return [type]         [description]
+   */
+  function handleError(error){
+    /*stop loading regardless*/
+    $rootScope.loading = false;
+    var newMessage = 'XHR Failed';
+    if (error.data && error.data.description) {
+      newMessage = newMessage + '\n' + error.data.description;
+    }
+    error.data.description = newMessage;
+    $log.error(newMessage);
+    $mdDialog.show(
+      $mdDialog.alert()
+        .parent(angular.element(document.body))
+        .clickOutsideToClose(true)
+        .title('Error!')
+        .textContent('an error occured: ' + error)
+        .ariaLabel('Error')
+        .ok('Ok')
+    );
+    return $q.reject(error);
+  }
+
   function test() {
     /*nice!*/
     //$log.log("Test: " + moment().week(week-1).startOf('week').format(constants.MOMENT_FORMAT));
@@ -67,7 +93,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   function clearCache() {
     CacheService.clear().then(function(){
       $log.log("Cache cleared!");
-    });//clears the cache
+    }).catch(handleError(err));//clears the cache
   }
   /*get daily amounts*/
   function getDaily() {
@@ -109,7 +135,8 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     return differed.promise;
   }
 
-  /*Handles a http request*/
+  /*Handles a http request
+  TODO: what does this function even do???*/
   function getFailedRequest(error) {
     var newMessage = 'XHR Failed';
     if (error.data && error.data.description) {

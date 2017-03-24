@@ -2,9 +2,10 @@ angular.module('chrome-neo').controller('SearchController', SearchController);
 SearchController.$inject = [
   '$log',
   '$rootScope',
-  'AsterankService'
+  'AsterankService',
+  '$mdDialog'
 ];
-function SearchController($log, $rootScope, AsterankService) {
+function SearchController($log, $rootScope, AsterankService, $mdDialog) {
   var vm = this;
   vm.query = "";
   vm.limits = [5, 10, 25]; //possible query limits
@@ -15,17 +16,13 @@ function SearchController($log, $rootScope, AsterankService) {
   vm.neosOnly = false;
 
   vm.search = search;
+  vm.clear = clear;
   vm.$onInit = onInit;
 
   return vm;
   /*function definitions*/
   function onInit() {
     $rootScope.loading = false; //turn off loading
-    /*make some mock fake values, so I dont have to keep searching the API*/
-    // vm.results.push({
-    //   "full_name": "FAKE NEO",
-    //   "spkid": 2000433 //eros spkid
-    // });
   }
   /**
    * Searches the Asterank API for the given name using a REGEX
@@ -33,15 +30,36 @@ function SearchController($log, $rootScope, AsterankService) {
    *                        within the Asterank database.
    */
   function search(query) {
-    $log.log("Searching query..." + query);
-    vm.query = ""; //clear the search query
-    $rootScope.loading = true;
-    var queryParams = buildQueryParams();
-    AsterankService.getByName(query, vm.limit, queryParams).then(function(response){
-      $log.log(response.data);
-      vm.results = response.data;
-      $rootScope.loading = false;
-    }); //error handling.
+    if(query !== ""){
+      $log.log("Searching query..." + query);
+      vm.query = ""; //clear the search query
+      $rootScope.loading = true;
+      var queryParams = buildQueryParams();
+      AsterankService.getByName(query, vm.limit, queryParams).then(function(response){
+        $log.log(response.data);
+        vm.results = response.data;
+        $rootScope.loading = false;
+      }).catch(function(err){
+        $rootScope.loading = false;
+        $mdDialog.show(
+          $mdDialog.alert()
+            .parent(angular.element(document.querySelector('#popupContainer')))
+            .clickOutsideToClose(true)
+            .title('Error!')
+            .textContent('an error occured: ' + err)
+            .ariaLabel('Error')
+            .ok('Ok')
+        );
+      }); //error handling.
+    }
+  }
+  /**
+   * Clears the search results
+   * @return [type] [description]
+   */
+  function clear() {
+    $log.log('clearing results');
+    vm.results = [];
   }
   /**
    * Utility function that builds the filters from the chosen parameters.

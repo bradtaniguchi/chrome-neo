@@ -165,16 +165,20 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
     };
   }
   /**
+   * Builds a chart on closest approach distance (!)
+   * We also parse for ONLY the top 10 NEOs. This utilizes the RankItSerivce.
    * @param  {[type]} data       [description]
    * @param  {[type]} xAttribute [description]
    * @return [type]              [description]
    * @TODO: finish the functionality of this function. Until it is implimented.
    * I will just use order by size for the month.
+   * @NOTE: Check this URL to view how the data is structured
+   * https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY
    */
-  function buildMonthlyChart(data, xAttribute) {
+  function buildClosestChart(data, xAttribute) {
     var labels = [];
-    var chartData = [];
-    var labelString = '??';
+    var chartData = [[]];
+    var labelString = 'Closest Appraoch';
 
     return {
       data: chartData,

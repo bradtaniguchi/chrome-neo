@@ -48,12 +48,15 @@
       </md-input-container>
     </div> <!--end custom dropdown options-->
     <form ng-submit="vm.search(vm.query)">
-      <md-input-container md-no-float>
+      <md-input-container md-no-float class="hide-error-msg">
         <label>Search</label>
         <input ng-model="vm.query">
-        <md-button class="md-raised" ng-click="vm.search(vm.query)">Search</md-button>
-        <md-button class="md-raised" ng-click="vm.query = ''">Clear</md-button>
       </md-input-container>
+      <div layout="row">
+        <md-button class="md-raised" ng-click="vm.search(vm.query)">Search</md-button>
+        <md-button class="md-raised" ng-click="vm.query = ''">Clear Search</md-button>
+        <md-button class="md-raised" ng-click="vm.clear()" ng-show="vm.results.length">Clear Search</md-button>
+      </div>
     </form>
   </md-card-content>
 </md-card>
