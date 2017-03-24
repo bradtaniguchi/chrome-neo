@@ -261,11 +261,12 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
    * and return an array of all the neos.
    * @return {array} array of neos.
    * @todo: needs testing!
+   * NOTE: each day is a key within the given days object
    */
-  function parseDays(days){
+  function parseDays(daysObject){
     var neos = [];
-    days.forEach(function(day) {
-      day.forEach(function() {
+    Object.keys(daysObject).forEach(function(day) {
+      daysObject[day].forEach(function(neo) {
         neos.push(neo);
       });
     });

@@ -1,20 +1,23 @@
 angular.module('chrome-neo').controller('HomeController', HomeController);
-HomeController.$inject = ['$log',
-'$mdDialog',
-'NeoWsService',
-'$q',
-'moment',
-'constants',
-'$rootScope',
-'CacheService',
-'$mdDialog'];
+HomeController.$inject = [
+  '$log',
+  '$mdDialog',
+  'NeoWsService',
+  '$q',
+  'moment',
+  'constants',
+  '$rootScope',
+  'CacheService',
+  'RankItService'
+];
 function HomeController($log, $mdDialog, NeoWsService, $q, moment,
-  constants, $rootScope, CacheService) {
+  constants, $rootScope, CacheService, RankItService) {
   var vm = this;
   /*Element counts*/
   vm.monthly = 0;
   vm.weekly = 0;
   vm.daily = 0;
+  vm.bestNeo = {};
   /*this is the data to pass to the tables-views*/
   vm.monthlyData = {};
   vm.weeklyData = {};
@@ -79,9 +82,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
 
   function test() {
-    /*nice!*/
-    //$log.log("Test: " + moment().week(week-1).startOf('week').format(constants.MOMENT_FORMAT));
-    getMonthly();
+    getBest();
   }
   function printDatabase(){
     CacheService.printDatabase();
@@ -120,6 +121,22 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
       differed.resolve();
     });
     return differed.promise;
+  }
+  /**
+   * Gets the 'best' Neo using the RankItService
+   */
+  function getBest() {
+    var attributes = [
+      "estimated_diameter.kilometers.estimated_diameter_min", //could also do max
+      "is_potentially_hazardous_asteroid", //true false
+      "close_approach_data[0].miss_distance.kilometers" //numbers
+    ];
+    var neos = NeoWsService.parseDays(vm.weeklyData.near_earth_objects);
+    //$log.log(neos);
+
+    RankItService.getBest(neos, attributes[0]).then(function(best){
+      $log.log(best);
+    });
   }
   /*gets the monthly amount*/
   function getMonthly() {

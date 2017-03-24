@@ -1,9 +1,8 @@
-
 var interestingNeo = {
   templateUrl:'components/interesting-neo/interesting-neo.view.html',
   controller: 'InterestingNeoController as vm',
   bindings: {
-    /*add later*/
+    neo : '<'
   }
 };
 angular.module('chrome-neo').component('interestingNeo', interestingNeo)
@@ -14,6 +13,5 @@ InterestingNeoController.$inject=[
 
 function InterestingNeoController($log) {
   var vm = this;
-
   return vm;
 }
