@@ -54,10 +54,10 @@
     });
     describe('merge_sort', function(){
       it('test', function(){
-        var entries = [{size:100},{size:500},{size:300}];
+        var entries = [{size:100},{size:500},{size:300}, {size:700}, {size:50}];
         var attribute = 'size';
         /*smallest to largest*/
-        var expectedResult = [{size:100},{size:300},{size:500}];
+        var expectedResult = [{size:50}, {size:100},{size:300},{size:500}, {size:700}];
         var result = RankItService.merge_sort(entries, attribute);
         expect(result).toEqual(expectedResult);
       });
