@@ -1,0 +1,30 @@
+<md-card class="md-whiteframe-2dp">
+  <md-card-header>
+    <md-card-header-text layout="row" layout-align="start center">
+      <p>{{vm.neo.full_name}}</p>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.fullDetail(vm.neo.spkid)">
+        <md-tooltip md-direction="left">Full Details</md-tooltip>
+        <i class="material-icons">keyboard_arrow_right</i>
+      </md-button>
+    </md-card-header-text>
+  </md-card-header>
+  <md-card-content>
+    <div layout="row">
+      <p class="md-body-2">
+        First Observed: {{vm.neo.first_obs}}
+      </p>
+      <span flex></span>
+      <p class="md-body-2">
+        Last Observed: {{vm.neo.last_obs}}
+      </p>
+    </div>
+    <div layout="row">
+      <md-button class="md-raised" ng-click="vm.jplDetail(vm.neo.spkid)">
+        JPL Link
+        <md-tooltip md-direction="bottom"
+        ng-click="vm.jplDetail(vm.neo.spkid)">JPL Link</md-tooltip>
+      </md-button>
+    </div>
+  </md-card-content>
+</md-card>

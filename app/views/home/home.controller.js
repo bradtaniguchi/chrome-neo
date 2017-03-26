@@ -1,19 +1,23 @@
 angular.module('chrome-neo').controller('HomeController', HomeController);
-HomeController.$inject = ['$log',
-'$mdDialog',
-'NeoWsService',
-'$q',
-'moment',
-'constants',
-'$rootScope',
-'CacheService'];
+HomeController.$inject = [
+  '$log',
+  '$mdDialog',
+  'NeoWsService',
+  '$q',
+  'moment',
+  'constants',
+  '$rootScope',
+  'CacheService',
+  'RankItService'
+];
 function HomeController($log, $mdDialog, NeoWsService, $q, moment,
-  constants, $rootScope, CacheService) {
+  constants, $rootScope, CacheService, RankItService) {
   var vm = this;
   /*Element counts*/
   vm.monthly = 0;
   vm.weekly = 0;
   vm.daily = 0;
+  vm.bestNeo = {};
   /*this is the data to pass to the tables-views*/
   vm.monthlyData = {};
   vm.weeklyData = {};
@@ -47,15 +51,38 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
         getMonthly().then(function(){
           $log.log("loading done");
           $rootScope.loading = false;
-        });
-      });
-    });
-
+        }).catch(handleError);
+      }).catch(handleError);
+    }).catch(handleError);
   }
+  /**
+   * Wrapper function to handle failed promise requests
+   * @param  {[type]} error [description]
+   * @return [type]         [description]
+   */
+  function handleError(error){
+    /*stop loading regardless*/
+    $rootScope.loading = false;
+    var newMessage = 'XHR Failed';
+    if (error.data && error.data.description) {
+      newMessage = newMessage + '\n' + error.data.description;
+    }
+    error.data.description = newMessage;
+    $log.error(newMessage);
+    $mdDialog.show(
+      $mdDialog.alert()
+        .parent(angular.element(document.body))
+        .clickOutsideToClose(true)
+        .title('Error!')
+        .textContent('an error occured: ' + error)
+        .ariaLabel('Error')
+        .ok('Ok')
+    );
+    return $q.reject(error);
+  }
+
   function test() {
-    /*nice!*/
-    //$log.log("Test: " + moment().week(week-1).startOf('week').format(constants.MOMENT_FORMAT));
-    getMonthly();
+    getBest();
   }
   /**
    * debug function, that prints the database keys within the database.
@@ -70,7 +97,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   function clearCache() {
     CacheService.clear().then(function(){
       $log.log("Cache cleared!");
-    });//clears the cache
+    }).catch(handleError(err));//clears the cache
   }
   /**
    * Get the daily amount of NEOs. Updates the vm.daily, vm.dailyData with
@@ -105,12 +132,28 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     });
     return differed.promise;
   }
+  /**
+   * Gets the 'best' Neo using the RankItService
+   */
+  function getBest() {
+    var attributes = [
+      "estimated_diameter.kilometers.estimated_diameter_min", //could also do max
+      "is_potentially_hazardous_asteroid", //true false
+      "close_approach_data[0].miss_distance.kilometers" //numbers
+    ];
+    var neos = NeoWsService.parseDays(vm.weeklyData.near_earth_objects);
+    //$log.log(neos);
+
+    RankItService.getBest(neos, attributes[0]).then(function(best){
+      $log.log(best);
+    });
+  }
   /*gets the monthly amount*/
   function getMonthly() {
     var differed = $q.defer();
     NeoWsService.getMonthly().then(function(response) {
       vm.monthly = response.element_count;
-      vm.monthlyData = response.near_earth_objects;
+      vm.monthlyData = response;
       differed.resolve();
     }).catch(function(error){
       getFailedRequest(error);
@@ -119,7 +162,8 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     return differed.promise;
   }
 
-  /*Handles a http request*/
+  /*Handles a http request
+  TODO: what does this function even do???*/
   function getFailedRequest(error) {
     var newMessage = 'XHR Failed';
     if (error.data && error.data.description) {
@@ -145,10 +189,10 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     });
   }
   function showDayTable(event, data){
-    showTable(event, data, 'TEMP ATTRIBUTE');
+    showTable(event, data, 'daily');
   }
   function showWeekTable(event, data) {
-    showTable(event, data); //don't give an xAttribute, it will automatically do dates
+    showTable(event, data, 'weekly'); //don't give an xAttribute, it will automatically do dates
   }
   function showMonthTable(event, data){
     showTable(event, data, 'monthly');

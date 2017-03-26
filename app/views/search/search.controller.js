@@ -2,9 +2,10 @@ angular.module('chrome-neo').controller('SearchController', SearchController);
 SearchController.$inject = [
   '$log',
   '$rootScope',
-  'AsterankService'
+  'AsterankService',
+  '$mdDialog'
 ];
-function SearchController($log, $rootScope, AsterankService) {
+function SearchController($log, $rootScope, AsterankService, $mdDialog) {
   var vm = this;
   vm.query = "";
   vm.limits = [5, 10, 25]; //possible query limits
@@ -15,18 +16,13 @@ function SearchController($log, $rootScope, AsterankService) {
   vm.neosOnly = false;
 
   vm.search = search;
+  vm.clear = clear;
   vm.$onInit = onInit;
-  vm.fullDetail = fullDetail;
 
   return vm;
   /*function definitions*/
   function onInit() {
     $rootScope.loading = false; //turn off loading
-    /*make some mock fake values, so I dont have to keep searching the API*/
-    vm.results.push({
-      "full_name": "FAKE NEO",
-      "spkid": 2000433 //eros spkid
-    });
   }
   /**
    * Searches the Asterank API for the given name using a REGEX
@@ -34,31 +30,36 @@ function SearchController($log, $rootScope, AsterankService) {
    *                        within the Asterank database.
    */
   function search(query) {
-    $log.log("Searching query..." + query);
-    vm.query = ""; //clear the search query
-    $rootScope.loading = true;
-    var queryParams = buildQueryParams();
-    AsterankService.getByName(query, vm.limit, queryParams).then(function(response){
-      $log.log(response.data);
-      vm.results = response.data;
-      $rootScope.loading = false;
-    }); //error handling.
+    if(query !== ""){
+      $log.log("Searching query..." + query);
+      vm.query = ""; //clear the search query
+      $rootScope.loading = true;
+      var queryParams = buildQueryParams();
+      AsterankService.getByName(query, vm.limit, queryParams).then(function(response){
+        $log.log(response.data);
+        vm.results = response.data;
+        $rootScope.loading = false;
+      }).catch(function(err){
+        $rootScope.loading = false;
+        $mdDialog.show(
+          $mdDialog.alert()
+            .parent(angular.element(document.querySelector('#popupContainer')))
+            .clickOutsideToClose(true)
+            .title('Error!')
+            .textContent('an error occured: ' + err)
+            .ariaLabel('Error')
+            .ok('Ok')
+        );
+      }); //error handling.
+    }
   }
   /**
-   * Takes the user to the Stat view, from the given SPKID. To save on the
-   * extra HTTP request, I cache the data I already have from the Asterank
-   * service.
-   * @param  {number} id the spkid number given by nasa, that is unique. This
-   *                     is required by the AsterankService to get all the data
-   *                     for a single NEO.
-   * @todo Add the cache by ID entry here. That way I make only 1 http request
-   * call to the API service.
+   * Clears the search results
+   * @return [type] [description]
    */
-  function fullDetail(id) {
-    /*add cache by ID entry here with the given data.
-    */
-    $log.log("Looking up the given id:" + id);
-
+  function clear() {
+    $log.log('clearing results');
+    vm.results = [];
   }
   /**
    * Utility function that builds the filters from the chosen parameters.
