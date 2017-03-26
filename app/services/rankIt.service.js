@@ -110,6 +110,7 @@ function RankItService($log, $q) {
       right = [];
     }
     while (left.length && right.length) { //while the two lists aren't empty
+      /*from smallest to largest, use .reverse() to get the opposite*/
       if(resolve(left[0], attr) <= resolve(right[0], attr)) {
         result.push(left.shift());
       } else {

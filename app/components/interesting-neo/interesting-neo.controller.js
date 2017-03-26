@@ -8,10 +8,19 @@ var interestingNeo = {
 angular.module('chrome-neo').component('interestingNeo', interestingNeo)
 .controller('InterestingNeoController', InterestingNeoController);
 InterestingNeoController.$inject=[
-  '$log'
+  '$log',
+  'ChromeService'
 ];
 
-function InterestingNeoController($log) {
+function InterestingNeoController($log, ChromeService) {
   var vm = this;
+  
+  vm.jplDetail = jplDetail;
   return vm;
+  /*function definitions*/
+  function jplDetail(spkid){
+    var rawUrl ='http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=';
+    $log.log("looking up the given id in browser " + spkid);
+    ChromeService.link(rawUrl + spkid);
+  }
 }

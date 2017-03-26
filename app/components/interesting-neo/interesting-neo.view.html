@@ -1,8 +1,48 @@
+<!--this component expects the data to be formatted from the neows service-->
 <md-card class="md-whiteframe-4dp">
-  <md-card-title>
+  <md-card-header>
+    <md-card-avatar>
+      <img src="img/icon128.png"/> <!--fix image!-->
+    </md-card-avatar>
+    <md-card-header-text>
+      <span class="md-headline">Neo of the Day {{vm.neo.name}}</span>
+    </md-card-header-text>
+  </md-card-header>
+  <!--<md-card-title>
     <md-card-title-text>
-      <md-headline>test headline</md-headline>
+      <md-headline class="md-title">Neo of the Day {{vm.neo.name}}</md-headline>
     </md-card-title-text>
-  </md-card-title>
-  <md-card-content>{{vm.neo.full_name}}</md-card-content>
+  </md-card-title>-->
+  <md-divider></md-divider>
+  <md-card-content>
+    <div layout="row">
+      <div> Neo Ref ID:</div> 
+      <span flex></span> 
+      <div class="md-body-1">{{vm.neo.neo_reference_id}}</div>
+    </div>
+    <div layout="row">
+      <div> Dangerous: </div>
+      <span flex></span>
+      <div class="md-body-1"> {{vm.neo.is_potentially_hazardous_asteroid?'yes':'no'}}</div>
+    </div>
+    <div layout="row">
+      <div> Next Pass: </div>
+      <span flex></span>
+      <div class="md-body-1">{{vm.neo.close_approach_data[0].close_approach_date}}</div>  
+    </div>
+    <div layout="row">
+      <div> Pass Distance(km): </div>
+      <span flex></span>
+      <div class="md-body-1"> {{vm.neo.close_approach_data[0].miss_distance.kilometers}}</div>  
+    </div>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised" ng-click="vm.jplDetail(vm.neo.neo_reference_id)">
+          JPL Link
+          <md-tooltip md-direction="bottom">
+            Open offical page
+          </md-tooltip>
+      </md-button>
+    </md-card-actions>
+    
+  </md-card-content>
 </md-card>

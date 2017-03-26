@@ -52,6 +52,9 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
           $log.log("loading done");
           $rootScope.loading = false;
         }).catch(handleError);
+        /*now we have the weekly data, also get the most ineteresting
+        for the week*/
+        getBest();
       }).catch(handleError);
     }).catch(handleError);
   }
@@ -82,7 +85,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
 
   function test() {
-    getBest();
+    //getBest();
   }
   /**
    * debug function, that prints the database keys within the database.
@@ -142,10 +145,13 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
       "close_approach_data[0].miss_distance.kilometers" //numbers
     ];
     var neos = NeoWsService.parseDays(vm.weeklyData.near_earth_objects);
-    //$log.log(neos);
-
-    RankItService.getBest(neos, attributes[0]).then(function(best){
-      $log.log(best);
+    $log.debug('in getBest');
+    RankItService.getSorted(neos, attributes[0]).then(function(sorted){
+      /*get the largest!*/
+      $log.debug('sortedBest:');
+      var best = sorted.reverse()[0];
+      $log.debug(best);
+      vm.bestNeo = best;
     });
   }
   /*gets the monthly amount*/
