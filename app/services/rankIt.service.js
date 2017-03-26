@@ -36,12 +36,12 @@ function RankItService($log, $q) {
    * @return {promise}      promise with the first argument as the ordered list
    *                                of NEOs
    */
-  function getSorted(neos) {
+  function getSorted(neos, attr) {
     var differed =  $q.defer();
     if(!neos.length) {
       differed.resolve([]);
     } else {
-      differed.resolve([]);
+      differed.resolve(merge_sort(neos, attr));
     }
     return differed.promise;
   }
@@ -54,6 +54,18 @@ function RankItService($log, $q) {
     var differed =  $q.defer();
     differed.resolve({});
     return differed.promise;
+  }
+  /*TODO: test this function! and fix jsdoc formatting!
+  This function resolves a accessor currectly. Be sure the object notation does not
+  include . characters, ase these will be split!*/
+  function resolve(obj, path){
+    path = path.split('.');
+    var current = obj;
+    while(path.length) {
+        if(typeof current !== 'object') return undefined;
+        current = current[path.shift()];
+    }
+    return current;
   }
   /**
    * Utility function that returns the ordered an ordered list in n log n time.
@@ -86,6 +98,7 @@ function RankItService($log, $q) {
    * Second utility sorting function, that takes 2 sublists, and combines them.
    * Orders them from SMALLEST to LARGEST
    * @return {array} an array of neos in order of attribute.
+   * @note this function uses the resolve function on the attr attribute. 
    */
   function merge(left, right, attr){
     var result = [];
@@ -97,7 +110,7 @@ function RankItService($log, $q) {
       right = [];
     }
     while (left.length && right.length) { //while the two lists aren't empty
-      if(left[0][attr] <= right[0][attr]) {
+      if(resolve(left[0], attr) <= resolve(right[0], attr)) {
         result.push(left.shift());
       } else {
         result.push(right.shift());
