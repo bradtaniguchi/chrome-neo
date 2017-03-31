@@ -16,12 +16,35 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   vm.chart = {};
   vm.tableType = "";
   vm.xAttribute = "";
+  vm.chosenChartOption = 'size';
+  vm.chartOptions = ['size', 'day', 'distance'];
+
+  vm.updateChart = updateChart;
   vm.close = close;
   //vm.test = test;
 
   onInit(); //call the function
   return vm;
+  /**
+   * Parse the chart update, and select the new chart type to update with.
+   * @param  {string} option chart option
+   * @return {[type]}        [description]
+   */
+  function updateChart(option) {
+    $log.log('option: ' + option);
+    if(option == 'size'){
+      $log.log('ordering by size');
+      vm.chart = buildSizeChart(vm.data, vm.xAttribute);
 
+    } else if(option == 'day') {
+      $log.log('ordering by day');
+      vm.chart = buildDayChart(vm.data, vm.xAttribute);
+
+    } else { //option = 'distance'
+      $log.log('ordering by distance');
+      vm.chart = buildDistanceChart(vm.data, vm.xAttribute);
+    }
+  }
   /*function definitons*/
   function onInit() {
 
@@ -78,7 +101,38 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   function close() {
     $mdDialog.hide();
   }
+  function buildDistanceChart(data, xAttribute) {
+    var labels=[];
+    var chartData=[];
+    var labelString= "distance in Km";
+    chartData.push(parseNeos(data)
+    .sort(function(a, b){
+     return a.close_approach_data[0].miss_distance.kilometers -
+            b.close_approach_data[0].miss_distance.kilometers;
+    })
+    .map(function(neo){
+      labels.push(neo.name);
+      return neo.close_approach_data[0].miss_distance.kilometers;
+    }));
 
+    return {
+      data: chartData,
+      labels: labels,
+      options: {
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: labelString
+            }
+          }]
+        },
+        tooltips: {
+          enabled: true
+        }
+      }
+    };
+  }
   /**
    * Builds a chart based on min and max estimated sizes
    * @param  {object} data       an object with keys that represent different days
@@ -150,6 +204,7 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
       data: chartData,
       labels: labels,
       options: {
+        //onClick: //use this to handle on clicks
         scales: {
           yAxes: [{
             scaleLabel: {
