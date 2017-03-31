@@ -23,7 +23,7 @@
     <div layout="row">
       <div> Dangerous: </div>
       <span flex></span>
-      <div class="md-body-1"> {{vm.neo.is_potentially_hazardous_asteroid?'yes':'no'}}</div>
+      <div class="md-body-1"> <b>{{vm.neo.is_potentially_hazardous_asteroid?'yes':'no'}} </b></div>
     </div>
     <div layout="row">
       <div> Next Pass: </div>
@@ -33,7 +33,7 @@
     <div layout="row">
       <div> Pass Distance(km): </div>
       <span flex></span>
-      <div class="md-body-1"> {{vm.neo.close_approach_data[0].miss_distance.kilometers}}</div>
+      <div class="md-body-1"> {{vm.neo.close_approach_data[0].miss_distance.kilometers | number}}</div>
     </div>
     <md-card-actions layout="row" layout-align="end center">
       <md-button class="md-raised" ng-click="vm.stats(vm.neo.neo_reference_id)"
@@ -43,13 +43,7 @@
           Open Stat Page
         </md-tooltip>
       </md-button>
-      <md-button class="md-raised" ng-click="vm.jplDetail(vm.neo.neo_reference_id)"
-      aria-label="Open Offical JPL page in browser">
-          JPL Link
-          <md-tooltip md-direction="bottom">
-            Open offical JPL page in browser
-          </md-tooltip>
-      </md-button>
+      <jpl-link spkid="vm.neo.neo_reference_id"></jpl-link>
     </md-card-actions>
 
   </md-card-content>
