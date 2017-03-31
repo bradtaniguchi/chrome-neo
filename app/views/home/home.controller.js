@@ -67,11 +67,9 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     /*stop loading regardless*/
     $rootScope.loading = false;
     var newMessage = 'XHR Failed';
-    if (error.data && error.data.description) {
-      newMessage = newMessage + '\n' + error.data.description;
-    }
-    error.data.description = newMessage;
-    $log.error(newMessage);
+    $log.log("there was an error!");
+    $log.log(error);
+
     $mdDialog.show(
       $mdDialog.alert()
         .parent(angular.element(document.body))
@@ -90,7 +88,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   /**
    * debug function, that prints the database keys within the database.
    * I don't print out the full JSON size as it gets to large.
-   */ 
+   */
   function printDatabase(){
     CacheService.printDatabase();
   }
@@ -104,10 +102,10 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
   /**
    * Get the daily amount of NEOs. Updates the vm.daily, vm.dailyData with
-   * data from the NeowsService.getDaily request. 
-   * @returns {Promise} returns a promise that will either resolve with nothing 
-   *                    or returns an error. 
-   */ 
+   * data from the NeowsService.getDaily request.
+   * @returns {Promise} returns a promise that will either resolve with nothing
+   *                    or returns an error.
+   */
   function getDaily() {
     var differed = $q.defer();
     NeoWsService.getDaily().then(function(response) {
@@ -120,7 +118,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     });
     return differed.promise;
   }
-  /** 
+  /**
    * get weekly requests, this automatically does this for us.
    */
   function getWeekly() {//2015-09-07
@@ -142,24 +140,37 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     var attributes = [
       "estimated_diameter.kilometers.estimated_diameter_min", //could also do max
       "is_potentially_hazardous_asteroid", //true false
-      "close_approach_data[0].miss_distance.kilometers" //numbers
+      "close_approach_data[0].miss_distance.kilometers", //numbers
+      "weight" //i provide this thru the loops
     ];
     var neos = NeoWsService.parseDays(vm.weeklyData.near_earth_objects);
-    $log.debug('in getBest');
-    /*before we sort them we need to add a weight to the object*/
-    neos.forEach(function(neo){
-      neo.prototype.weight = 0;
+
+    /*before we sort them, I want to parse only those that are dangerous*/
+    var tempNeos = neos.filter(function(neo){
+      return neo.is_potentially_hazardous_asteroid;
     });
-    RankItService.getSorted(neos, attributes[0]).then(function(sorted){
-      /*after each sorted, we need to add to the weight, which equals the size-index*/
-      sorted.forEach(function(item, index){
-        item.weight = sorted.length - index;
+    /*only filter dangerous if the list is large, otherwise
+    don't filter!*/
+    if(neos.length !== 0) {
+      neos = tempNeos;
+    }
+    $log.debug("test:");
+    $log.debug(neos);
+    /*we need to add a base weight of 0 to all of them before sorting*/
+    neos.forEach(function(neo){
+      neo.weight = 0;
+    });
+    var tempSorted;
+    attributes.forEach(function(attribute){
+      RankItService.getSorted(neos, attribute).then(function(sorted){
+        /*after each sorted, we need to add to the weight, which equals the size-index*/
+        sorted.forEach(function(item, index){
+          item.weight += sorted.length - index;
+        });
+        vm.bestNeo = sorted.pop(); //save the current best value
+        $log.debug('sortedBest:');
+        $log.debug(vm.bestNeo);
       });
-      /*get the largest!*/
-      $log.debug('sortedBest:');
-      var best = sorted.pop();
-      $log.debug(best);
-      vm.bestNeo = best;
     });
   }
   /*gets the monthly amount*/
