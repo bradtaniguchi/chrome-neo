@@ -134,7 +134,7 @@
       it("set daily with arguments", function(done){
         CacheService.setDaily(1, 2017, {foo: "bar"}).then(function(response){
           expect(response.key).toEqual("Day_1_2017");
-          expect(response.object).toEqual({foo:'bar'});
+          expect(response.object).toEqual({foo:'bar', dbEntry:1});
           done();
         });
         $scope.$apply();
@@ -151,7 +151,7 @@
       it('set weekly with arguments', function(done){
         CacheService.setWeekly(1, 2017, {foo:'bar'}).then(function(response){
           expect(response.key).toEqual('Week_1_2017');
-          expect(response.object).toEqual({foo:'bar'});
+          expect(response.object).toEqual({foo:'bar', dbEntry:1});
           done();
         });
         $scope.$apply();

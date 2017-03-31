@@ -29,7 +29,9 @@ function CacheService($log, $localForage, $q, moment, constants) {
   function printDatabase() {
     $log.log("[[[[[DATABASE PRINTOUT]]]]]");
     $localForage.iterate(function(value, key, iterationNumber) {
-      $log.log("     [" + key + "] : " + value);
+      //$log.log("     [" + key + "] : " + value);
+      $log.log(key);
+      $log.log(value);
     });
   }
   /*function definitions*/
@@ -44,24 +46,37 @@ function CacheService($log, $localForage, $q, moment, constants) {
     $log.log("Clearing Cache...");
     return $localForage.clear();
   }
-  /*
-  This function checks for old dates and removes them.
-  saved in the database in the following formats:
-  Day_##_Year,
-  Week_##_Year,
-  Month_##_year
-  */
-  function removeOld() {
-    /*
-    First get all the keys, then we need to check to see if any of them are
-    considered 'old', we do this by generating the current week/month/day/year
-    and comparing it to the given date.
-    */
-    var now = moment().now(); //get the current time
-    /*
-    iterate through all dates, and check to see if they are valid or not.
-    */
-    return "";
+
+  /**
+   * Function to remove old entries in the localForage database.
+   * @param  {number} week optional argument, if not given this function automatically
+   *                       calculates the current week of the year
+   * @param  {number} day  optional argument, if not gien this function automatically
+   *                       calculates the current day of the year.
+   */
+  function removeOld(week, day) {
+    var weekDiff = 5;
+    var dayDiff = 8;
+    if(typeof(week) !== "number")
+      week = moment().week();
+    if(typeof(day) !== "number")
+      day = moment().day();
+    $localForage.keys().then(function(keys){
+      keys.forEach(function(key){
+        if(key.startsWith('Week_')){
+          /*see if the current moment, day of week is different*/
+          if(week + weekDiff > key){
+            $localForage.removeItem(key);
+          }
+        }
+
+        if(key.startsWith('Day_')){
+          if(day + dayDiff > key) {
+            $localForage.removeItem(key);
+          }
+        }
+      });
+    });
   }
   /*
   Checks if the given date is in the local store,
@@ -97,13 +112,19 @@ function CacheService($log, $localForage, $q, moment, constants) {
     return $localForage.getItem(key); //returns a promise
   }
 
-  /*sets the value in the cache with the daily format
-  Day_##_Year
-  where day is the DAY NUMBER*/
+  /**
+   * Sets the alue in the cache with the daily format
+   * DAY_##_Year
+   * @param {number} day    day to save as
+   * @param {number} year   year to save as
+   * @param {object} object Object so save in cache.
+   */
   function setDaily(day, year, object) {
     if(day >= 0 && day <= 366) {
       var key = "Day_" + day + "_" + year;
       $log.log("setting daily with given key: " + key);
+      /*add day of year to object*/
+      object.dbEntry = day;
       return $localForage.setItem(key, object); //returns promise
     } else {
       var differed = $q.defer();
@@ -120,6 +141,8 @@ function CacheService($log, $localForage, $q, moment, constants) {
     if(week >= 0 && week <= 52) {
       var key = "Week_" + week + "_" + year;
       $log.log("setting weekly with given key: " + key);
+      /*add week of year to object*/
+      object.dbEntry = week;
       return $localForage.setItem(key, object);
     } else {
       var differed = $q.defer();
