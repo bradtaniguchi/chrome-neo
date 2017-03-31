@@ -16,8 +16,8 @@
   <md-divider></md-divider>
   <md-card-content>
     <div layout="row">
-      <div> Neo Ref ID:</div> 
-      <span flex></span> 
+      <div> Neo Ref ID:</div>
+      <span flex></span>
       <div class="md-body-1">{{vm.neo.neo_reference_id}}</div>
     </div>
     <div layout="row">
@@ -28,21 +28,29 @@
     <div layout="row">
       <div> Next Pass: </div>
       <span flex></span>
-      <div class="md-body-1">{{vm.neo.close_approach_data[0].close_approach_date}}</div>  
+      <div class="md-body-1">{{vm.neo.close_approach_data[0].close_approach_date}}</div>
     </div>
     <div layout="row">
       <div> Pass Distance(km): </div>
       <span flex></span>
-      <div class="md-body-1"> {{vm.neo.close_approach_data[0].miss_distance.kilometers}}</div>  
+      <div class="md-body-1"> {{vm.neo.close_approach_data[0].miss_distance.kilometers}}</div>
     </div>
     <md-card-actions layout="row" layout-align="end center">
-      <md-button class="md-raised" ng-click="vm.jplDetail(vm.neo.neo_reference_id)">
+      <md-button class="md-raised" ng-click="vm.stats(vm.neo.neo_reference_id)"
+      aria-label="Open Stat page">
+        Stats
+        <md-tooltip md-direction="bottom">
+          Open Stat Page
+        </md-tooltip>
+      </md-button>
+      <md-button class="md-raised" ng-click="vm.jplDetail(vm.neo.neo_reference_id)"
+      aria-label="Open Offical JPL page in browser">
           JPL Link
           <md-tooltip md-direction="bottom">
-            Open offical page
+            Open offical JPL page in browser
           </md-tooltip>
       </md-button>
     </md-card-actions>
-    
+
   </md-card-content>
 </md-card>

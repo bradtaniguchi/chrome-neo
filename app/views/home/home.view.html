@@ -1,8 +1,14 @@
 <md-card class="md-whiteframe-4dp" ng-cloak>
   <md-card-header>
       <i class="material-icons">home</i>
-    <md-card-header-text class="md-title">
-      Home
+    <md-card-header-text class="md-title" layout="row">
+      <div>
+        Home
+      </div>
+      <span flex></span>
+      <div class="md-subhead">
+        {{vm.todaysDate}}
+      </div>
     </md-card-header-text>
   </md-card-header>
   <md-card-content>
@@ -33,19 +39,6 @@
       </md-button>
     </div>
     <md-divider></md-divider>
-  </md-card-content>
-</md-card>
-<!--
-The Daily information card goes here
--->
-<md-card class="md-whiteframe-4dp">
-  <md-card-content>
-    <p class="md-body-2">
-      Todays date:
-    </p>
-    <p class="md-body-2">
-      {{vm.todaysDate}}
-    </p>
   </md-card-content>
 </md-card>
 <interesting-neo neo="vm.bestNeo"></interesting-neo> <!--custom directive-->
