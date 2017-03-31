@@ -85,7 +85,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
 
   function test() {
-    //getBest();
+    getBest();
   }
   /**
    * debug function, that prints the database keys within the database.
@@ -146,10 +146,18 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     ];
     var neos = NeoWsService.parseDays(vm.weeklyData.near_earth_objects);
     $log.debug('in getBest');
+    /*before we sort them we need to add a weight to the object*/
+    neos.forEach(function(neo){
+      neo.prototype.weight = 0;
+    });
     RankItService.getSorted(neos, attributes[0]).then(function(sorted){
+      /*after each sorted, we need to add to the weight, which equals the size-index*/
+      sorted.forEach(function(item, index){
+        item.weight = sorted.length - index;
+      });
       /*get the largest!*/
       $log.debug('sortedBest:');
-      var best = sorted.reverse()[0];
+      var best = sorted.pop();
       $log.debug(best);
       vm.bestNeo = best;
     });
