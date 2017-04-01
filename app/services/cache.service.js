@@ -78,7 +78,6 @@ function CacheService($log, $localForage, $q, moment, constants) {
   function printDatabase() {
     $log.log("[[[[[DATABASE PRINTOUT]]]]]");
     $localForage.iterate(function(value, key, iterationNumber) {
-      //$log.log("     [" + key + "] : " + value);
       $log.log(key);
       $log.log(value);
     });
@@ -95,7 +94,6 @@ function CacheService($log, $localForage, $q, moment, constants) {
     $log.log("Clearing Cache...");
     return $localForage.clear();
   }
-
   /**
    * Function to remove old entries in the localForage database.
    * @param  {number} week optional argument, if not given this function automatically
@@ -136,7 +134,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
   */
   function checkDaily(day, year) {
     var key = "Day_" + day + "_" + year;
-    $log.log("Looking for key: " + key);
+    $log.debug("Looking for key: " + key);
     return $localForage.getItem(key);
   }
   /*
@@ -148,7 +146,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
   */
   function checkWeekly(week, year) {
     var key = "Week_" + week + "_" + year;
-    $log.log("Looking for key: " + key);
+    $log.debug("Looking for key: " + key);
     return $localForage.getItem(key);
   }
   /*
@@ -157,7 +155,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
   */
   function checkMonthly(month, year) {
     var key = "Month_" + month +"_"+ year;
-    $log.log("Looking for key: " + key);
+    $log.debug("Looking for key: " + key);
     return $localForage.getItem(key); //returns a promise
   }
 
@@ -171,13 +169,13 @@ function CacheService($log, $localForage, $q, moment, constants) {
   function setDaily(day, year, object) {
     if(day >= 0 && day <= 366) {
       var key = "Day_" + day + "_" + year;
-      $log.log("setting daily with given key: " + key);
+      $log.debug("setting daily with given key: " + key);
       /*add day of year to object*/
       object.dbEntry = day;
       return $localForage.setItem(key, object); //returns promise
     } else {
       var differed = $q.defer();
-      $log.log("Invalid day amount");
+      $log.error("Invalid day amount");
       differed.reject("Invalid day amount");
       return differed.promise;
     }
@@ -189,13 +187,13 @@ function CacheService($log, $localForage, $q, moment, constants) {
   function setWeekly(week, year, object) {
     if(week >= 0 && week <= 52) {
       var key = "Week_" + week + "_" + year;
-      $log.log("setting weekly with given key: " + key);
+      $log.debug("setting weekly with given key: " + key);
       /*add week of year to object*/
       object.dbEntry = week;
       return $localForage.setItem(key, object);
     } else {
       var differed = $q.defer();
-      $log.log("Invalid week amount");
+      $log.error("Invalid week amount");
       differed.reject("Invalid week amount");
       return differed.promise;
     }
@@ -203,11 +201,11 @@ function CacheService($log, $localForage, $q, moment, constants) {
   function setMonthly(month, year, object) {
     if(month >= 0 && month <= 12) {
       var key ="Month_" + month +"_" + year;
-      $log.log("setting monthly with given key: " + key);
+      $log.debug("setting monthly with given key: " + key);
       return $localForage.setItem(key, object);
     } else {
       var differed = $q.defer();
-      $log.log("Invalid month ammount");
+      $log.error("Invalid month ammount");
       differed.reject("invalid month amount");
       return differed.promise;
     }
@@ -215,12 +213,12 @@ function CacheService($log, $localForage, $q, moment, constants) {
   /*Checks if a given single item lookup exists*/
   function checkByID(spkId) {
     var key="NEO_" + spkId;
-    $log.log("Looking for key: " + key);
+    $log.debug("Looking for key: " + key);
     return $localForage.getItem(key);
   }
   function setByID(spkId, object) {
     var key = "NEO_" + spkId;
-    $log.log("setting NEO with the given key: " + key);
+    $log.debug("setting NEO with the given key: " + key);
     return $localForage.setItem(key, object);
   }
 }

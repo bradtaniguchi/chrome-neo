@@ -22,7 +22,7 @@ function RankItService($log, $q) {
   function getBest(neos, attr) {
     var differed =  $q.defer();
     if(!neos.length) { //if the neos array is empty, return nothing
-      $log.log('LENGTH WRONG');
+      $log.error('getBest array has no length!');
       differed.resolve({});
     } else {
       var best = merge_sort(neos, attr).pop();

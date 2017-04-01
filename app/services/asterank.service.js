@@ -19,10 +19,10 @@ function AsterankService($log, $http, constants, moment, $q, CacheService) {
     }
     CacheService.checkByID(id).then(function(object){
       if(object !== null) {
-        $log.log("Id exists in cache as " + object);
+        $log.debug("Id exists in cache as " + object);
         differed.resolve(object);
       } else { // item doesn't exist in cache
-        $log.log("Key does not exist, calling api...");
+        $log.debug("Key does not exist, calling api...");
         $http({
           url: constants.ASTERANK_BASE_URL,
           method: 'GET',

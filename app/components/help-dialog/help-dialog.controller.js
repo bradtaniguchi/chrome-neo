@@ -14,25 +14,18 @@ function HelpDialogController($log, queryFields, $mdDialog) {
     buildList(); //call the function to build the help definitions
   }
   function close() {
-    $log.log("Closing window");
+    $log.debug("Closing window");
     $mdDialog.cancel();
   }
   /**
    * Builds the list of help definitions
    */
   function buildList() {
-    $log.log("Building list...");
+    $log.debug("Building list...");
     vm.list = Object.keys(queryFields); //get the keys
     vm.definitions = queryFields;
     $log.log(vm.definitions);
     /*for each item, we want to replace their "key value" with
     an object with BOTH the key value, and their definition*/
-    /*vm.list.map(function(keyValue){
-      $log.log("Map");
-      return {
-        "keyValue" : keyValue,
-        "definition" : queryFields[keyValue]
-      };
-    });*/
   }
 }

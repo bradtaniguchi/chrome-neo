@@ -44,20 +44,20 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
     $log.log("Week: "+ week); //get the week of the year
     CacheService.checkWeekly(week, year).then(function(object){
       if(object !== null) {
-        $log.log('key exists in cache as:');
-        $log.log(object);
+        $log.debug('key exists in cache as:');
+        $log.debug(object);
         /*return the data*/
         differed.resolve(object);
       } else {
-        $log.log("Key does not exist, calling api...");
+        $log.debug("Key does not exist, calling api...");
         if(startWeek === undefined) {
           startWeek = moment().startOf('week').format(constants.MOMENT_FORMAT);
         }
         if(endWeek === undefined) {
             endWeek = moment().endOf('week').format(constants.MOMENT_FORMAT);
         }
-        $log.log("start of week: " + startWeek);
-        $log.log("end of week: " + endWeek);
+        $log.debug("start of week: " + startWeek);
+        $log.debug("end of week: " + endWeek);
         /*call api and return data*/
         $http({
           url: constants.NEOWS_BASE_URL,
@@ -69,12 +69,11 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
           }
           /*get the response from the http request, stash it then return it*/
         }).then(function(response){
-          $log.log('Saving response in cache from NeoWsService');
+          $log.debug('Saving response in cache from NeoWsService');
           CacheService.setWeekly(week, year, response.data).then(function(){
             /*then FINALLY return the data to the user*/
             differed.resolve(response.data);
           }); //save the whole response
-
         });
       }
     });
@@ -89,18 +88,18 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
     var day = moment().dayOfYear();
     var differed = $q.defer();
 
-    $log.log("day " + day);
-    $log.log("year " + year);
+    $log.debug("day " + day);
+    $log.debug("year " + year);
     CacheService.checkDaily(day, year).then(function(object){
       if(object !== null) {
-        $log.log('key exists in cache as:');
-        $log.log(object);
+        $log.debug('key exists in cache as:');
+        $log.debug(object);
         /*return the data*/
         differed.resolve(object);
       } else {
-        $log.log("Key does not exist, calling api...");
+        $log.debug("Key does not exist, calling api...");
         var today = moment().format(constants.MOMENT_FORMAT);
-        $log.log("todays date: " + today);
+        $log.debug("todays date: " + today);
 
         /*call API and return data*/
         return $http({
@@ -142,12 +141,12 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
     CacheService.checkMonthly(monthNumber, year).then(function(object){
 
       if(object !== null) {
-        $log.log('key exists in cache as:');
-        $log.log(object);
+        $log.debug('key exists in cache as:');
+        $log.debug(object);
         /*return the data object using promise*/
         differed.resolve(object);
       } else {
-        $log.log("Key does not exist, calling api 4 times(!)...");
+        $log.debug("Key does not exist, calling api 4 times(!)...");
         /*call the first week of the month*/
         var weekNumber = moment().week();
         /*get the first and last day of the first week of the current month*/
@@ -168,10 +167,10 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
         week4.startDay = moment().week(weekNumber+3).startOf('week').format(constants.MOMENT_FORMAT);
         week4.endDay = moment().week(weekNumber+3).endOf('week').format(constants.MOMENT_FORMAT);
 
-        $log.log("w1: " + week1.startDay + ' ' + week1.endDay + ' ' + week1.week);
-        $log.log("w2: " + week2.startDay + ' ' + week2.endDay + ' ' + week2.week);
-        $log.log("w3: " + week3.startDay + ' ' + week3.endDay + ' ' + week3.week);
-        $log.log("w4: " + week4.startDay + ' ' + week4.endDay + ' ' + week4.week);
+        $log.debug("w1: " + week1.startDay + ' ' + week1.endDay + ' ' + week1.week);
+        $log.debug("w2: " + week2.startDay + ' ' + week2.endDay + ' ' + week2.week);
+        $log.debug("w3: " + week3.startDay + ' ' + week3.endDay + ' ' + week3.week);
+        $log.debug("w4: " + week4.startDay + ' ' + week4.endDay + ' ' + week4.week);
         /*now combine the week objects*/
         var finalObject = {}; //object to return
 
@@ -180,40 +179,30 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
           /*we need to get the amount, to add it to the other weeks*/
           var week1ElementCount = object1.element_count;
           var week1Objects = object1.near_earth_objects;
-          $log.log('got week1 objects: ' +week1ElementCount);
+          $log.debug('got week1 objects: ' +week1ElementCount);
 
           finalObject.element_count = week1ElementCount;
 
           getWeekly(week2.startDay, week2.endDay, week2.week).then(function(object2){ //week 1
             var week2ElementCount = object2.element_count;
             var week2Objects = object2.near_earth_objects;
-            $log.log("got week2 objects: " + week2ElementCount);
+            $log.debug("got week2 objects: " + week2ElementCount);
 
             finalObject.element_count +=  week2ElementCount;
 
             getWeekly(week3.startDay, week3.endDay, week3.week).then(function(object3){ //week 2
               var week3ElementCount = object3.element_count;
               var week3Objects = object3.near_earth_objects;
-              $log.log("Get week3 objects: " + week3ElementCount);
+              $log.debug("Get week3 objects: " + week3ElementCount);
 
               finalObject.element_count = finalObject.element_count + week3ElementCount;
               /*TODO: CALL IT ONE MORE TIME!*/
               getWeekly(week4.startDay, week4.endDay, week4.week).then(function(object4){
                 var week4ElementCount = object4.element_count;
                 var week4Objects = object4.near_earth_objects;
-                $log.log("Got week4 objects: " + week4ElementCount);
+                $log.debug("Got week4 objects: " + week4ElementCount);
 
                 finalObject.element_count = finalObject.element_count + week4ElementCount;
-
-                /*combine the elements
-                TODO: this code below only works in ES6, I don't want to use it
-                THus I have to use a function*/
-                /*finalObject.near_earth_objects = Object.assign(
-                  week1Objects,
-                  week2Objects,
-                  week3Objects,
-                  week4Objects
-                );*/
                 finalObject.near_earth_objects = combine([
                   week1Objects,
                   week2Objects,
@@ -221,8 +210,6 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
                   week4Objects
                 ]);
 
-                // $log.log("Final week count: " + finalObject.element_count);
-                // $log.log("Final object count(length): " + Object.keys(finalObject.near_earth_objects));
                 differed.resolve(finalObject);
               }); /*Finally done wth this madness!*/
             }); //week3
@@ -243,12 +230,6 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
    */
   function combine(list) {
     var finalObject = {};
-    //for (var object in list) { //for each object in list
-      //for (var attr in object) { //for each Attribute in object
-        //finalObject[attr] = object[attr];
-      //}
-    //}
-      /* the above code ALMOST DESTROYED MY LIFE!*/
     list.forEach(function(object){ //for each object in the list
       Object.keys(object).forEach(function(attr){//for each Attribute in object
         finalObject[attr] = object[attr];

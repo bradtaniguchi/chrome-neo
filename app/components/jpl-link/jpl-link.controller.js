@@ -15,7 +15,6 @@ angular.module('chrome-neo').component('jplLink', jplLink)
 
 JplLinkController.$inject=['$log','ChromeService'];
 function JplLinkController($log, ChromeService) {
-  $log.log('link controller loaded');
   var vm = this;
 
   vm.lookup = lookup;
@@ -27,7 +26,7 @@ function JplLinkController($log, ChromeService) {
    */
   function lookup(){
     var rawUrl ='http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=';
-    $log.log("looking up the given id in browser " + vm.spkid);
+    $log.debug("looking up the given id in browser " + vm.spkid);
     ChromeService.link(rawUrl + vm.spkid);
   }
 }

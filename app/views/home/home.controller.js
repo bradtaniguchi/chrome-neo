@@ -49,7 +49,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     getDaily().then(function(){
       getWeekly().then(function(){
         getMonthly().then(function(){
-          $log.log("loading done");
+          $log.debug("loading done");
           $rootScope.loading = false;
         }).catch(handleError);
         /*now we have the weekly data, also get the most ineteresting

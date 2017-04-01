@@ -31,17 +31,17 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
    * @return {[type]}        [description]
    */
   function updateChart(option) {
-    $log.log('option: ' + option);
+    $log.debug('option: ' + option);
     if(option == 'size'){
-      $log.log('ordering by size');
+      $log.debug('ordering by size');
       vm.chart = buildSizeChart(vm.data, vm.xAttribute);
 
     } else if(option == 'day') {
-      $log.log('ordering by day');
+      $log.debug('ordering by day');
       vm.chart = buildDayChart(vm.data, vm.xAttribute);
 
     } else { //option = 'distance'
-      $log.log('ordering by distance');
+      $log.debug('ordering by distance');
       vm.chart = buildDistanceChart(vm.data, vm.xAttribute);
     }
   }
@@ -52,7 +52,6 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
     parseData();
     /*
       By default we setup the chart with given parameters for the given data.
-
      */
     if(vm.xAttribute === 'daily') {//use days of the week
       vm.tableType = "Daily";

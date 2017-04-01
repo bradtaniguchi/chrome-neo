@@ -20,12 +20,13 @@
       </p>
     </div>
     <div layout="row">
-      <md-button class="md-raised" ng-click="vm.jplDetail(vm.neo.spkid)">
+      <!--<md-button class="md-raised" ng-click="vm.jplDetail(vm.neo.spkid)">
         JPL Link
         <md-tooltip md-direction="bottom">
           Open offical page
         </md-tooltip>
-      </md-button>
+      </md-button>-->
+      <jpl-link spkid="vm.neo.spkid"></jpl-link>
     </div>
   </md-card-content>
 </md-card>
