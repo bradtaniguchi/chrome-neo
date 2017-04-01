@@ -10,20 +10,21 @@ function CacheDialogController($log, $mdDialog, $mdToast, CacheService) {
   var vm = this;
   vm.loading = false; //custom loading bar for just this dialog
   vm.keyObjects = [];
+  vm.chosenKeyObject = -1; //index of the chosen index
   vm.size = 0;
 
   vm.close = close;
   vm.remove = remove;
+  vm.expand = expand;
 
   onInit();
   return vm;
   /*function defnition*/
   function onInit() {
     var counter = 0;
-    $log.debug('in init for CacheDialog');
     vm.loading = true;
     CacheService.size().then(function(keys){
-      vm.size = keys.size;
+      vm.size = keys.length;
       counter = counter + 1;
       if(counter == 2) vm.loading = false;
     });
@@ -32,6 +33,7 @@ function CacheDialogController($log, $mdDialog, $mdToast, CacheService) {
       counter = counter + 1;
       if(counter == 2) vm.loading = false;
     });
+    vm.chosenKeyObject = -1;
   }
   /**
    * Close the modal
@@ -48,12 +50,19 @@ function CacheDialogController($log, $mdDialog, $mdToast, CacheService) {
    */
   function remove(key) {
     CacheService.remove(key).then(function(){
-      $mdToast.show(
-      $mdToast.simple()
-        .textContent('Remove item!')
-        //.position(pinTo )
-        .hideDelay(3000)
-      );
+      onInit(); //update the keys, and size
     });
+  }
+  /**
+   * Updates the chosen cache index to expand.
+   * NOTE: this is rather ugly and not user friendly, but will have to do
+   * @param  {[type]} index [description]
+   * @return {[type]}       [description]
+   */
+  function expand(index) {
+    if(index !== vm.chosenKeyObject)
+      vm.chosenKeyObject = index;
+    else
+      vm.chosenKeyObject = -1;
   }
 }

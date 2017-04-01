@@ -11,7 +11,7 @@
 <md-progress-linear md-mode="indeterminate" ng-if="vm.loading"></md-progress-linear>
 <md-dialog-content layout-padding="">
   <p class="md-body-2">
-    Cache Entries = 0
+    Cache Entries = {{vm.size}}
   </p>
   <div ng-repeat="keyObject in vm.keyObjects">
     <div class="md-body-1" layout="row" layout-align="start center">
@@ -19,13 +19,20 @@
         {{keyObject.key}}
       </div>
       <span flex></span>
-      <md-button class="md-icon-button">
+      <md-button class="md-icon-button" ng-click="vm.expand($index)">
         <i class="material-icons">open_in_new</i>
+        <md-tooltip md-direction="down">Expand this item (ugly!)</md-tooltip>
       </md-button>
-      <md-button class="md-icon-button">
+      <md-button class="md-icon-button" ng-click="vm.remove(keyObject.key)">
         <i class="material-icons">close</i>
+        <md-tooltip md-direction="down">Remove this item from cache</md-tooltip>
       </md-button>
     </div>
+    <md-card ng-show='vm.chosenKeyObject == $index' style="background:grey">
+      <p class="md-caption">
+        {{keyObject.object}}
+      </p>
+    </md-card>
   </div>
   <!--add a list of all entires in the database.-->
 </md-dialog-content>
