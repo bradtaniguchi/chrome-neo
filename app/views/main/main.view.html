@@ -16,13 +16,6 @@
             Home
           </md-button>
         </md-menu-item>
-        <!--<md-menu-item>
-          <md-button ng-click="vm.go('stats')">
-            <md-tooltip md-direction="right">Go to Stat View</md-tooltip>
-            <i class="material-icons">show_chart</i>
-            Stats
-          </md-button>
-        </md-menu-item>-->
         <md-menu-item>
           <md-button ng-click="vm.go('search')">
             <md-tooltip md-direction="right">Search the database</md-tooltip>
@@ -39,6 +32,10 @@
     </md-menu><!--END menu-->
     <h2>Chrome-Neo</h2>
     <span flex></span>
+    <md-button class="md-icon-button">
+      <md-tooltip md-direction="down">Settings</md-tooltip>
+      <md-icon class="material-icons" ng-click="vm.settings()">settings</md-icon>
+    </md-button>
     <md-button class="md-icon-button">
       <md-tooltip md-direction="down">Refresh the app</md-tooltip>
       <md-icon class="material-icons" ng-click="vm.refresh()">refresh</md-icon>

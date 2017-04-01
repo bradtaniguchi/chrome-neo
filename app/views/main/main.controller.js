@@ -7,6 +7,7 @@ function MainController($log, $state, $rootScope) {
   vm.openMenu = openMenu;
   vm.currState = $state;//get current state
   vm.go = go;
+  vm.settings = settings;
   vm.refresh = refresh;
   vm.$onInit = onInit;
   return vm;
@@ -19,21 +20,30 @@ function MainController($log, $state, $rootScope) {
    * small and basic navbar.
    * @param {$mdMenu} $mdMenu angular material
    * @param {event} ev event to open the menu from on the screen
-   */ 
+   */
   function openMenu($mdMenu, ev) {
     originatorEv = ev;
     $mdMenu.open(ev);
   }
   /**
+   * Opens the settings state
+   * @return {[type]} [description]
+   */
+  function settings() {
+    //$state.go('settings');
+    go('settings');
+  }
+  /**
    * Refreshes the current state
-   */ 
+   */
   function refresh() {
+    $log.debug('refreshing');
     $state.reload();
   }
   /**
-   * Transfers to the given state 
+   * Transfers to the given state
    * @param {string} state name of the state to transfer to
-   */ 
+   */
   function go(state) {
     if(vm.currState !== state){
       $state.go(state);
