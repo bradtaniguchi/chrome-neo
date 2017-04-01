@@ -1,0 +1,32 @@
+<md-dialog aria-label="cache popup">
+<md-toolbar>
+  <div class="md-toolbar-tools" layout="row">
+    <h3>Items in Cache</h3>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="vm.close()">
+        <i class="material-icons">close</i>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-progress-linear md-mode="indeterminate" ng-if="vm.loading"></md-progress-linear>
+<md-dialog-content layout-padding="">
+  <p class="md-body-2">
+    Cache Entries = 0
+  </p>
+  <div ng-repeat="keyObject in vm.keyObjects">
+    <div class="md-body-1" layout="row" layout-align="start center">
+      <div>
+        {{keyObject.key}}
+      </div>
+      <span flex></span>
+      <md-button class="md-icon-button">
+        <i class="material-icons">open_in_new</i>
+      </md-button>
+      <md-button class="md-icon-button">
+        <i class="material-icons">close</i>
+      </md-button>
+    </div>
+  </div>
+  <!--add a list of all entires in the database.-->
+</md-dialog-content>
+</md-dialog>

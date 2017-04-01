@@ -31,6 +31,12 @@ function router($stateProvider, $urlRouterProvider) {
     templateUrl: 'views/search/search.view.html',
     controller: 'SearchController as vm'
   })
+  .state('settings',{
+    url:'settings',
+    parent: 'main',
+    templateUrl: 'views/settings/settings.view.html',
+    controller: 'SettingsController as vm'
+  })
   .state('about',{
     url: 'about',
     parent: 'main',

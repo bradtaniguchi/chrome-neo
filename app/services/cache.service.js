@@ -20,9 +20,58 @@ function CacheService($log, $localForage, $q, moment, constants) {
     setMonthly : setMonthly,
     setByID : setByID,
 
-    printDatabase: printDatabase
+    getKeyObjects : getKeyObjects,
+    removeOld : removeOld,
+    printDatabase: printDatabase,
+    size : size,
+    remove : remove
     //NOTE no monthly as I might not support monthly statements
   };
+  /**
+   * Returns the number of entries in the database as the first argument to a promise
+   * @return {promise} promise with the first argument the number of items within
+   *                           the database.
+   * @TODO: update this function to return a promise with the size, not the keys
+   * makes for a ungly and confusing API.
+   */
+  function size() {
+    return $localForage.keys();
+  }
+  /**
+   * Removes a key from the database
+   * @param  {[type]} key [description]
+   * @return {[type]}     [description]
+   */
+  function remove(key) {
+    return $localForage.removeItem(key);
+  }
+  /**
+   * Function that gets all the keys in the database, and their corresponding
+   * objects and returns them as a list of keyObjects. with two params:
+   * key : KEY NAME
+   * object : OBJECT NAME
+   * @return {promise} arry of key objects
+   */
+  function getKeyObjects() {
+    var differed = $q.defer();
+    var arr = [];
+    var counter = 0;
+    var max;
+    $localForage.keys().then(function(keys){
+      max = keys.length;
+      keys.forEach(function(key){
+        $localForage.getItem(key).then(function(object){
+          arr.push({
+            key : key,
+            object : object
+          });
+        });
+        counter = counter + 1;
+        if(counter >= max) differed.resolve(arr);
+      });
+    });
+    return differed.promise;
+  }
   /**
    * Debugging function, prints out the contents of the database in the log
    */

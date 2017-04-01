@@ -1,0 +1,30 @@
+<md-card class="md-whiteframe-4dp">
+  <md-card-header>
+    <i class="material-icons">settings</i>
+    <md-card-header-text class="md-title">
+      Search
+    </md-card-header-text>
+  </md-card-header>
+  <md-card-content>
+    <p class="md-body-2">
+      Settings and special functions to apply to the application.
+    </p>
+    <md-divider></md-divider>
+    <div layout="column">
+      <md-button ng-click="vm.deleteDb($event)" class="md-raised">
+        Delete Cache History
+        <md-tooltip md-direction="down">Removes ALL cache entries</md-tooltip>
+      </md-button>
+      <md-button ng-click="vm.cleanDb($event)" class="md-raised">
+        Remove Old
+        <md-tooltip md-direction="down">Removes older cache entries</md-tooltip>
+      </md-button>
+      <md-button ng-click="vm.printDb($event)" class="md-raised">
+        Print Cache
+        <md-tooltip md-direction="down">Display all the entires in <thead>
+          database
+        </thead></md-tooltip>
+      </md-button>
+    </div>
+  </md-card-content>
+</md-card>
