@@ -198,12 +198,25 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     $log.error(newMessage);
     return $q.reject(error);
   }
-  function showTable(event, data, xAttribute) {
+  /**
+   * Creates a modal and provides it with the data, default tableType
+   * and modalLabel to create a graph table to show the user.
+   * @param  {$event} event      origin of where the button was clicked. for
+   *                             Animation.
+   * @param  {Object} data       object data to graph, expected to have near_earth_objects
+   *                             as an attribute, as this is the actually stuff to graph.
+   * @param  {String} tableType  type of the table to display, currently the table
+   *                             access the following string parameters:
+   *                             'size', 'day', 'distance'
+   * @param  {String} modalLabel title of the modal popup.
+   */
+  function showTable(event, data, tableType, modalLabel) {
     $mdDialog.show({
       locals: {
         initData : {
           data: data,
-          xAttribute: xAttribute
+          tableType: tableType,
+          modalLabel : modalLabel
         },
       },
       controller: 'TableViewController as vm',
@@ -214,12 +227,12 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     });
   }
   function showDayTable(event, data){
-    showTable(event, data, 'daily');
+    showTable(event, data, 'size', 'Daily');
   }
   function showWeekTable(event, data) {
-    showTable(event, data, 'weekly'); //don't give an xAttribute, it will automatically do dates
+    showTable(event, data, 'day', 'Weekly'); //don't give an xAttribute, it will automatically do dates
   }
   function showMonthTable(event, data){
-    showTable(event, data, 'monthly');
+    showTable(event, data, 'day', 'Monthly');
   }
 }

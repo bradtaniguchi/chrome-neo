@@ -2,7 +2,7 @@
   <!--https://material.angularjs.org/latest/demo/dialog-->
   <md-toolbar>
     <div class="md-toolbar-tools" layout="row" layout-align="start center">
-      {{vm.tableType}}
+      {{vm.modalLabel}}
       <span flex></span>
       <md-button class="md-icon-button" ng-click="vm.refresh()">
         <i class="material-icons">refresh</i>
@@ -22,13 +22,24 @@
       </md-button>
   </md-dialog-content>
   <md-dialog-actions>
+    <md-checkbox ng-show="true"> <!--TODO add flag IF we want to limit data by size-->
+      LimitOutput
+      <md-tooltip aria-label="Hide some NEO's" ng-model="vm.hideNeos"
+      md-direction="bottom">Hide some NEOs in graph output</md-tooltip>
+    </md-checkbox>
+
+    <md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="data.cb5" class="md-primary">
+            Checkbox (md-primary): No Ink
+          </md-checkbox>
+
+    <span flex></span>
     <md-input-container>
-          <label>Graph type</label>
-          <md-select ng-model="vm.chosenChartOption" ng-change="vm.updateChart(vm.chosenChartOption)">
-            <md-option ng-repeat="option in vm.chartOptions" ng-value="option">
-              {{option}}
-            </md-option>
-          </md-select>
+      <label>Graph type</label>
+      <md-select ng-model="vm.chosenChartOption" ng-change="vm.updateChart(vm.chosenChartOption)">
+        <md-option ng-repeat="option in vm.chartOptions" ng-value="option">
+          {{option}}
+        </md-option>
+      </md-select>
     </md-input-container>
     <md-button class="raised" ng-click="vm.close()">Close</md-button>
   </md-dialog-actions>

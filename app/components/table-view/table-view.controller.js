@@ -14,8 +14,11 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   var vm = this;
   vm.data = {}; //all data
   vm.chart = {};
-  vm.tableType = "";
-  vm.xAttribute = "";
+  vm.modalLabel = "TITLE";
+  vm.tableType = ""; //the table type to display
+  /*hide some of the NEOs in the graph, only shown for the monthly table, as
+  there are two many datapoints!*/
+  vm.hideNeos = "false";
   vm.chosenChartOption = 'size';
   vm.chartOptions = ['size', 'day', 'distance'];
 
@@ -35,14 +38,14 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
     if(option == 'size'){
       $log.debug('ordering by size');
       vm.chart = buildSizeChart(vm.data, vm.xAttribute);
-
     } else if(option == 'day') {
       $log.debug('ordering by day');
       vm.chart = buildDayChart(vm.data, vm.xAttribute);
-
-    } else { //option = 'distance'
+    } else if(option == 'distance'){ //option = 'distance'
       $log.debug('ordering by distance');
       vm.chart = buildDistanceChart(vm.data, vm.xAttribute);
+    } else {
+      $log.error("invalid option given! Cannot generate chart");
     }
   }
   /*function definitons*/
@@ -50,33 +53,16 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
 
     /*define our chart object*/
     parseData();
-    /*
-      By default we setup the chart with given parameters for the given data.
-     */
-    if(vm.xAttribute === 'daily') {//use days of the week
-      vm.tableType = "Daily";
-      //vm.chart = buildDailyChart(vm.data, vm.xAttribute);
-      vm.chart = buildSizeChart(vm.data, vm.xAttribute);
-
-    } else if (vm.xAttribute === 'weekly'){
-      vm.tableType = "Weekly ";
-      //vm.chart = buildWeeklyChart(vm.data, vm.xAttribute);
-      vm.chart = buildDayChart(vm.data, vm.xAttribute);
-
-    } else if (vm.xAttribute === 'monthly') {
-      vm.tableType = "Monthly";
-      vm.chart = buildDayChart(vm.data, vm.xAttribute);
-    } else {
-      $log.debug("invalid parameter given!");
-    }
-
+    updateChart(vm.tableType);
   }
   /**
    * Parses the given data and applies it to the settings.
    */
   function parseData(){
-    vm.xAttribute = initData.xAttribute;
+    vm.tableType = initData.tableType;
     vm.data = initData.data.near_earth_objects;
+    vm.modalLabel = initData.modalLabel;
+    $log.log(initData);
   }
   /**
    * Utility function that takes the near_earth_objects as the first argument,
