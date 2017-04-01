@@ -25,14 +25,14 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
 
   vm.todaysDate = "";
 
-  vm.test = test; //test function
+  // vm.test = test; //test function
   vm.clearCache = clearCache;
   vm.$onInit = onInit;
 
   vm.getWeekly = getWeekly;
   vm.getDaily = getDaily;
   vm.getMonthly = getMonthly;
-  vm.printDatabase = printDatabase;
+  //vm.printDatabase = printDatabase;
 
   /*Table show functions*/
   vm.showDayTable = showDayTable;
@@ -82,9 +82,9 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     return $q.reject(error);
   }
 
-  function test() {
-    getBest();
-  }
+  // function test() {
+  //   getBest();
+  // }
   /**
    * debug function, that prints the database keys within the database.
    * I don't print out the full JSON size as it gets to large.
