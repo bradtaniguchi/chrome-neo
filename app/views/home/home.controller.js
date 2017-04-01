@@ -67,8 +67,8 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     /*stop loading regardless*/
     $rootScope.loading = false;
     var newMessage = 'XHR Failed';
-    $log.log("there was an error!");
-    $log.log(error);
+    $log.debug("there was an error!");
+    $log.debug(error);
 
     $mdDialog.show(
       $mdDialog.alert()
