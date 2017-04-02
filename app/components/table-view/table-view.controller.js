@@ -2,6 +2,7 @@
 angular.module('chrome-neo').controller('TableViewController', TableViewController);
 TableViewController.$inject=[
   '$log',
+  '$q',
   '$mdDialog',
   'constants',
   'initData', //this should be given to us from the home controller
@@ -9,7 +10,7 @@ TableViewController.$inject=[
   'RankItService'
 ];
 
-function TableViewController($log, $mdDialog, constants, initData, moment,
+function TableViewController($log, $q, $mdDialog, constants, initData, moment,
   RankItService) {
   var vm = this;
   vm.data = {}; //all data
@@ -19,12 +20,12 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   /*hide some of the NEOs in the graph, only shown for the monthly table, as
   there are two many datapoints!*/
   vm.hideNeos = "false";
-  vm.chosenChartOption = 'size';
+  //vm.chosenChartOption = '';
   vm.chartOptions = ['size', 'day', 'distance'];
+  vm.neoLimit = 15; //limit of NEOs to show if the hideNeos flag is set true
 
   vm.updateChart = updateChart;
   vm.close = close;
-  //vm.test = test;
 
   onInit(); //call the function
   return vm;
@@ -33,27 +34,24 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
    * @param  {string} option chart option
    * @return {[type]}        [description]
    */
-  function updateChart(option) {
-    $log.debug('option: ' + option);
-    if(option == 'size'){
-      $log.debug('ordering by size');
-      vm.chart = buildSizeChart(vm.data, vm.xAttribute);
-    } else if(option == 'day') {
-      $log.debug('ordering by day');
-      vm.chart = buildDayChart(vm.data, vm.xAttribute);
-    } else if(option == 'distance'){ //option = 'distance'
-      $log.debug('ordering by distance');
-      vm.chart = buildDistanceChart(vm.data, vm.xAttribute);
+  function updateChart(tableType, hideNeos) {
+    /*determine if we want to limit the data */
+    if(tableType == 'size'){
+      vm.chart = buildSizeChart(vm.data);
+    } else if(tableType == 'day') {
+      vm.chart = buildDayChart(vm.data);
+
+    } else if(tableType == 'distance'){ //option = 'distance'
+      vm.chart = buildDistanceChart(vm.data);
     } else {
       $log.error("invalid option given! Cannot generate chart");
     }
   }
   /*function definitons*/
   function onInit() {
-
     /*define our chart object*/
     parseData();
-    updateChart(vm.tableType);
+    updateChart(vm.tableType, false);
   }
   /**
    * Parses the given data and applies it to the settings.
@@ -62,7 +60,6 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
     vm.tableType = initData.tableType;
     vm.data = initData.data.near_earth_objects;
     vm.modalLabel = initData.modalLabel;
-    $log.log(initData);
   }
   /**
    * Utility function that takes the near_earth_objects as the first argument,
@@ -86,11 +83,12 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   function close() {
     $mdDialog.hide();
   }
-  function buildDistanceChart(data, xAttribute) {
+  function buildDistanceChart(data) {
     var labels=[];
     var chartData=[];
     var labelString= "distance in Km";
     chartData.push(parseNeos(data)
+    //chartData.push(data)
     .sort(function(a, b){
      return a.close_approach_data[0].miss_distance.kilometers -
             b.close_approach_data[0].miss_distance.kilometers;
@@ -121,14 +119,15 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   /**
    * Builds a chart based on min and max estimated sizes
    * @param  {object} data       an object with keys that represent different days
-   * @param  {string} xAttribute attribute to orderby, currently not in use.
    */
-  function buildSizeChart(data, xAttribute) {
+  function buildSizeChart(data) {
     var labels =[];
     var chartData = [];
     var labelString = 'Size in Meters';
-
+    //if(vm.hideNeos)
+    //data = parseNeos(data).splice(0,10);
     chartData.push(parseNeos(data)
+    //chartData.push(data)
     /*Sort the parsed data by estimatedDiameter*/
     .sort(function(a, b){
       return a.estimated_diameter.meters.estimated_diameter_min -
@@ -175,7 +174,7 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
    * @param  {object} data       an object with keys that represent different days
    * @param  {string} xAttribute attribute to orderby, currently not in use.
    */
-  function buildDayChart(data, xAttribute) {
+  function buildDayChart(data) {
     var labels = [];
     var chartData = [[]];
     var labelString =  'Order by Size';
@@ -215,7 +214,7 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
    * @NOTE: Check this URL to view how the data is structured
    * https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY
    */
-  function buildClosestChart(data, xAttribute) {
+  function buildClosestChart(data) {
     var labels = [];
     var chartData = [[]];
     var labelString = 'Closest Appraoch';

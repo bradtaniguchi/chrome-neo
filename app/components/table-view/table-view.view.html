@@ -16,26 +16,19 @@
     <canvas id="lineGraph" class="chart chart-line" chart-data="vm.chart.data"
     chart-labels="vm.chart.labels" chart-options="vm.chart.options"
     chart-hover=""></canvas>
-
-    <!--<md-button class="md-icon-button" ng-click="vm.test()">
-          <i class="material-icons">code</i>-->
       </md-button>
   </md-dialog-content>
   <md-dialog-actions>
-    <md-checkbox ng-show="true"> <!--TODO add flag IF we want to limit data by size-->
+    <md-checkbox ng-show="true" ng-model="vm.hideNeos" ng-change="vm.updateChart(vm.tableType, vm.hideNeos)">
       LimitOutput
-      <md-tooltip aria-label="Hide some NEO's" ng-model="vm.hideNeos"
+    <md-tooltip aria-label="Hide some NEO's"
       md-direction="bottom">Hide some NEOs in graph output</md-tooltip>
     </md-checkbox>
-
-    <md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="data.cb5" class="md-primary">
-            Checkbox (md-primary): No Ink
-          </md-checkbox>
 
     <span flex></span>
     <md-input-container>
       <label>Graph type</label>
-      <md-select ng-model="vm.chosenChartOption" ng-change="vm.updateChart(vm.chosenChartOption)">
+      <md-select ng-model="vm.tableType" ng-change="vm.updateChart(vm.tableType)">
         <md-option ng-repeat="option in vm.chartOptions" ng-value="option">
           {{option}}
         </md-option>
