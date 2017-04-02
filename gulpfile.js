@@ -15,6 +15,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var wrap = require('gulp-wrap');
+var jsdoc = require('gulp-jsdoc3');
 var sloc = require('gulp-sloc');
 var ngGraph = require('gulp-angular-architecture-graph');
 var Server = require('karma').Server;
@@ -28,9 +29,11 @@ title +=' * */\n';
 title +='<%= contents %>';
 
 var wrapper = '(function(){\n"use strict";<%= contents %>\n})();';
-/*default task*/
-gulp.task('default', function() {
-  return gutil.log('Gulp is running!');
+
+/*build jsdoc*/
+gulp.task('doc', function(cb){
+  gulp.src(['README.md', './app/**/*.js'], {read:false})
+  .pipe(jsdoc(cb));
 });
 
 /*Move html files from angular app to dist.
