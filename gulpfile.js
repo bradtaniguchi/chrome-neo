@@ -61,6 +61,7 @@ gulp.task('moveStatic', function() {
   /*Move angularjs file*/
   gutil.log(gutil.colors.magenta("Moving static files to lib"));
   gulp.src([
+    'src/_ga.js',
     './bower_components/angular/angular.js',
     './bower_components/angular-ui-router/release/angular-ui-router.js',
     './bower_components/angular-material/angular-material.js',
