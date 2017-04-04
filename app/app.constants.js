@@ -1,3 +1,9 @@
+/**
+ * General application constants
+ * @global
+ * @name Constants 
+ * @type {Object.<string, number>}
+ */
 angular.module('chrome-neo').constant("constants", {
   "NEOWS_BASE_URL" : "https://api.nasa.gov/neo/rest/v1/feed",
   "ASTERANK_BASE_URL": "http://www.asterank.com/api/asterank",
@@ -6,8 +12,14 @@ angular.module('chrome-neo').constant("constants", {
   "MOMENT_FORMAT" : "YYYY-MM-DD"
 });
 
-/*These are definitions that are specified by nasa for what
-these fields actually mean, used for tooltip popup helps*/
+/**
+ * These are definitions that are specified by nasa for what these fields
+ * actually mean, used for tooltip popup helps
+ * @name QueryFields
+ * @global
+ * @constant
+ * @type {Object.<string, number>}
+ */
 angular.module('chrome-neo').constant("queryFields", {
   "sigma_tp": "Time of perihelion passage sigma",
   "diameter":"Estimated object diameter",
