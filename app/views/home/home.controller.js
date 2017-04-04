@@ -10,6 +10,14 @@ HomeController.$inject = [
   'CacheService',
   'RankItService'
 ];
+/**
+ * @class angular_module.HomeController
+ * @name HomeController
+ * @description controller for the home view, which also encapsulates
+ * the most interesting neo and graph modals.
+ * @see TableViewController
+ * @see InterestingNeoController
+ */
 function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   constants, $rootScope, CacheService, RankItService) {
   var vm = this;
@@ -60,8 +68,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   }
   /**
    * Wrapper function to handle failed promise requests
-   * @param  {[type]} error [description]
-   * @return [type]         [description]
+   * @param  {object} error error to display
    */
   function handleError(error){
     /*stop loading regardless*/
@@ -201,7 +208,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
   /**
    * Creates a modal and provides it with the data, default tableType
    * and modalLabel to create a graph table to show the user.
-   * @param  {$event} event      origin of where the button was clicked. for
+   * @param  {Object} event      origin of where the button was clicked. for
    *                             Animation.
    * @param  {Object} data       object data to graph, expected to have near_earth_objects
    *                             as an attribute, as this is the actually stuff to graph.

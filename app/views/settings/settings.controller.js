@@ -5,7 +5,12 @@ SettingsController.$inject=[
   '$mdDialog',
   '$rootScope'
 ];
-
+/**
+ * @class angular_module.SettingsController
+ * @name SettingsController
+ * @description controller for the settings view, which handles cache related
+ * settings, such as clearing and removing select items from the cache store.
+ */
 function SettingsController($log, CacheService, $mdDialog, $rootScope) {
   var vm = this;
 
@@ -15,8 +20,8 @@ function SettingsController($log, CacheService, $mdDialog, $rootScope) {
   return vm;
   /*function defintions*/
   /**
-   * Clears the database of ALL entires
-   * @return {[type]} [description]
+   * Deletes the entire localCahce storage, and shows an alert when completed.
+   * @param {object} event location on the dom where the event occured.
    */
   function deleteDb(event) {
     $log.debug('Removing all items in the database');
@@ -35,6 +40,11 @@ function SettingsController($log, CacheService, $mdDialog, $rootScope) {
       });
     });
   }
+  /**
+   * Calls the cache service remove old function which removes older files but
+   * keeps recent queries.
+   * @param {object} event location on the dom where the event occured.
+   */
   function cleanDb(event) {
     $log.debug('Removing old items from the database!');
     CacheService.removeOld();
@@ -42,7 +52,7 @@ function SettingsController($log, CacheService, $mdDialog, $rootScope) {
   }
   /**
    * Opens a modal to display all the data that the cache service can find
-   * @return {[type]} [description]
+   * @param {object} event location on the dom where the event occured.
    */
   function printDb(event) {
     $log.debug('Printing database...');

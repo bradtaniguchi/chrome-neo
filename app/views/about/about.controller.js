@@ -2,6 +2,12 @@ angular.module('chrome-neo').controller('AboutController', AboutController);
 AboutController.$inject = [
   '$log',
   '$rootScope'];
+/**
+ * @class angular_module.AboutController
+ * @name AboutController
+ * @description Controller for the about view that displays information about
+ * the development of this application.
+ */
 function AboutController($log, $rootScope) {
   var vm = this;
   vm.technologies = [];
@@ -13,6 +19,10 @@ function AboutController($log, $rootScope) {
     techInit(); //init the technologies
     $rootScope.loading = false;
   }
+  /**
+   * Declaration utility function that holds all the technologies.
+   * @todo add more technologies that I used to build the program.
+   */
   function techInit() {
     vm.technologies = [
       {

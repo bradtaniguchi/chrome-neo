@@ -1,5 +1,11 @@
 angular.module('chrome-neo').controller('MainController', MainController);
 MainController.$inject=['$log', '$state', '$rootScope'];
+/**
+ * @class angular_module.MainController
+ * @name MainController
+ * @description controller for the main view, which all other views inherit from.
+ *
+ */
 function MainController($log, $state, $rootScope) {
   var vm = this;
   var originatorEv; //idk what this does right now..
@@ -27,7 +33,6 @@ function MainController($log, $state, $rootScope) {
   }
   /**
    * Opens the settings state
-   * @return {[type]} [description]
    */
   function settings() {
     //$state.go('settings');

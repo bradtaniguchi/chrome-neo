@@ -9,7 +9,13 @@ StatsController.$inject = [
   'queryFields',
   'resolvedStatData'
 ];
-
+/**
+ * @class angular_module.StatsController
+ * @name StatsController
+ * @description controller for the stats controller view, which displays
+ * all the data for a given NEO, provided by the AsterankService
+ * @See AsterankService
+ */
 function StatsController($log, $mdMenu, $mdDialog, $state, $rootScope,
   $stateParams, queryFields, resolvedStatData) {
 
@@ -38,7 +44,6 @@ function StatsController($log, $mdMenu, $mdDialog, $state, $rootScope,
 
   /**
    * Opens help dialog that shows all known terms to the user
-   * @return {undefined}
    */
   function openHelp() {
     $mdDialog.show({

@@ -5,6 +5,13 @@ SearchController.$inject = [
   'AsterankService',
   '$mdDialog'
 ];
+/**
+ * @class angular_module.SearchController
+ * @name SearchController
+ * @description controller for the search page, displays search results using
+ * neo-basic components
+ * @see NeoBasicController
+ */
 function SearchController($log, $rootScope, AsterankService, $mdDialog) {
   var vm = this;
   vm.query = "";
