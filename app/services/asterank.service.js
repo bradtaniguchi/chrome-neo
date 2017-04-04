@@ -1,5 +1,11 @@
 angular.module('chrome-neo').factory('AsterankService', AsterankService);
 AsterankService.$inject= ['$log', '$http', 'constants', 'moment', '$q', 'CacheService'];
+/**
+ * @class angular_module.AsterankService
+ * @name AsterankService
+ * @description primary wrapper around the Asterank API
+ * @see {@link http://www.asterank.com/api}
+ */
 function AsterankService($log, $http, constants, moment, $q, CacheService) {
   return {
     getById: getById,
@@ -7,6 +13,7 @@ function AsterankService($log, $http, constants, moment, $q, CacheService) {
   };
   /**
    * Gets a given asterank request by spkid
+   * @memberof AsterankService
    * @param  {number} id    SPKID of NEO you want to look up
    * @param  {number} limit limit the number to return, this will be generally
    *                        redundant. But is left just in case.

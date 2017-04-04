@@ -11,6 +11,12 @@ NeoWsService.$inject = [
   'CacheService',
   '$q'
 ];
+/**
+ * @class angular_module.NeoWsService
+ * @name NeoWsService
+ * @description primary wrapper around NeoWsService
+ * @see {@link https://api.nasa.gov/api.html#neows-feed}
+ */
 function NeoWsService($log, $http, constants, moment, CacheService, $q) {
   return {
     getWeekly : getWeekly,

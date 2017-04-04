@@ -6,9 +6,15 @@ CacheService.$inject = [
   'moment', //Used to handle time handling
   'constants' //application constants, used mainly for moment format.
 ];
+/**
+ * @class angular_module.CacheService
+ * @name CacheService
+ * @description Primary handler for cache entires, queries and general handling functions
+ * for the $localForage API
+ */
 function CacheService($log, $localForage, $q, moment, constants) {
   return {
-    test: test,
+    //test: test,
     clear: clear,
     checkDaily: checkDaily,
     checkWeekly: checkWeekly,
@@ -39,8 +45,8 @@ function CacheService($log, $localForage, $q, moment, constants) {
   }
   /**
    * Removes a key from the database
-   * @param  {[type]} key [description]
-   * @return {[type]}     [description]
+   * @param  {String} key key to remove from the local cache
+   * @return {Promise}     a promise object is returned
    */
   function remove(key) {
     return $localForage.removeItem(key);
@@ -82,10 +88,9 @@ function CacheService($log, $localForage, $q, moment, constants) {
       $log.log(value);
     });
   }
-  /*function definitions*/
-  function test(callback) {
-    callback(true);
-  }
+  // function test(callback) {
+  //   callback(true);
+  // }
   /**
    * [clearCache description]
    * @return {promise} returns a promise with no arguments. To assist in chaining
@@ -125,24 +130,31 @@ function CacheService($log, $localForage, $q, moment, constants) {
       });
     });
   }
-  /*
-  Checks if the given date is in the local store,
-  if it isn't it adds the object under the given date.
-  saved as:
-  Day_##_Year
-  @returns object of whats given, or if it is in the datastore
-  */
+  /**
+   * Checks if the given date is in the local store,
+   * if it isn't it adds the object under the given date.
+   * Saved as:
+   * Day_##_Year
+   * @param  {number} day  the day of the year
+   * @param  {number} year the year
+   * @return {promise}      returns a promise object with the object within the
+   *                        Cache. If there is no value with the given ID, the
+   *                        value will be null.
+   */
   function checkDaily(day, year) {
     var key = "Day_" + day + "_" + year;
     $log.debug("Looking for key: " + key);
     return $localForage.getItem(key);
   }
-  /*
-  Checks if the given week number is within the application,
-  NOTE because a simple number is not suffecient to be a seperate key, it will
-  be left as:
-  Week_##_Year
-     var weeknumber = moment("12-25-1995", "MM-DD-YYYY").week();
+  /**
+  * Checks if the given week number is within the cache.
+  * with the following format for the key:
+  * Week_##_Year
+  * @param  {number} week the week of the year.
+  * @param  {number} year the year
+  * @return {promise}      returns  a promise object with the given object within
+  *                        the cache. If there is no value with the given ID,
+  *                        the value will be null.
   */
   function checkWeekly(week, year) {
     var key = "Week_" + week + "_" + year;
@@ -152,6 +164,15 @@ function CacheService($log, $localForage, $q, moment, constants) {
   /*
   Checks if the given month is within the application,
   Month_##_Year
+  */
+  /**
+  * Checks if the given month is within the cache. (it is saaved as a custom made
+  * object when put in.)
+  * @param  {number} month the month of the year.
+  * @param  {number} year  the year
+  * @return {promise}       returns a promise object with the given object within
+  *                         the cache. If there is no value with the given ID, the
+  *                         value will be null.
   */
   function checkMonthly(month, year) {
     var key = "Month_" + month +"_"+ year;
@@ -180,10 +201,16 @@ function CacheService($log, $localForage, $q, moment, constants) {
       return differed.promise;
     }
   }
-
-  /*Sets the value in the cache with the weekly format:
-  Week_##_Year
-  where week is the WEEK NUMBER*/
+  /**
+   * Sets the value in the cache with the weekly format:
+   * Week_##_Year
+   * @param {number} week   week of the year
+   * @param {number} year   the year
+   * @param {object} object the object to put into the cache with the generated
+   *                        key.
+   * @return {promise}     returns a promise object with no arguments once the
+   *                       task entry has been completed.
+   */
   function setWeekly(week, year, object) {
     if(week >= 0 && week <= 52) {
       var key = "Week_" + week + "_" + year;
@@ -198,6 +225,15 @@ function CacheService($log, $localForage, $q, moment, constants) {
       return differed.promise;
     }
   }
+  /**
+   * Sets a monthly value into the localCache.
+   * @param {number} month the month of the year
+   * @param {number} year   the year
+   * @param {object} object the object to put into the cache with the generated
+   *                        key.
+   * @return {promise} a promise object with no arguments that resolves once the
+   *                     local cache returns.
+   */
   function setMonthly(month, year, object) {
     if(month >= 0 && month <= 12) {
       var key ="Month_" + month +"_" + year;
@@ -210,12 +246,25 @@ function CacheService($log, $localForage, $q, moment, constants) {
       return differed.promise;
     }
   }
-  /*Checks if a given single item lookup exists*/
+  /**
+   * Checks if a given single item lookup exists using the SPKID, which is unique
+   * among all NEOs in nasa's database.
+   * @param  {string} spkId unique id for each NEO.
+   * @return {promise} a promise object that returns with the retrieved item from
+   *                     the cache. If there is no item in the cache with the given
+   *                     spkid, then it will return with null.
+   */
   function checkByID(spkId) {
     var key="NEO_" + spkId;
     $log.debug("Looking for key: " + key);
     return $localForage.getItem(key);
   }
+  /**
+   * [setByID description]
+   * @param {string} spkId  unique id for each NEO.
+   * @param {promise} object a promise object with no arguments that resolves once
+   *                         the local cache returns.
+   */
   function setByID(spkId, object) {
     var key = "NEO_" + spkId;
     $log.debug("setting NEO with the given key: " + key);

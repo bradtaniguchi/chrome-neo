@@ -3,6 +3,12 @@ RankItService.$inject = [
   '$log',
   '$q'
 ];
+/**
+ * @class angular_module.RankItService
+ * @name RankItService
+ * @description provides basic algorithm functions that can be used accross the
+ * application.
+ */
 function RankItService($log, $q) {
   return {
     getBest : getBest,
@@ -98,7 +104,7 @@ function RankItService($log, $q) {
    * Second utility sorting function, that takes 2 sublists, and combines them.
    * Orders them from SMALLEST to LARGEST
    * @return {array} an array of neos in order of attribute.
-   * @note this function uses the resolve function on the attr attribute. 
+   * @note this function uses the resolve function on the attr attribute.
    */
   function merge(left, right, attr){
     var result = [];
@@ -125,8 +131,8 @@ function RankItService($log, $q) {
   /**
    * Given a parsed list of neos, this function returns only those that have
    * the 'dangerous' flag.
-   * @param  {[type]} neos [description]
-   * @return {[type]}      [description]
+   * @param  {array} neos list of parsed neos.
+   * @return {array} a list of neos that have the dangerous flag only.
    */
   function filterDangerous(neos) {
     var field = 'is_potentially_hazardous_asteroid';

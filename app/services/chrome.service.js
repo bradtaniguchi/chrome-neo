@@ -3,7 +3,11 @@ ChromeService.$inject = [
   '$log',
   '$window'
 ];
-
+/**
+ * @class angular_module.ChromeService
+ * @name ChromeService
+ * @description wrapper around the Chrome API
+ */
 function ChromeService($log, $window) {
   return {
     link: link
