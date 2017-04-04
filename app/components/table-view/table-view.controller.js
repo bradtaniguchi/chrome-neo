@@ -11,6 +11,8 @@ TableViewController.$inject=[
 /**
  * Dialog that is used to display a set of data with different views. This datas
  * should be formatted by the neows api.
+ * @class angular_module.TableViewController
+ * @name TableViewController
  * @see NeoWsService
  */
 function TableViewController($log, $mdDialog, constants, initData, moment,
