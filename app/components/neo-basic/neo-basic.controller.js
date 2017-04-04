@@ -8,7 +8,6 @@ var neoBasic = {
 angular.module('chrome-neo').component('neoBasic', neoBasic)
 .controller('NeoBasicController', NeoBasicController);
 
-/*function definition*/
 NeoBasicController.$inject=[
   '$log',
   '$state',
@@ -16,7 +15,14 @@ NeoBasicController.$inject=[
   '$window',
   'ChromeService'
 ];
-
+/**
+ * Component that is used to display an single NEO with a few default buttons
+ * and links. the user can use this component to see basic information such as
+ * pass date, full_name and use the links to see asteranks API, and or go
+ * directly to the offical jpl page.
+ * @class angular_module.NeoBasicController
+ * @name NeoBasicController
+ */
 function NeoBasicController($log, $state, $stateParams, $window, ChromeService) {
   var vm = this;
   //vm.$onInit = onInit;

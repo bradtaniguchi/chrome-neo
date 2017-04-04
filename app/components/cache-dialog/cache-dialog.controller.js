@@ -5,7 +5,12 @@ CacheDialogController.$inject=[
   '$mdToast',
   'CacheService'
 ];
-
+/**
+ * Dialog where the user can update caches saved items. Primarily used to clear
+ * the recent history to prevent a cache overload for no reason.
+ * @class angular_module.CacheDialogController
+ * @name CacheDialogController
+ */
 function CacheDialogController($log, $mdDialog, $mdToast, CacheService) {
   var vm = this;
   vm.loading = false; //custom loading bar for just this dialog
@@ -19,7 +24,10 @@ function CacheDialogController($log, $mdDialog, $mdToast, CacheService) {
 
   onInit();
   return vm;
-  /*function defnition*/
+  /*function defnitions*/
+  /**
+   * Init function
+   */
   function onInit() {
     var counter = 0;
     vm.loading = true;
@@ -37,7 +45,6 @@ function CacheDialogController($log, $mdDialog, $mdToast, CacheService) {
   }
   /**
    * Close the modal
-   * @return {[type]} [description]
    */
   function close() {
     $log.debug("closing window");
@@ -45,8 +52,7 @@ function CacheDialogController($log, $mdDialog, $mdToast, CacheService) {
   }
   /**
    * Function to remove a given item from the database.
-   * @param  {[type]} key [description]
-   * @return {[type]}     [description]
+   * @param  {String} key the key value to remove from the Cache.
    */
   function remove(key) {
     CacheService.remove(key).then(function(){
@@ -56,8 +62,7 @@ function CacheDialogController($log, $mdDialog, $mdToast, CacheService) {
   /**
    * Updates the chosen cache index to expand.
    * NOTE: this is rather ugly and not user friendly, but will have to do
-   * @param  {[type]} index [description]
-   * @return {[type]}       [description]
+   * @param  {number} index expands or closes a given index.
    */
   function expand(index) {
     if(index !== vm.chosenKeyObject)

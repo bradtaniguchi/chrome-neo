@@ -1,8 +1,3 @@
-/**
- * Component that take a single binding, which will transfer the user
- * to JPL's offical page for the given NEO.
- * @type {component}
- */
 var jplLink = {
   templateUrl: 'components/jpl-link/jpl-link.view.html',
   controller: 'JplLinkController as vm',
@@ -14,6 +9,12 @@ angular.module('chrome-neo').component('jplLink', jplLink)
 .controller("JplLinkController", JplLinkController);
 
 JplLinkController.$inject=['$log','ChromeService'];
+/**
+ * Component that takes a single binding, spkid, and provides a button that the
+ * user can click on to get transfered to the offical JPL page for that given NEO.
+ * @class angular_module.JplLinkController
+ * @name JplLinkController
+ */
 function JplLinkController($log, ChromeService) {
   var vm = this;
 
