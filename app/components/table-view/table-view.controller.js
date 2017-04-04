@@ -8,7 +8,11 @@ TableViewController.$inject=[
   'moment', //we need to handle some dates here if given a month/week
   'RankItService'
 ];
-
+/**
+ * Dialog that is used to display a set of data with different views. This datas
+ * should be formatted by the neows api.
+ * @see NeoWsService
+ */
 function TableViewController($log, $mdDialog, constants, initData, moment,
   RankItService) {
   var vm = this;
@@ -31,7 +35,6 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   /**
    * Parse the chart update, and select the new chart type to update with.
    * @param  {string} option chart option
-   * @return {[type]}        [description]
    */
   function updateChart(option) {
     $log.debug('option: ' + option);
@@ -83,10 +86,18 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
     });
     return elements;
   }
+  /**
+   * closes the dialog popup
+   */
   function close() {
     $mdDialog.hide();
   }
-  function buildDistanceChart(data, xAttribute) {
+  /**
+   * Builds a chart object by considering distance.
+   * @param  {Object} data object that is parsed using paredNeos.
+   * @return {object} returns chart data object
+   */
+  function buildDistanceChart(data) {
     var labels=[];
     var chartData=[];
     var labelString= "distance in Km";
@@ -121,9 +132,8 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   /**
    * Builds a chart based on min and max estimated sizes
    * @param  {object} data       an object with keys that represent different days
-   * @param  {string} xAttribute attribute to orderby, currently not in use.
    */
-  function buildSizeChart(data, xAttribute) {
+  function buildSizeChart(data) {
     var labels =[];
     var chartData = [];
     var labelString = 'Size in Meters';
@@ -173,9 +183,8 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   /**
    * Builds a chart based on days. Showing the amount per day.
    * @param  {object} data       an object with keys that represent different days
-   * @param  {string} xAttribute attribute to orderby, currently not in use.
    */
-  function buildDayChart(data, xAttribute) {
+  function buildDayChart(data) {
     var labels = [];
     var chartData = [[]];
     var labelString =  'Order by Size';
@@ -215,7 +224,7 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
    * @NOTE: Check this URL to view how the data is structured
    * https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY
    */
-  function buildClosestChart(data, xAttribute) {
+  function buildClosestChart(data) {
     var labels = [];
     var chartData = [[]];
     var labelString = 'Closest Appraoch';
