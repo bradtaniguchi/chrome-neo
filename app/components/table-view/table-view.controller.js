@@ -30,6 +30,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
   vm.chartOptions = ['size', 'day', 'distance'];
   vm.neoLimit = 15; //limit of NEOs to show if the hideNeos flag is set true
 
+  vm.chartClick = chartClick;
   vm.updateChart = updateChart;
   vm.close = close;
 
@@ -52,6 +53,19 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
       $log.error("invalid option given! Cannot generate chart");
     }
   }
+  /**
+   * chartjs click handler
+   * @todo update jsdocs.
+   */
+  function chartClick(points, event) {
+    $log.debug('chartClick hander');
+    $log.debug(points);
+    $log.debug(points[0]._index);
+    $log.debug(vm.chart.labels[points[0]._index]);
+
+    /*we do not want to provide a click handler function for a days printout*/
+    
+  }
   /*function definitons*/
   function onInit() {
     /*define our chart object*/
@@ -62,8 +76,6 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
    * Parses the given data and applies it to the settings.
    */
   function parseData(){
-    $log.debug('INITDATA');
-    $log.debug(initData);
     vm.tableType = initData.tableType;
     vm.data = initData.data.near_earth_objects;
     vm.modalLabel = initData.modalLabel;
@@ -171,7 +183,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
     }));
 
     /*if we want to hide stuff, we will splice the three arrays*/
-    if(hideNeos){
+    if(hideNeos && chartData[0].length > vm.neoLimit){
       chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
       chartData[1] = chartData[1].splice(chartData[1].length - vm.neoLimit,vm.neoLimit);
       labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);

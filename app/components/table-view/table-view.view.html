@@ -15,7 +15,7 @@
   <md-dialog-content> <!--table goes here-->
     <canvas id="lineGraph" class="chart chart-line" chart-data="vm.chart.data"
     chart-labels="vm.chart.labels" chart-options="vm.chart.options"
-    chart-hover=""></canvas>
+    chart-hover="" chart-click="vm.chartClick"></canvas>
   </md-dialog-content>
   <md-dialog-actions>
     <md-checkbox ng-show="true" ng-model="vm.hideNeos" ng-change="vm.updateChart(vm.tableType, vm.hideNeos)">
@@ -26,7 +26,8 @@
     <span flex></span>
     <md-input-container>
       <label>Graph type</label>
-      <md-select ng-model="vm.tableType" ng-change="vm.updateChart(vm.tableType)">
+      <md-select ng-model="vm.tableType" ng-change="vm.updateChart(vm.tableType)"
+      style="width:100px;">
         <md-option ng-repeat="option in vm.chartOptions" ng-value="option">
           {{option}}
         </md-option>
