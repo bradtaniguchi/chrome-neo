@@ -24,7 +24,7 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   vm.tableType = ""; //the table type to display
   /*hide some of the NEOs in the graph, only shown for the monthly table, as
   there are two many datapoints!*/
-  vm.hideNeos = "false";
+  vm.hideNeos = false;
   vm.chosenChartOption = 'size';
   vm.chartOptions = ['size', 'day', 'distance'];
 
