@@ -18,7 +18,7 @@
     chart-hover="" chart-click="vm.chartClick"></canvas>
   </md-dialog-content>
   <md-dialog-actions>
-    <md-checkbox ng-show="true" ng-model="vm.hideNeos" ng-change="vm.updateChart(vm.tableType, vm.hideNeos)">
+    <md-checkbox ng-hide="vm.tableType === 'day' " ng-model="vm.hideNeos" ng-change="vm.updateChart(vm.tableType, vm.hideNeos)">
       LimitOutput
     <md-tooltip aria-label="Hide some NEO's"
       md-direction="bottom">Hide some NEOs in graph output</md-tooltip>

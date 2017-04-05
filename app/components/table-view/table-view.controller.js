@@ -27,7 +27,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
   /*hide some of the NEOs in the graph, only shown for the monthly table, as
   there are two many datapoints!*/
   vm.hideNeos = false;
-  vm.chartOptions = ['size', 'day', 'distance'];
+  vm.chartOptions = ['size', 'day', 'distance', 'closest'];
   vm.neoLimit = 15; //limit of NEOs to show if the hideNeos flag is set true
 
   vm.chartClick = chartClick;
@@ -49,6 +49,10 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
 
     } else if(tableType == 'distance'){ //option = 'distance'
       vm.chart = buildDistanceChart(vm.data, hideNeos);
+
+    } else if(tableType == 'closest') {
+      vm.chart = buildClosestChart(vm.data, hideNeos);
+
     } else {
       $log.error("invalid option given! Cannot generate chart");
     }
@@ -125,11 +129,11 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
     }));
 
     /*if we want to hide stuff, we will splice the three arrays*/
-    if(hideNeos){
+    if(hideNeos && (chartData[0].length > vm.neoLimit)){
       chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
       labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
     }
-    
+
     return graphFactory(chartData, labels, labelString);
   }
   /**
@@ -168,7 +172,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
     }));
 
     /*if we want to hide stuff, we will splice the three arrays*/
-    if(hideNeos && chartData[0].length > vm.neoLimit){
+    if(hideNeos && (chartData[0].length > vm.neoLimit)){
       chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
       chartData[1] = chartData[1].splice(chartData[1].length - vm.neoLimit,vm.neoLimit);
       labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
@@ -189,6 +193,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
     Object.keys(data).forEach(function(key){
       chartData[0].push(data[key].length);
     });
+
     return graphFactory(chartData, labels, labelString);
   }
   /**
@@ -201,11 +206,28 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
    * @NOTE: Check this URL to view how the data is structured
    * https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY
    */
-  function buildClosestChart(data) {
+  function buildClosestChart(data, hideNeos) {
     var labels = [];
-    var chartData = [[]];
+    var chartData = [];
     var labelString = 'Closest Appraoch';
+    /*we just want to get the FIRST closest approach*/
+    chartData.push(parseNeos(data)
 
+    .sort(function(a, b){
+      return a.close_approach_data[0].miss_distance.kilometers -
+             b.close_approach_data[0].miss_distance.kilometers;
+    })
+    /*because we want to see how large these guys are, map to return the estimated diameter*/
+    .map(function(neo){
+      labels.push(neo.name);
+      return neo.close_approach_data[0].miss_distance.kilometers;
+    }));
+
+    /*if we want to hide stuff, we will splice the three arrays*/
+    if(hideNeos && (chartData[0].length > vm.neoLimit)){
+      chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
+      labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
+    } 
     return graphFactory(chartData, labels, labelString);
   }
   /**
