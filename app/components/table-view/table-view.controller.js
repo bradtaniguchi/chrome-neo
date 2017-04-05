@@ -64,7 +64,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
     $log.debug(vm.chart.labels[points[0]._index]);
 
     /*we do not want to provide a click handler function for a days printout*/
-    
+
   }
   /*function definitons*/
   function onInit() {
@@ -129,23 +129,8 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
       chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
       labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
     }
-    return {
-      data: chartData,
-      labels: labels,
-      options: {
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: labelString
-            }
-          }]
-        },
-        tooltips: {
-          enabled: true
-        }
-      }
-    };
+    
+    return graphFactory(chartData, labels, labelString);
   }
   /**
    * Builds a chart based on min and max estimated sizes
@@ -188,24 +173,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
       chartData[1] = chartData[1].splice(chartData[1].length - vm.neoLimit,vm.neoLimit);
       labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
     }
-
-    return {
-      data: chartData,
-      labels: labels,
-      options: {
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: labelString
-            }
-          }]
-        },
-        tooltips: {
-          enabled: true
-        }
-      }
-    };
+    return graphFactory(chartData, labels, labelString);
   }
   /**
    * Builds a chart based on days. Showing the amount per day.
@@ -221,24 +189,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
     Object.keys(data).forEach(function(key){
       chartData[0].push(data[key].length);
     });
-    return {
-      data: chartData,
-      labels: labels,
-      options: {
-        //onClick: //use this to handle on clicks
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: labelString
-            }
-          }]
-        },
-        tooltips: {
-          enabled: true
-        }
-      }
-    };
+    return graphFactory(chartData, labels, labelString);
   }
   /**
    * Builds a chart on closest approach distance (!)
@@ -255,6 +206,17 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
     var chartData = [[]];
     var labelString = 'Closest Appraoch';
 
+    return graphFactory(chartData, labels, labelString);
+  }
+  /**
+   * Graph Factory function that creates a graph object.
+   * @param  {array} chartData array of arrays The main array holds each line
+   *                           graph.
+   * @param  {array} labels   array of strings to place at the bottom.
+   * @param  {string} labelString the name of the graph
+   * @return {object}  a chartjs object
+   */
+  function graphFactory(chartData, labels, labelString) {
     return {
       data: chartData,
       labels: labels,
