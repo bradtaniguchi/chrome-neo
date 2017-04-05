@@ -19,7 +19,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
   vm.tableType = ""; //the table type to display
   /*hide some of the NEOs in the graph, only shown for the monthly table, as
   there are two many datapoints!*/
-  vm.hideNeos = "false";
+  vm.hideNeos = false;
   //vm.chosenChartOption = '';
   vm.chartOptions = ['size', 'day', 'distance'];
   vm.neoLimit = 15; //limit of NEOs to show if the hideNeos flag is set true
@@ -37,12 +37,12 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
   function updateChart(tableType, hideNeos) {
     /*determine if we want to limit the data */
     if(tableType == 'size'){
-      vm.chart = buildSizeChart(vm.data);
+      vm.chart = buildSizeChart(vm.data, hideNeos);
     } else if(tableType == 'day') {
       vm.chart = buildDayChart(vm.data);
 
     } else if(tableType == 'distance'){ //option = 'distance'
-      vm.chart = buildDistanceChart(vm.data);
+      vm.chart = buildDistanceChart(vm.data, hideNeos);
     } else {
       $log.error("invalid option given! Cannot generate chart");
     }
@@ -69,10 +69,6 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
    */
   function parseNeos(data){
     var elements = []; //these are the NEO's regardless of day
-    /*
-    for each day/key we need to get its elements for that day, these
-    are left within a list that we must iterate through.
-    */
     Object.keys(data).forEach(function(key){
       data[key].forEach(function(neo){
         elements.push(neo);
@@ -83,7 +79,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
   function close() {
     $mdDialog.hide();
   }
-  function buildDistanceChart(data) {
+  function buildDistanceChart(data, hideNeos) {
     var labels=[];
     var chartData=[];
     var labelString= "distance in Km";
@@ -98,6 +94,11 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
       return neo.close_approach_data[0].miss_distance.kilometers;
     }));
 
+    /*if we want to hide stuff, we will splice the three arrays*/
+    if(hideNeos){
+      chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
+      labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
+    }
     return {
       data: chartData,
       labels: labels,
@@ -120,7 +121,7 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
    * Builds a chart based on min and max estimated sizes
    * @param  {object} data       an object with keys that represent different days
    */
-  function buildSizeChart(data) {
+  function buildSizeChart(data, hideNeos) {
     var labels =[];
     var chartData = [];
     var labelString = 'Size in Meters';
@@ -151,6 +152,13 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
       return neo.estimated_diameter.meters.estimated_diameter_max;
     }));
 
+    /*if we want to hide stuff, we will splice the three arrays*/
+    if(hideNeos){
+      chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
+      chartData[1] = chartData[1].splice(chartData[1].length - vm.neoLimit,vm.neoLimit);
+      labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
+    }
+
     return {
       data: chartData,
       labels: labels,
@@ -172,7 +180,6 @@ function TableViewController($log, $q, $mdDialog, constants, initData, moment,
   /**
    * Builds a chart based on days. Showing the amount per day.
    * @param  {object} data       an object with keys that represent different days
-   * @param  {string} xAttribute attribute to orderby, currently not in use.
    */
   function buildDayChart(data) {
     var labels = [];
