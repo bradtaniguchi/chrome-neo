@@ -18,15 +18,15 @@
     chart-hover=""></canvas>
   </md-dialog-content>
   <md-dialog-actions>
-    <md-checkbox ng-show="true"> <!--TODO add flag IF we want to limit data by size-->
+    <md-checkbox ng-show="true" ng-model="vm.hideNeos" ng-change="vm.updateChart(vm.tableType, vm.hideNeos)">
       LimitOutput
-      <md-tooltip aria-label="Hide some NEO's" ng-model="vm.hideNeos"
+    <md-tooltip aria-label="Hide some NEO's"
       md-direction="bottom">Hide some NEOs in graph output</md-tooltip>
     </md-checkbox>
     <span flex></span>
     <md-input-container>
       <label>Graph type</label>
-      <md-select ng-model="vm.chosenChartOption" ng-change="vm.updateChart(vm.chosenChartOption)">
+      <md-select ng-model="vm.tableType" ng-change="vm.updateChart(vm.tableType)">
         <md-option ng-repeat="option in vm.chartOptions" ng-value="option">
           {{option}}
         </md-option>

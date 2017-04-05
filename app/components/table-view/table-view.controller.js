@@ -2,12 +2,14 @@
 angular.module('chrome-neo').controller('TableViewController', TableViewController);
 TableViewController.$inject=[
   '$log',
+  '$q',
   '$mdDialog',
   'constants',
   'initData', //this should be given to us from the home controller
   'moment', //we need to handle some dates here if given a month/week
   'RankItService'
 ];
+
 /**
  * Dialog that is used to display a set of data with different views. This datas
  * should be formatted by the neows api.
@@ -15,7 +17,7 @@ TableViewController.$inject=[
  * @name TableViewController
  * @see NeoWsService
  */
-function TableViewController($log, $mdDialog, constants, initData, moment,
+function TableViewController($log, $q, $mdDialog, constants, initData, moment,
   RankItService) {
   var vm = this;
   vm.data = {}; //all data
@@ -25,12 +27,11 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   /*hide some of the NEOs in the graph, only shown for the monthly table, as
   there are two many datapoints!*/
   vm.hideNeos = false;
-  vm.chosenChartOption = 'size';
   vm.chartOptions = ['size', 'day', 'distance'];
+  vm.neoLimit = 15; //limit of NEOs to show if the hideNeos flag is set true
 
   vm.updateChart = updateChart;
   vm.close = close;
-  //vm.test = test;
 
   onInit(); //call the function
   return vm;
@@ -38,36 +39,34 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
    * Parse the chart update, and select the new chart type to update with.
    * @param  {string} option chart option
    */
-  function updateChart(option) {
-    $log.debug('option: ' + option);
-    if(option == 'size'){
-      $log.debug('ordering by size');
-      vm.chart = buildSizeChart(vm.data, vm.xAttribute);
-    } else if(option == 'day') {
-      $log.debug('ordering by day');
-      vm.chart = buildDayChart(vm.data, vm.xAttribute);
-    } else if(option == 'distance'){ //option = 'distance'
-      $log.debug('ordering by distance');
-      vm.chart = buildDistanceChart(vm.data, vm.xAttribute);
+  function updateChart(tableType, hideNeos) {
+    /*determine if we want to limit the data */
+    if(tableType == 'size'){
+      vm.chart = buildSizeChart(vm.data, hideNeos);
+    } else if(tableType == 'day') {
+      vm.chart = buildDayChart(vm.data);
+
+    } else if(tableType == 'distance'){ //option = 'distance'
+      vm.chart = buildDistanceChart(vm.data, hideNeos);
     } else {
       $log.error("invalid option given! Cannot generate chart");
     }
   }
   /*function definitons*/
   function onInit() {
-
     /*define our chart object*/
     parseData();
-    updateChart(vm.tableType);
+    updateChart(vm.tableType, false);
   }
   /**
    * Parses the given data and applies it to the settings.
    */
   function parseData(){
+    $log.debug('INITDATA');
+    $log.debug(initData);
     vm.tableType = initData.tableType;
     vm.data = initData.data.near_earth_objects;
     vm.modalLabel = initData.modalLabel;
-    $log.log(initData);
   }
   /**
    * Utility function that takes the near_earth_objects as the first argument,
@@ -77,10 +76,6 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
    */
   function parseNeos(data){
     var elements = []; //these are the NEO's regardless of day
-    /*
-    for each day/key we need to get its elements for that day, these
-    are left within a list that we must iterate through.
-    */
     Object.keys(data).forEach(function(key){
       data[key].forEach(function(neo){
         elements.push(neo);
@@ -97,13 +92,17 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   /**
    * Builds a chart object by considering distance.
    * @param  {Object} data object that is parsed using paredNeos.
+   * @param {boolean} hideNeos flag if we want to cutdown on the size of the graph
+   *                           useful if the graph is going to get far to large
+   *                           to render properly or clearly.
    * @return {object} returns chart data object
    */
-  function buildDistanceChart(data) {
+  function buildDistanceChart(data, hideNeos) {
     var labels=[];
     var chartData=[];
     var labelString= "distance in Km";
     chartData.push(parseNeos(data)
+    //chartData.push(data)
     .sort(function(a, b){
      return a.close_approach_data[0].miss_distance.kilometers -
             b.close_approach_data[0].miss_distance.kilometers;
@@ -113,6 +112,11 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
       return neo.close_approach_data[0].miss_distance.kilometers;
     }));
 
+    /*if we want to hide stuff, we will splice the three arrays*/
+    if(hideNeos){
+      chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
+      labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
+    }
     return {
       data: chartData,
       labels: labels,
@@ -134,14 +138,16 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
   /**
    * Builds a chart based on min and max estimated sizes
    * @param  {object} data       an object with keys that represent different days
+   * @param {boolean} hideNeos flag if we want to cutdown on the size of the graph
+   *                           useful if the graph is going to get far to large
+   *                           to render properly or clearly.
    */
-  function buildSizeChart(data) {
+  function buildSizeChart(data, hideNeos) {
     var labels =[];
     var chartData = [];
     var labelString = 'Size in Meters';
-
     chartData.push(parseNeos(data)
-    /*Sort the parsed data by estimatedDiameter*/
+
     .sort(function(a, b){
       return a.estimated_diameter.meters.estimated_diameter_min -
              b.estimated_diameter.meters.estimated_diameter_min;
@@ -163,6 +169,13 @@ function TableViewController($log, $mdDialog, constants, initData, moment,
     .map(function(neo){
       return neo.estimated_diameter.meters.estimated_diameter_max;
     }));
+
+    /*if we want to hide stuff, we will splice the three arrays*/
+    if(hideNeos){
+      chartData[0] = chartData[0].splice(chartData[0].length-vm.neoLimit, vm.neoLimit);
+      chartData[1] = chartData[1].splice(chartData[1].length - vm.neoLimit,vm.neoLimit);
+      labels = labels.splice(labels.length-vm.neoLimit, vm.neoLimit);
+    }
 
     return {
       data: chartData,
