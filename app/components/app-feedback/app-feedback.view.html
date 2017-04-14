@@ -1,0 +1,30 @@
+<md-card class="md-whiteframe-4dp">
+  <md-card-header>
+    <md-card-header-text class="md-title">
+      App Feedback
+    </md-card-header-text>
+  </md-card-header>
+  <form name="form" ng-submit="vm.submit(vm.feedback)"><!--start form-->
+    <md-card-content> 
+      <md-input-container class="md-block">
+        <label>Email</label>
+        <input type="email" name="email" ng-model="vm.feedback.email"
+        aria-label="Email" required/>
+        <!--<div ng-messages="form.email.$error">
+          <div ng-message="required">
+            This Field is Required!
+          </div>
+          <div ng-message="email">
+            Not a valid Email!
+          </div>
+        </div>-->
+        </md-input-container>
+    </md-card-content>
+    <md-card-actions layout="row" layout-padding>
+      <span flex></span>
+      <div>
+        <md-button value="submit" type="submit" class="md-raised">submit</md-button>
+      </div>
+    </md-card-actions>
+  </form>
+</md-card>

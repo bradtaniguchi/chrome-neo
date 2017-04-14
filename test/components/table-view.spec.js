@@ -26,6 +26,12 @@
 
     it('check functions exist', function(){
       expect(TableViewController.close).toBeDefined();
+      expect(TableViewController.updateChart).toBeDefined();
+      expect(TableViewController.chartClick).toBeDefined();
+    });
+    
+    describe('Update chart tes', function(){
+      
     });
   });
 })();
