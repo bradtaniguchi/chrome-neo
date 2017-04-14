@@ -17,19 +17,15 @@ function FeedbackService($log, $http) {
     var data = {
       time: new Date().toString(),
       email: email,
-      comments: 'comments',
-      callback: callback
+      comments: 'comments'
+      //callback: callback
     };
     $log.debug(data);
-    return $http({
-      url: URL,
-      data: data,
-      method: 'POST',
-      responseType: 'json'
-    });
-    // return $http.jsonp(url+);
+    var buildUrl=URL+
+    "?email="+data.email+
+    "&time="+data.time+
+    "&comments="+data.comments;
+    
+    return $http.get(buildUrl);
   } 
-  function callback(response) {
-    $log.debug(response);
-  }
 }
