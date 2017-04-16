@@ -21,19 +21,21 @@ function AppFeedbackController($log, $mdToast, FeedbackService){
     
   }
   function submit(form) {
-    FeedbackService.send(form.email, form.comments).then(function(response){
-      $log.debug(response);
-      $mdToast.show($mdToast.simple()
-        .textContent('Feedback Sent!')
-        .position('right')
-        .hideDelay(1000));
-    }).catch(function(error){
-      $mdToast.show($mdToast.simple()
-        .textContent('Feedback Send Error!')
-        .position('right')
-        .hideDelay(1000));
-      $log.error(error);
-    });
-    vm.feedback = {};
+    if(form.email && form.comments){
+      FeedbackService.send(form.email, form.comments).then(function(response){
+        $log.debug(response);
+        $mdToast.show($mdToast.simple()
+          .textContent('Feedback Sent!')
+          .position('bottom')
+          .hideDelay(1000));
+      }).catch(function(error){
+        $mdToast.show($mdToast.simple()
+          .textContent('Feedback Send Error!')
+          .position('bottom')
+          .hideDelay(1000));
+        $log.error(error);
+      });
+      vm.feedback = {};
+    }
   }
 }
