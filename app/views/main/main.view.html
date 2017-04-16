@@ -1,7 +1,7 @@
 <div style="width:650px;">
   <md-toolbar class="md-hue-1 md-whiteframe-8dp">
     <div class="md-toolbar-tools" layout-align="start center">
-      <md-menu  md-offset="5 10">
+      <md-menu md-offset="5 10" flex id="md-menu">
         <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openMenu($mdMenu, $event)">
         <!--lookup how to do this...
         https://material.angularjs.org/latest/demo/menu
@@ -9,7 +9,7 @@
         <md-tooltip md-direction="down">Open Menu</md-tooltip>
           <i class="material-icons">menu</i>
         </md-button>
-        <md-menu-content><!--ITEM LIST CONTENTS FOR MENU DROPDOWN-->
+        <md-menu-content width="3"><!--ITEM LIST CONTENTS FOR MENU DROPDOWN-->
           <md-menu-item>
             <md-button ng-click="vm.go('home')">
               <md-tooltip md-direction="right">Go to Home</md-tooltip>

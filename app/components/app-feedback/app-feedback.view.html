@@ -1,12 +1,12 @@
+<form name="form" ng-submit="vm.submit(vm.feedback)"><!--start form-->
 <md-card class="md-whiteframe-4dp">
   <md-card-header>
     <md-card-header-text class="md-title">
       App Feedback
     </md-card-header-text>
   </md-card-header>
-  <form name="form" ng-submit="vm.submit(vm.feedback)"><!--start form-->
-    <md-card-content flex> 
-      <p>Send the developer feedback!</p> 
+    <md-card-content flex>
+      <p>Send the developer feedback!</p>
       <md-input-container class="md-block">
         <label>Email</label>
         <input type="email" name="email" ng-model="vm.feedback.email"
@@ -16,12 +16,12 @@
             Not a valid Email!
           </div>
         </div>
-        <md-tooltip>Required!</md-tooltip>
+        <md-tooltip md-direction="top">Required!</md-tooltip>
         </md-input-container>
         <md-input-container class="md-block">
-          <textarea rows="5" name="comments" ng-model="vm.feedback.comments" 
+          <textarea rows="5" name="comments" ng-model="vm.feedback.comments"
           md-maxlength="250" placeholder="Enter Comments here"></textarea>
-          <md-tooltip>Required!</md-tooltip>
+          <md-tooltip md-direction="top">Required!</md-tooltip>
         </md-input-container>
     </md-card-content>
     <md-card-actions layout="row" layout-padding>
@@ -30,5 +30,5 @@
         <md-button value="submit" type="submit" class="md-raised">submit</md-button>
       </div>
     </md-card-actions>
-  </form>
 </md-card>
+</form>

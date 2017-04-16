@@ -36,7 +36,7 @@ function SettingsController($log, CacheService, $mdDialog, $rootScope) {
           .ariaLabel('Cleared cache')
           .targetEvent(event)
           .ok('Okay!'));
-          //.cancel('I\'m a cat person');
+          // .cancel('I\'m a cat person');
       });
     });
   }

@@ -1,12 +1,18 @@
 angular.module('chrome-neo').controller('MainController', MainController);
-MainController.$inject=['$log', '$state', '$rootScope'];
+MainController.$inject=[
+  '$log',
+  '$state',
+  '$rootScope',
+  '$document',
+  '$timeout'
+];
 /**
  * @class angular_module.MainController
  * @name MainController
  * @description controller for the main view, which all other views inherit from.
  *
  */
-function MainController($log, $state, $rootScope) {
+function MainController($log, $state, $rootScope, $document, $timeout) {
   var vm = this;
   var originatorEv; //idk what this does right now..
 
@@ -26,9 +32,8 @@ function MainController($log, $state, $rootScope) {
    * @param {$mdMenu} $mdMenu angular material
    * @param {event} ev event to open the menu from on the screen
    */
-  function openMenu($mdMenu, ev) {
-    originatorEv = ev;
-    $mdMenu.open(ev);
+  function openMenu(menu, ev) {
+      menu.open(ev);
   }
   /**
    * Refreshes the current state
