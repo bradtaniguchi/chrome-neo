@@ -10,7 +10,7 @@
     },
     "permissions": [
         "http://www.asterank.com/api/asterank"
-    ]
+    ],
     "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
     "icons" : {
       "16" : "img/icon16.png",
