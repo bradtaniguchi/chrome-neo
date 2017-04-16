@@ -16,6 +16,7 @@ var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var wrap = require('gulp-wrap');
 var jsdoc = require('gulp-jsdoc3');
+var zip = require('gulp-zip');
 var sloc = require('gulp-sloc');
 var ngGraph = require('gulp-angular-architecture-graph');
 var Server = require('karma').Server;
@@ -168,6 +169,13 @@ gulp.task('test', function (done) {
 });
 
 
+/*zip for prod*/
+gulp.task('zip', function(){
+  gulp.src('./dist/*')
+  .pipe(zip('chrome-neo.zip'))
+  .pipe(gulp.dest('./'));
+});
+
 /*Default task*/
 gulp.task('default', ['jshint', 'copyHtml', 'moveStatic', 'buildjs', 'watch']);
 
@@ -176,3 +184,6 @@ gulp.task('build', ['jshint', 'copyHtml', 'moveStatic', 'buildjs', 'testjs']);
 
 /*Just lint my files*/
 gulp.task('lint',['jshint', 'testjs']);
+
+/*builds the prod zip*/
+gulp.task('build.prod', ['build', 'zip']);

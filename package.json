@@ -25,6 +25,7 @@
     "gulp-uglify": "^2.0.1",
     "gulp-util": "^3.0.8",
     "gulp-wrap": "^0.13.0",
+    "gulp-zip": "^4.0.0",
     "jasmine": "^2.5.3",
     "jasmine-core": "^2.5.2",
     "jshint": "^2.9.4",
