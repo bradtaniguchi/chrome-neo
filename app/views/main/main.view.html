@@ -1,42 +1,39 @@
-<div style="width:650px;">
+<div>
   <md-toolbar class="md-hue-1 md-whiteframe-8dp">
     <div class="md-toolbar-tools" layout-align="start center">
-      <md-menu md-offset="5 10" flex id="md-menu">
-        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openMenu($mdMenu, $event)">
-        <!--lookup how to do this...
-        https://material.angularjs.org/latest/demo/menu
-        -->
+      <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openMenu()">
         <md-tooltip md-direction="down">Open Menu</md-tooltip>
-          <i class="material-icons">menu</i>
-        </md-button>
-        <md-menu-content width="3"><!--ITEM LIST CONTENTS FOR MENU DROPDOWN-->
-          <md-menu-item>
+        <i class="material-icons">menu</i>
+      </md-button>
+      <div width="3" ng-show="vm.showMenu" style="position:relative; right:10px; top:60px;"><!--ITEM LIST CONTENTS FOR MENU DROPDOWN-->
+        <md-card layout-align="start center" layout="column">
+          <div>
             <md-button ng-click="vm.go('home')">
               <md-tooltip md-direction="right">Go to Home</md-tooltip>
               <i class="material-icons">home</i>
               Home
             </md-button>
-          </md-menu-item>
-          <md-menu-item>
+          </div>
+          <div>
             <md-button ng-click="vm.go('search')">
               <md-tooltip md-direction="right">Search the database</md-tooltip>
               <i class="material-icons">search</i>
               Search</md-button>
-          </md-menu-item>
-          <md-menu-item>
+          </div>
+          <div>
             <md-button ng-click="vm.go('settings')">
               <md-tooltip md-direction="right">Application settings</md-tooltip>
               <i class="material-icons">settings</i>
               Settings</md-button>
-          </md-menu-item>
-          <md-menu-item>
+          </div>
+          <div>
             <md-button ng-click="vm.go('about')">
               <md-tooltip md-direction="right">Extension information</md-tooltip>
               <i class="material-icons">live_help</i>
               About</md-button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu><!--END menu-->
+          </div>
+        </md-card>
+      </div>
       <h2 ng-click="vm.go('home')" style="cursor:default; outline: none">Chrome-Neo</h2>
       <span flex></span>
       <md-button class="md-icon-button">
@@ -49,7 +46,7 @@
   <div ng-show="loading">
      <md-progress-linear md-mode="indeterminate"></md-progress-linear>
   </div>
-  <div>
+  <md-content>
     <ui-view></ui-view>
-  </div>
+  </md-content>
 </div>

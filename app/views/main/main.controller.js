@@ -14,7 +14,7 @@ MainController.$inject=[
  */
 function MainController($log, $state, $rootScope, $document, $timeout) {
   var vm = this;
-  var originatorEv; //idk what this does right now..
+  vm.showMenu = false;
 
   vm.openMenu = openMenu;
   vm.currState = $state;//get current state
@@ -29,11 +29,12 @@ function MainController($log, $state, $rootScope, $document, $timeout) {
   /**
    * Opens the menu to display the available choices to provide a
    * small and basic navbar.
-   * @param {$mdMenu} $mdMenu angular material
-   * @param {event} ev event to open the menu from on the screen
    */
-  function openMenu(menu, ev) {
-      menu.open(ev);
+  function openMenu() {
+    vm.showMenu=!vm.showMenu;
+  }
+  function closeMenu() {
+    vm.showMenu = false;
   }
   /**
    * Refreshes the current state
@@ -52,5 +53,6 @@ function MainController($log, $state, $rootScope, $document, $timeout) {
     //   vm.currState = state;
     // }
     $state.go(state);
+    vm.showMenu = false;
   }
 }
