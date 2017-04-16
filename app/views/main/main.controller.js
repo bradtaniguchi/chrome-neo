@@ -13,7 +13,6 @@ function MainController($log, $state, $rootScope) {
   vm.openMenu = openMenu;
   vm.currState = $state;//get current state
   vm.go = go;
-  vm.settings = settings;
   vm.refresh = refresh;
   vm.$onInit = onInit;
   return vm;
@@ -30,13 +29,6 @@ function MainController($log, $state, $rootScope) {
   function openMenu($mdMenu, ev) {
     originatorEv = ev;
     $mdMenu.open(ev);
-  }
-  /**
-   * Opens the settings state
-   */
-  function settings() {
-    //$state.go('settings');
-    go('settings');
   }
   /**
    * Refreshes the current state

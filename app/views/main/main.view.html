@@ -24,6 +24,12 @@
               Search</md-button>
           </md-menu-item>
           <md-menu-item>
+            <md-button ng-click="vm.go('settings')">
+              <md-tooltip md-direction="right">Application settings</md-tooltip>
+              <i class="material-icons">settings</i>
+              Settings</md-button>
+          </md-menu-item>
+          <md-menu-item>
             <md-button ng-click="vm.go('about')">
               <md-tooltip md-direction="right">Extension information</md-tooltip>
               <i class="material-icons">live_help</i>
@@ -31,12 +37,8 @@
           </md-menu-item>
         </md-menu-content>
       </md-menu><!--END menu-->
-      <h2>Chrome-Neo</h2>
+      <h2 ng-click="vm.go('home')" style="cursor:default; outline: none">Chrome-Neo</h2>
       <span flex></span>
-      <md-button class="md-icon-button">
-        <md-tooltip md-direction="down">Settings</md-tooltip>
-        <md-icon class="material-icons" ng-click="vm.settings()">settings</md-icon>
-      </md-button>
       <md-button class="md-icon-button">
         <md-tooltip md-direction="down">Refresh the app</md-tooltip>
         <md-icon class="material-icons" ng-click="vm.refresh()">refresh</md-icon>
