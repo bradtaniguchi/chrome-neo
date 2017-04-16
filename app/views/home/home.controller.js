@@ -8,7 +8,8 @@ HomeController.$inject = [
   'constants',
   '$rootScope',
   'CacheService',
-  'RankItService'
+  'RankItService',
+  'ChromeService'
 ];
 /**
  * @class angular_module.HomeController
@@ -19,7 +20,7 @@ HomeController.$inject = [
  * @see InterestingNeoController
  */
 function HomeController($log, $mdDialog, NeoWsService, $q, moment,
-  constants, $rootScope, CacheService, RankItService) {
+  constants, $rootScope, CacheService, RankItService, ChromeService) {
   var vm = this;
   /*Element counts*/
   vm.monthly = 0;
@@ -33,7 +34,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
 
   vm.todaysDate = "";
 
-  // vm.test = test; //test function
+  vm.test = test; //test function
   vm.clearCache = clearCache;
   vm.$onInit = onInit;
 
@@ -89,9 +90,11 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
     return $q.reject(error);
   }
 
-  // function test() {
-  //   getBest();
-  // }
+  function test() {
+    $log.debug('checking user ');
+    var user = ChromeService.getUser();
+    $log.debug(user);
+  }
   /**
    * debug function, that prints the database keys within the database.
    * I don't print out the full JSON size as it gets to large.

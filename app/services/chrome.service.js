@@ -10,7 +10,8 @@ ChromeService.$inject = [
  */
 function ChromeService($log, $window) {
   return {
-    link: link
+    link: link,
+    getUser: getUser
   };
   /**
    * Opens a new chrome tab with the given link
@@ -23,6 +24,22 @@ function ChromeService($log, $window) {
       });
     } else { //if we dont, try to open it the traditional way.
       $window.open(link, '_blank');
+    }
+  }
+  /**
+   * Uses the chrome.identity platform to get the user currently logged in
+   * 
+   */ 
+  function getUser() {
+    $log.debug('Getting user email');
+    $log.debug(chrome);
+    if(chrome.identity) {
+      chrome.identity.getProfileUserInfo(function(user){
+        $log.debug(user);
+        return user;
+      });
+    } else {
+      return {};
     }
   }
 }

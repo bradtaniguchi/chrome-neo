@@ -17,7 +17,7 @@ function FeedbackService($log, $http) {
     var data = {
       time: new Date().toString(),
       email: email,
-      comments: 'comments'
+      comments: comments
       //callback: callback
     };
     $log.debug(data);
