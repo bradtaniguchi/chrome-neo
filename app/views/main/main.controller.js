@@ -50,9 +50,10 @@ function MainController($log, $state, $rootScope) {
    * @param {string} state name of the state to transfer to
    */
   function go(state) {
-    if(vm.currState !== state){
-      $state.go(state);
-      vm.currState = state;
-    }
+    // if(vm.currState !== state){
+    //   $state.go(state);
+    //   vm.currState = state;
+    // }
+    $state.go(state);
   }
 }

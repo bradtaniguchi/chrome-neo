@@ -1,4 +1,4 @@
-<md-card class="md-whiteframe-4dp" ng-cloak>
+<md-card class="md-whiteframe-4dp" ng-cloak ng-hide="loading">
   <md-card-header>
       <i class="material-icons">home</i>
     <md-card-header-text class="md-title" layout="row">
@@ -40,6 +40,9 @@
     </div>
   </md-card-content>
 </md-card>
+<div ng-show="loading" layout="column" layout-align="center center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="120"></md-progress-circular>
+</div>
 <interesting-neo ng-hide="loading" neo="vm.bestNeo"></interesting-neo> <!--custom directive-->
 <!--<md-card>-->
 <!--  test-->
