@@ -7,8 +7,10 @@ angular.module('chrome-neo', [
   'LocalForageModule' //local storage api
 ]).run(block);
 
-block.$inject = ['$log', '$rootScope'];
-function block($log, $rootScope){
+block.$inject = ['$log', '$rootScope', '$logProvider'];
+function block($log, $rootScope, $logProvider){
+   $logProvider.debugEnabled(false);
+  
   $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
     $rootScope.loading = true;
   });
