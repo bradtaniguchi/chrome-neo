@@ -1,6 +1,6 @@
 {
   "name": "chrome-neo",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Chrome extension that uses the asterank API",
   "main": "popup.html",
   "scripts": {
