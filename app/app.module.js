@@ -5,12 +5,14 @@ angular.module('chrome-neo', [
   'chart.js', //to display the data
   'angularMoment', //to handle times more gracefully
   'LocalForageModule' //local storage api
-]).run(block);
+])
+.run(block)
+.config(['$logProvider',function($logProvider){
+  $logProvider.debugEnabled(false);
+}]);
 
-block.$inject = ['$log', '$rootScope', '$logProvider'];
-function block($log, $rootScope, $logProvider){
-   $logProvider.debugEnabled(false);
-  
+block.$inject = ['$log', '$rootScope'];
+function block($log, $rootScope){
   $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
     $rootScope.loading = true;
   });

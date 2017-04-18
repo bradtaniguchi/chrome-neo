@@ -107,7 +107,7 @@ function HomeController($log, $mdDialog, NeoWsService, $q, moment,
    */
   function clearCache() {
     CacheService.clear().then(function(){
-      $log.log("Cache cleared!");
+      $log.debug("Cache cleared!");
     }).catch(handleError(err));//clears the cache
   }
   /**

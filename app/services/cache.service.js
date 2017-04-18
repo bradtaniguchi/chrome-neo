@@ -82,10 +82,10 @@ function CacheService($log, $localForage, $q, moment, constants) {
    * Debugging function, prints out the contents of the database in the log
    */
   function printDatabase() {
-    $log.log("[[[[[DATABASE PRINTOUT]]]]]");
+    $log.debug("[[[[[DATABASE PRINTOUT]]]]]");
     $localForage.iterate(function(value, key, iterationNumber) {
-      $log.log(key);
-      $log.log(value);
+      $log.debug(key);
+      $log.debug(value);
     });
   }
   // function test(callback) {
@@ -96,7 +96,7 @@ function CacheService($log, $localForage, $q, moment, constants) {
    * @return {promise} returns a promise with no arguments. To assist in chaining
    */
   function clear() {
-    $log.log("Clearing Cache...");
+    $log.debug("Clearing Cache...");
     return $localForage.clear();
   }
   /**

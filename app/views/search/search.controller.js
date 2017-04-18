@@ -38,12 +38,12 @@ function SearchController($log, $rootScope, AsterankService, $mdDialog) {
    */
   function search(query) {
     if(query !== ""){
-      $log.log("Searching query..." + query);
+      $log.debug("Searching query..." + query);
       vm.query = ""; //clear the search query
       $rootScope.loading = true;
       var queryParams = buildQueryParams();
       AsterankService.getByName(query, vm.limit, queryParams).then(function(response){
-        $log.log(response.data);
+        $log.debug(response.data);
         vm.results = response.data;
         $rootScope.loading = false;
       }).catch(function(err){
@@ -65,7 +65,7 @@ function SearchController($log, $rootScope, AsterankService, $mdDialog) {
    * @return [type] [description]
    */
   function clear() {
-    $log.log('clearing results');
+    $log.debug('clearing results');
     vm.results = [];
   }
   /**

@@ -48,7 +48,7 @@ function NeoBasicController($log, $state, $stateParams, $window, ChromeService) 
    */
   function fullDetail(id) {
     /*add cache by ID entry here with the given data.*/
-    $log.log("Looking up the given id:" + id);
+    $log.debug("Looking up the given id:" + id);
     $window.scrollTo(0, 0); //move view to the top of the page while we load..
     /*change state regardless?*/
     $state.go('stats',{
@@ -62,7 +62,7 @@ function NeoBasicController($log, $state, $stateParams, $window, ChromeService) 
    */
   function jplDetail(spkid){
     var rawUrl ='http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=';
-    $log.log("looking up the given id in browser " + spkid);
+    $log.debug("looking up the given id in browser " + spkid);
     ChromeService.link(rawUrl + spkid);
   }
 }

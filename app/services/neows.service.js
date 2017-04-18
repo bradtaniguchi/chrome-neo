@@ -47,7 +47,7 @@ function NeoWsService($log, $http, constants, moment, CacheService, $q) {
       week = moment().week();
     }
     var differed = $q.defer();
-    $log.log("Week: "+ week); //get the week of the year
+    $log.debug("Week: "+ week); //get the week of the year
     CacheService.checkWeekly(week, year).then(function(object){
       if(object !== null) {
         $log.debug('key exists in cache as:');

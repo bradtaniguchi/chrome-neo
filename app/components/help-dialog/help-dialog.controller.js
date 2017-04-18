@@ -34,6 +34,6 @@ function HelpDialogController($log, queryFields, $mdDialog) {
     $log.debug("Building list...");
     vm.list = Object.keys(queryFields); //get the keys
     vm.definitions = queryFields;
-    $log.log(vm.definitions);
+    $log.debug(vm.definitions);
   }
 }
