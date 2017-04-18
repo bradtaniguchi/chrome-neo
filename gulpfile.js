@@ -171,7 +171,7 @@ gulp.task('test', function (done) {
 
 /*zip for prod*/
 gulp.task('zip', function(){
-  gulp.src('./dist/*')
+  gulp.src('./dist/**')
   .pipe(zip('chrome-neo.zip'))
   .pipe(gulp.dest('./'));
 });
