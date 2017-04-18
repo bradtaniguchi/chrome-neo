@@ -13,9 +13,12 @@
     </div>
   </md-toolbar>
   <md-dialog-content> <!--table goes here-->
+    <!-- <canvas id="lineGraph" class="chart chart-line" chart-data="vm.chart.data"
+    chart-labels="vm.chart.labels" chart-options="vm.chart.options"
+    chart-hover="" chart-click="vm.chartClick"></canvas> -->
     <canvas id="lineGraph" class="chart chart-line" chart-data="vm.chart.data"
     chart-labels="vm.chart.labels" chart-options="vm.chart.options"
-    chart-hover="" chart-click="vm.chartClick"></canvas>
+    chart-hover=""></canvas>
   </md-dialog-content>
   <md-dialog-actions>
     <md-checkbox ng-hide="vm.tableType === 'day' " ng-model="vm.hideNeos" ng-change="vm.updateChart(vm.tableType, vm.hideNeos)">
